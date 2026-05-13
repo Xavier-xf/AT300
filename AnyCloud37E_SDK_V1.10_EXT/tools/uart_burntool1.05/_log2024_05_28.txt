@@ -1,0 +1,58 @@
+
+
+=============Transc Information =============
+Print Time: 2024-05-28 14:40:54
+
+[14:40:54]184020[14:41:09]g_ret_flag[0] = 2
+[14:41:09]BT_DownLoadData  fail
+
+
+=============Transc Information =============
+Print Time: 2024-05-28 14:41:35
+
+[14:41:35]184020[14:41:52]g_ret_flag[0] = 2
+[14:41:52]BT_DownLoadData  fail
+
+
+=============Transc Information =============
+Print Time: 2024-05-28 14:41:55
+
+[14:41:55]BT_Start_Read: Open_Uart handle fail
+[14:41:55]BT_Start_Read: Open_Uart handle fail
+[14:41:55]BT_Start_Read: Open_Uart handle fail
+[14:41:55]BT_Start_Read: Open_Uart handle fail
+[14:41:55]BT_Start_Read: Open_Uart handle fail
+[14:41:55]BT_Start_Read: Open_Uart handle fail
+[14:41:56]BT_Start_Read: Open_Uart handle fail
+[14:41:56]BT_Start_Read: Open_Uart handle fail
+[14:41:56]BT_Start_Read: Open_Uart handle fail
+[14:41:56]BT_Start_Read: Open_Uart handle fail
+[14:41:56]BT_Start_Read: Open_Uart handle fail
+[14:41:56]BT_Start_Read: Open_Uart handle fail
+[14:41:56]BT_Start_Read: Open_Uart handle fail
+[14:42:42]184020
+
+=============Transc Information =============
+Print Time: 2024-05-28 14:51:29
+
+[14:51:29]184020
+
+=============Transc Information =============
+Print Time: 2024-05-28 14:55:13
+
+[14:55:13]184020[14:55:24]g_ret_flag[0] = 2
+[14:55:24]BT_DownLoadData  fail
+
+
+=============Transc Information =============
+Print Time: 2024-05-28 14:56:03
+
+[14:56:03]184020[14:56:13]g_ret_flag[0] = 2
+[14:56:13]BT_DownLoadData  fail
+
+
+=============Transc Information =============
+Print Time: 2024-05-28 14:56:43
+
+[14:56:43]184020[14:56:53]g_ret_flag[0] = 2
+[14:56:53]BT_DownLoadData  fail

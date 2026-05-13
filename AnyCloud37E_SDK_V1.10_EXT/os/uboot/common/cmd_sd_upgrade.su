@@ -1,0 +1,4 @@
+cmd_sd_upgrade.c:577:12:partitions_mtdparts_parse	24	static
+cmd_sd_upgrade.c:650:12:upgrade_progress_bar_draw.part.0.constprop	40	static
+cmd_sd_upgrade.c:174:6:lcd_string_draw	40	static
+cmd_sd_upgrade.c:842:5:do_sd_upgrade	1864	static

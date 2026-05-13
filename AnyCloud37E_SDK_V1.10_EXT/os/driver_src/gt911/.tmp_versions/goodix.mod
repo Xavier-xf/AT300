@@ -1,0 +1,2 @@
+/home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/driver_src/gt911/goodix.ko
+/home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/driver_src/gt911/goodix.o

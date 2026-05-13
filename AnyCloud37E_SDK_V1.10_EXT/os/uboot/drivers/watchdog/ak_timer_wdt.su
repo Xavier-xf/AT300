@@ -1,0 +1,3 @@
+ak_timer_wdt.c:67:6:wdt_enable	0	static
+ak_timer_wdt.c:92:6:wdt_keepalive	8	static
+ak_timer_wdt.c:104:6:wdt_disable	0	static

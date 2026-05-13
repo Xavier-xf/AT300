@@ -1,0 +1,83 @@
+=============Burn Information For Channel[1]=============
+Print Time: 2024-1-25 14:51:21
+
+ss g_udisk_burnnum: 0
+[14:51:21]work number = 1
+[14:51:21]burn_mode = 1, eMedium = 1
+[14:51:23]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[14:52:15]end work number = 0
+[14:52:15]++Burn success++
+[14:52:15]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2024-1-25 14:58:00
+
+ss g_udisk_burnnum: 0
+[14:58:00]work number = 1
+[14:58:00]burn_mode = 1, eMedium = 1
+[14:58:01]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[14:58:54]end work number = 0
+[14:58:54]++Burn success++
+[14:58:54]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2024-1-25 15:02:17
+
+ss g_udisk_burnnum: 0
+[15:02:17]work number = 1
+[15:02:17]burn_mode = 1, eMedium = 1
+[15:02:19]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[15:02:22]Burn_Switch Uart COM fail.
+[15:02:22]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2024-1-25 15:02:37
+
+ss g_udisk_burnnum: 0
+[15:02:37]work number = 1
+[15:02:37]burn_mode = 1, eMedium = 1
+[15:02:39]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[15:02:49]end work number = 0
+[15:02:49]++Burn success++
+[15:02:49]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2024-1-25 15:03:11
+
+ss g_udisk_burnnum: 0
+[15:03:11]work number = 1
+[15:03:11]burn_mode = 1, eMedium = 1
+[15:03:13]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[15:04:05]end work number = 0
+[15:04:05]++Burn success++
+[15:04:05]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2024-1-25 15:07:37
+
+ss g_udisk_burnnum: 0
+[15:07:37]work number = 1
+[15:07:37]burn_mode = 1, eMedium = 1
+[15:07:38]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[15:07:50]end work number = 0
+[15:07:50]++Burn success++
+[15:07:50]close file
+
+
+

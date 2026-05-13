@@ -1,0 +1,1 @@
+#define UTS_RELEASE "4.4.192V2.4"

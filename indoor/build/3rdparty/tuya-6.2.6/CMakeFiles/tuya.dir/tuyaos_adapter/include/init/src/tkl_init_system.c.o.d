@@ -1,0 +1,31 @@
+3rdparty/tuya-6.2.6/CMakeFiles/tuya.dir/tuyaos_adapter/include/init/src/tkl_init_system.c.o: \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/init/src/tkl_init_system.c \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/init/include/tkl_init_system.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/utilities/include/tuya_cloud_types.h \
+ /home/xiaoxiao/workspace/QT300/indoor/includes/tuya/base/include/tuya_iot_config.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdarg.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/ctype.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/features.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/uClibc_config.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/sys/cdefs.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/types.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/wordsize.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/typesizes.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/uClibc_touplow.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stddef.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdint.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/stdint.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/wchar.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdbool.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/string.h \
+ /home/xiaoxiao/workspace/QT300/indoor/includes/tuya/base/include/tuya_error_code.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_system.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_memory.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_thread.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_mutex.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_semaphore.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_output.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_queue.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_ota.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_sleep.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/tuya-6.2.6/tuyaos_adapter/include/system/tkl_fs.h

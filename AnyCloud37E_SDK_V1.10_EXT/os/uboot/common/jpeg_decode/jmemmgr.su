@@ -1,0 +1,14 @@
+jmemmgr.c:211:1:out_of_memory	0	static
+jmemmgr.c:727:1:do_barray_io	48	static
+jmemmgr.c:249:1:alloc_small	40	static
+jmemmgr.c:544:1:request_virt_barray	24	static
+jmemmgr.c:515:1:request_virt_sarray	24	static
+jmemmgr.c:958:1:free_pool	24	static
+jmemmgr.c:1036:1:self_destruct	8	static
+jmemmgr.c:857:1:access_virt_barray	32	static
+jmemmgr.c:336:1:alloc_large	24	static
+jmemmgr.c:436:1:alloc_barray	32	static
+jmemmgr.c:388:1:alloc_sarray	32	static
+jmemmgr.c:573:1:realize_virt_arrays	40	static
+jmemmgr.c:760:1:access_virt_sarray	48	static
+jmemmgr.c:1062:1:jinit_memory_mgr	16	static

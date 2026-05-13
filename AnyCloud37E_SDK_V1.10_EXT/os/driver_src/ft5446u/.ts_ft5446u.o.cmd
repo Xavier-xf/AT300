@@ -1,0 +1,1 @@
+cmd_/home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/driver_src/ft5446u/ts_ft5446u.o := arm-anykav500-linux-uclibcgnueabi-ld -EL  --strip-debug -r -o /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/driver_src/ft5446u/ts_ft5446u.o /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/driver_src/ft5446u/ft5446u.o 

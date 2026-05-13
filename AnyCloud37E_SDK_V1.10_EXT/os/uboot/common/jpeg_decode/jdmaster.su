@@ -1,0 +1,6 @@
+jdmaster.c:424:1:prepare_for_output_pass	16	static
+jdmaster.c:484:1:finish_output_pass	8	static
+jdmaster.c:50:1:use_merged_upsample	0	static
+jdmaster.c:106:1:jpeg_calc_output_dimensions	48	static
+jdmaster.c:501:1:jpeg_new_colormap	16	static
+jdmaster.c:529:1:jinit_master_decompress	16	static

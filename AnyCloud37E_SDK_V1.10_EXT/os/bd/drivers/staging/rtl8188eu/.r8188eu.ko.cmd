@@ -1,0 +1,1 @@
+cmd_drivers/staging/rtl8188eu/r8188eu.ko := arm-anykav500-linux-uclibcgnueabi-ld -EL -r  -T /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/scripts/module-common.lds --build-id  -o drivers/staging/rtl8188eu/r8188eu.ko drivers/staging/rtl8188eu/r8188eu.o drivers/staging/rtl8188eu/r8188eu.mod.o

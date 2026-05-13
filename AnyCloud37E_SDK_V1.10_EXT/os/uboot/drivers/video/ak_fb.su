@@ -1,0 +1,15 @@
+ak_fb.c:1575:13:rgb_panel_info_cfg	8	static
+ak_fb.c:921:13:mipi_panel_cmd_setting	328	static
+ak_fb.c:1909:13:mpu_recover_buswidth.isra.4	0	static
+ak_fb.c:1891:13:mpu_set_16bit_buswidth.isra.7	16	static
+ak_fb.c:2019:12:mpu_write_reg	16	static
+ak_fb.c:1929:13:mpu_read_reg.isra.8	32	static
+ak_fb.c:61:15:get_peri_pll_freq	8	static
+ak_fb.c:86:15:ak_get_asic_pll_clk	8	static
+ak_fb.c:103:5:ak_lcd_parameter_parse_dt1	48	static
+ak_fb.c:271:5:ak_lcd_parameter_parse_dt2	24	static
+ak_fb.c:361:5:ak_lcd_parameter_parse_dt3	16	static
+ak_fb.c:2649:6:lcd_ctrl_init	64	static
+ak_fb.c:2742:6:lcd_enable	16	static
+ak_fb.c:2757:6:lcd_disable	8	static
+ak_fb.c:2772:6:lcd_setcolreg	0	static

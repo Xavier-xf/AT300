@@ -1,0 +1,4 @@
+ak_interrupts.c:33:13:default_isr	0	static
+ak_interrupts.c:46:6:ak_do_irq	0	static
+ak_interrupts.c:54:6:ak_irq_install_handler	0	static
+ak_interrupts.c:63:5:ak_arch_interrupt_init	8	static

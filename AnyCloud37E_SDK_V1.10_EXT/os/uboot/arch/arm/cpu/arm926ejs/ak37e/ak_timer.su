@@ -1,0 +1,8 @@
+ak_timer.c:40:5:timer_init	0	static
+ak_timer.c:60:6:reset_timer_masked	0	static
+ak_timer.c:73:20:get_ticks	0	static
+ak_timer.c:100:7:get_timer_masked	8	static
+ak_timer.c:55:7:get_timer	8	static
+ak_timer.c:107:6:udelay_masked	24	static
+ak_timer.c:127:6:__udelay	0	static
+ak_timer.c:136:7:get_tbclk	0	static

@@ -1,0 +1,10 @@
+fdt.c:18:5:fdt_check_header	0	static
+fdt.c:38:13:fdt_offset_ptr	8	static
+fdt.c:56:10:fdt_next_tag	24	static
+fdt.c:106:5:_fdt_check_node_offset	16	static
+fdt.c:115:5:_fdt_check_prop_offset	16	static
+fdt.c:124:5:fdt_next_node	24	static
+fdt.c:164:5:fdt_first_subnode	16	static
+fdt.c:175:5:fdt_next_subnode	24	static
+fdt.c:192:13:_fdt_find_string	24	static
+fdt.c:204:5:fdt_move	24	static

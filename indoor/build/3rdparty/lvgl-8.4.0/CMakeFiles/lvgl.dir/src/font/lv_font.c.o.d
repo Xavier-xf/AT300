@@ -1,0 +1,25 @@
+3rdparty/lvgl-8.4.0/CMakeFiles/lvgl.dir/src/font/lv_font.c.o: \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/lv_font.c \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/lv_font.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../lv_conf_internal.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdint.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/stdint.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/features.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/uClibc_config.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/sys/cdefs.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/wchar.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/wordsize.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../lv_conf_kconfig.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/lv_conf.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stddef.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdbool.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/lv_symbol_def.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../misc/lv_area.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../misc/../lv_conf_internal.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../misc/lv_utils.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../misc/lv_log.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../misc/lv_types.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../misc/lv_assert.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../misc/lv_log.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/font/../misc/lv_mem.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/string.h

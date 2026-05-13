@@ -1,0 +1,2 @@
+kernel/drivers/iio/trigger/iio-trig-interrupt.ko
+kernel/drivers/iio/trigger/iio-trig-sysfs.ko

@@ -1,0 +1,27 @@
+3rdparty/lvgl-8.4.0/CMakeFiles/lvgl.dir/src/misc/lv_tlsf.c.o: \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/misc/lv_tlsf.c \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/misc/../lv_conf_internal.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdint.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/stdint.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/features.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/uClibc_config.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/sys/cdefs.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/wchar.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/wordsize.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/misc/../lv_conf_kconfig.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/lv_conf.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include-fixed/limits.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include-fixed/syslimits.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/limits.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/posix1_lim.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/local_lim.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/linux/limits.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/uClibc_local_lim.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/posix2_lim.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/misc/lv_tlsf.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stddef.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/misc/lv_mem.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/string.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/misc/lv_types.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/misc/lv_log.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/misc/lv_assert.h

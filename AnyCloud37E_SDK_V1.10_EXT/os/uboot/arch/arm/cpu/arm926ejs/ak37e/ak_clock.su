@@ -1,0 +1,3 @@
+ak_clock.c:62:15:clk_get_core_pll_freq	8	static
+ak_clock.c:78:15:get_vclk	8	static
+ak_clock.c:94:15:get_asic_freq	8	static

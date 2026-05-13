@@ -1,0 +1,3 @@
+ak_early_serial.c:35:6:test_init_serial	8	static
+ak_early_serial.c:58:6:test_putc	0	static
+ak_early_serial.c:72:6:test_print	8	static

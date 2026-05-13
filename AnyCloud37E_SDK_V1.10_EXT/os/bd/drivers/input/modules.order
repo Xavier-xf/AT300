@@ -1,0 +1,2 @@
+kernel/drivers/input/touchscreen/goodix.ko
+kernel/drivers/input/touchscreen/jadard/jadard_touch.ko

@@ -1,0 +1,2 @@
+/home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/driver_src/ft5446u/ts_ft5446u.ko
+/home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/driver_src/ft5446u/ft5446u.o

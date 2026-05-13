@@ -1,0 +1,4 @@
+cmd_bootm.c:164:13:__arch_preboot_os	0	static
+cmd_bootm.c:615:12:do_bootm_states.isra.16.constprop	72	static
+cmd_bootm.c:773:5:do_bootm	48	static
+cmd_bootm.c:822:5:bootm_maybe_autostart	24	static

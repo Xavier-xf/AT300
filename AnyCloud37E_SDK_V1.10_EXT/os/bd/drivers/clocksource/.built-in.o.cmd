@@ -1,0 +1,1 @@
+cmd_drivers/clocksource/built-in.o :=  arm-anykav500-linux-uclibcgnueabi-ld -EL   -r -o drivers/clocksource/built-in.o drivers/clocksource/clksrc-probe.o drivers/clocksource/mmio.o drivers/clocksource/ak_timer.o drivers/clocksource/timer-sp804.o drivers/clocksource/ak_hardware_timer.o 

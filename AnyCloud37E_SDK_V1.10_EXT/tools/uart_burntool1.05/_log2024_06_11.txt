@@ -1,0 +1,13 @@
+
+
+=============Transc Information =============
+Print Time: 2024-06-11 14:19:14
+
+[14:19:14]184020[14:19:14]g_ret_flag[0] = 0
+[14:19:14]BT_CommitTransc  fail
+
+
+=============Transc Information =============
+Print Time: 2024-06-11 14:19:45
+
+[14:19:45]184020

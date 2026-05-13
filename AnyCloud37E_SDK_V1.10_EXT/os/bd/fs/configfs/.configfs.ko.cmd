@@ -1,0 +1,1 @@
+cmd_fs/configfs/configfs.ko := arm-anykav500-linux-uclibcgnueabi-ld -EL -r  -T /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/scripts/module-common.lds --build-id  -o fs/configfs/configfs.ko fs/configfs/configfs.o fs/configfs/configfs.mod.o

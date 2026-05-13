@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#	第一个参数指定要打包目录
+#	第二个参数指定输出文件名
+#	第三个参数指定打包方式
+mkdir -p tmpfs
+cp -af rootfs/* tmpfs
+rm -rf tmpfs/usr/* tmpfs/etc/config/*
+
+./mkyaffs2image tmpfs/ rootfs.yaffs2 2048
+./mkyaffs2image rootfs/usr usr.yaffs2 2048
+./mkyaffs2image rootfs/etc/config config.yaffs2 2048
+
+./mkyaffs2image_4k tmpfs/ rootfs_4k.yaffs2 4096
+./mkyaffs2image_4k rootfs/usr usr_4k.yaffs2 4096
+./mkyaffs2image_4k rootfs/etc/config config_4k.yaffs2 4096
+
+rm -rf tmpfs

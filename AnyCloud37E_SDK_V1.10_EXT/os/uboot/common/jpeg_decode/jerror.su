@@ -1,0 +1,6 @@
+jerror.c:128:1:emit_message	8	static
+jerror.c:212:1:reset_error_mgr	0	static
+jerror.c:157:1:format_message	32	static
+jerror.c:97:1:output_message	208	static
+jerror.c:69:1:error_exit	8	static
+jerror.c:231:1:jpeg_std_error	0	static

@@ -1,0 +1,9 @@
+crc16.o: crc16.c \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/crc.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/types.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/config.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/posix_types.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/stddef.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/posix_types.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/types.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdbool.h

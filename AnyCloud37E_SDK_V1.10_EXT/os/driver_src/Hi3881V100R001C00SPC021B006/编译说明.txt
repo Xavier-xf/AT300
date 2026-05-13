@@ -1,0 +1,3 @@
+1、修改 当前目录下 和 driver目录下 Makefile中的 KDIR 的内核编译缓存路径；
+2、执行make linux_driver开始编译；
+3、driver目录下会生成ko。

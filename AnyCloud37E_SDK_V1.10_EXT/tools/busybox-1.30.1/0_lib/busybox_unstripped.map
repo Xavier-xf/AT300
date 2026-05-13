@@ -1,0 +1,457 @@
+
+舍弃的输入节
+
+ .data          0x0000000000000000        0x4 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+ .bss           0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+ .text          0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crti.o
+ .data          0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crti.o
+ .bss           0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crti.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crti.o
+ .data          0x0000000000000000        0x4 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+ .text          0x0000000000000000        0x0 applets/built-in.o
+ .data          0x0000000000000000        0x0 applets/built-in.o
+ .bss           0x0000000000000000        0x0 applets/built-in.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 applets/built-in.o
+ .text          0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+ .data          0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+ .bss           0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+ .text          0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+ .data          0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+ .bss           0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+
+内存配置
+
+名称           来源             长度             属性
+*default*        0x0000000000000000 0xffffffffffffffff
+
+链结器命令稿和内存映射
+
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crti.o
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+START GROUP
+LOAD applets/built-in.o
+END GROUP
+LOAD 0_lib/libbusybox.so
+START GROUP
+END GROUP
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/libgcc.a
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/libgcc_eh.a
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/libc.so
+START GROUP
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/lib/libc.so.1
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/uclibc_nonshared.a
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/libpthread_nonshared.a
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/lib/ld-uClibc.so.1
+END GROUP
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/libgcc.a
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/libgcc_eh.a
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+LOAD /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+                [!provide]                        PROVIDE (__executable_start, SEGMENT_START ("text-segment", 0x10000))
+                0x00000000000100f4                . = (SEGMENT_START ("text-segment", 0x10000) + SIZEOF_HEADERS)
+
+.interp         0x00000000000100f4       0x14
+ *(SORT(.interp))
+ .interp        0x00000000000100f4       0x14 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.note.gnu.build-id
+ *(SORT(.note.gnu.build-id))
+
+.hash           0x0000000000010108       0x94
+ *(SORT(.hash))
+ .hash          0x0000000000010108       0x94 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.gnu.hash
+ *(SORT(.gnu.hash))
+
+.dynsym         0x000000000001019c      0x120
+ *(SORT(.dynsym))
+ .dynsym        0x000000000001019c      0x120 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.dynstr         0x00000000000102bc       0xfb
+ *(SORT(.dynstr))
+ .dynstr        0x00000000000102bc       0xfb /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.gnu.version    0x00000000000103b8        0x0
+ *(SORT(.gnu.version))
+ .gnu.version   0x00000000000103b8        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.gnu.version_d  0x00000000000103b8        0x0
+ *(SORT(.gnu.version_d))
+ .gnu.version_d
+                0x00000000000103b8        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.gnu.version_r  0x00000000000103b8        0x0
+ *(SORT(.gnu.version_r))
+ .gnu.version_r
+                0x00000000000103b8        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.rel.dyn        0x00000000000103b8        0x0
+ *(SORT(.rel.init))
+ *(SORT(.rel.text) SORT(.rel.text.*) SORT(.rel.gnu.linkonce.t.*))
+ *(SORT(.rel.fini))
+ *(SORT(.rel.rodata) SORT(.rel.rodata.*) SORT(.rel.gnu.linkonce.r.*))
+ *(SORT(.rel.data.rel.ro) SORT(.rel.data.rel.ro.*) SORT(.rel.gnu.linkonce.d.rel.ro.*))
+ .rel.data.rel.ro
+                0x00000000000103b8        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+ *(SORT(.rel.data) SORT(.rel.data.*) SORT(.rel.gnu.linkonce.d.*))
+ *(SORT(.rel.tdata) SORT(.rel.tdata.*) SORT(.rel.gnu.linkonce.td.*))
+ *(SORT(.rel.tbss) SORT(.rel.tbss.*) SORT(.rel.gnu.linkonce.tb.*))
+ *(SORT(.rel.ctors))
+ *(SORT(.rel.dtors))
+ *(SORT(.rel.got))
+ .rel.got       0x00000000000103b8        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+ *(SORT(.rel.bss) SORT(.rel.bss.*) SORT(.rel.gnu.linkonce.b.*))
+ .rel.bss       0x00000000000103b8        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+                [!provide]                        PROVIDE (__rel_iplt_start, .)
+ *(SORT(.rel.iplt))
+ .rel.iplt      0x00000000000103b8        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+                [!provide]                        PROVIDE (__rel_iplt_end, .)
+
+.rela.dyn       0x00000000000103b7        0x0
+ *(SORT(.rela.init))
+ *(SORT(.rela.text) SORT(.rela.text.*) SORT(.rela.gnu.linkonce.t.*))
+ *(SORT(.rela.fini))
+ *(SORT(.rela.rodata) SORT(.rela.rodata.*) SORT(.rela.gnu.linkonce.r.*))
+ *(SORT(.rela.data) SORT(.rela.data.*) SORT(.rela.gnu.linkonce.d.*))
+ *(SORT(.rela.tdata) SORT(.rela.tdata.*) SORT(.rela.gnu.linkonce.td.*))
+ *(SORT(.rela.tbss) SORT(.rela.tbss.*) SORT(.rela.gnu.linkonce.tb.*))
+ *(SORT(.rela.ctors))
+ *(SORT(.rela.dtors))
+ *(SORT(.rela.got))
+ *(SORT(.rela.bss) SORT(.rela.bss.*) SORT(.rela.gnu.linkonce.b.*))
+                [!provide]                        PROVIDE (__rela_iplt_start, .)
+ *(SORT(.rela.iplt))
+                [!provide]                        PROVIDE (__rela_iplt_end, .)
+
+.rel.plt        0x00000000000103b8       0x28
+ *(SORT(.rel.plt))
+ .rel.plt       0x00000000000103b8       0x28 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.rela.plt
+ *(SORT(.rela.plt))
+
+.init           0x00000000000103e0       0x10
+ *(SORT(.init))
+ .init          0x00000000000103e0        0xc /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crti.o
+                0x00000000000103e0                _init
+ .init          0x00000000000103ec        0x4 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+
+.plt            0x00000000000103f0       0x50
+ *(SORT(.plt))
+ .plt           0x00000000000103f0       0x50 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+                0x0000000000010404                abort
+                0x000000000001041c                lbb_main
+                0x0000000000010428                __uClibc_main
+
+.iplt           0x0000000000010440        0x0
+ *(SORT(.iplt))
+ .iplt          0x0000000000010440        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.text           0x0000000000010440      0x14c
+ *(SORT(.text.unlikely) SORT(.text.*_unlikely) SORT(.text.unlikely.*))
+ *(SORT(.text.exit) SORT(.text.exit.*))
+ *(SORT(.text.startup) SORT(.text.startup.*))
+ *(SORT(.text.hot) SORT(.text.hot.*))
+ *(SORT(.text) SORT(.stub) SORT(.text.*) SORT(.gnu.linkonce.t.*))
+ .text          0x0000000000010440       0x3c /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+                0x0000000000010440                _start
+ .text          0x000000000001047c      0x108 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+ .text.main     0x0000000000010584        0x8 applets/built-in.o
+                0x0000000000010584                main
+ *(SORT(.gnu.warning))
+ *(SORT(.glue_7t))
+ .glue_7t       0x000000000001058c        0x0 linker stubs
+ *(SORT(.glue_7))
+ .glue_7        0x000000000001058c        0x0 linker stubs
+ *(SORT(.vfp11_veneer))
+ .vfp11_veneer  0x000000000001058c        0x0 linker stubs
+ *(SORT(.v4_bx))
+ .v4_bx         0x000000000001058c        0x0 linker stubs
+
+.fini           0x000000000001058c       0x10
+ *(SORT(.fini))
+ .fini          0x000000000001058c        0xc /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crti.o
+                0x000000000001058c                _fini
+ .fini          0x0000000000010598        0x4 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+                [!provide]                        PROVIDE (__etext, .)
+                [!provide]                        PROVIDE (_etext, .)
+                [!provide]                        PROVIDE (etext, .)
+
+.rodata
+ *(SORT(.rodata) SORT(.rodata.*) SORT(.gnu.linkonce.r.*))
+
+.rodata1
+ *(SORT(.rodata1))
+
+.ARM.extab
+ *(SORT(.ARM.extab*) SORT(.gnu.linkonce.armextab.*))
+                [!provide]                        PROVIDE (__exidx_start, .)
+
+.ARM.exidx
+ *(SORT(.ARM.exidx*) SORT(.gnu.linkonce.armexidx.*))
+                [!provide]                        PROVIDE (__exidx_end, .)
+
+.eh_frame_hdr
+ *(SORT(.eh_frame_hdr))
+ *(SORT(.eh_frame_entry) SORT(.eh_frame_entry.*))
+
+.eh_frame       0x000000000001059c        0x4
+ *(SORT(.eh_frame))
+ .eh_frame      0x000000000001059c        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+ .eh_frame      0x000000000001059c        0x4 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+ *(SORT(.eh_frame.*))
+
+.gcc_except_table
+ *(SORT(.gcc_except_table) SORT(.gcc_except_table.*))
+
+.gnu_extab
+ *(SORT(.gnu_extab*))
+
+.exception_ranges
+ *(SORT(.exception_ranges) SORT(.exception_ranges*))
+                0x00000000000205a0                . = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE))
+
+.eh_frame
+ *(SORT(.eh_frame))
+ *(SORT(.eh_frame.*))
+
+.gnu_extab
+ *(SORT(.gnu_extab))
+
+.gcc_except_table
+ *(SORT(.gcc_except_table) SORT(.gcc_except_table.*))
+
+.exception_ranges
+ *(SORT(.exception_ranges) SORT(.exception_ranges*))
+
+.tdata
+ *(SORT(.tdata) SORT(.tdata.*) SORT(.gnu.linkonce.td.*))
+
+.tbss
+ *(SORT(.tbss) SORT(.tbss.*) SORT(.gnu.linkonce.tb.*))
+ *(SORT(.tcommon))
+
+.preinit_array  0x00000000000205a0        0x0
+                [!provide]                        PROVIDE (__preinit_array_start, .)
+ *(SORT(.preinit_array))
+                [!provide]                        PROVIDE (__preinit_array_end, .)
+
+.init_array     0x00000000000205a0        0x4
+                [!provide]                        PROVIDE (__init_array_start, .)
+ *(SORT(.init_array.*) SORT(.ctors.*))
+ *(SORT(.init_array) SORT(EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors))
+ .init_array    0x00000000000205a0        0x4 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+                [!provide]                        PROVIDE (__init_array_end, .)
+
+.fini_array     0x00000000000205a4        0x4
+                [!provide]                        PROVIDE (__fini_array_start, .)
+ *(SORT(.fini_array.*) SORT(.dtors.*))
+ *(SORT(.fini_array) SORT(EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors))
+ .fini_array    0x00000000000205a4        0x4 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+                [!provide]                        PROVIDE (__fini_array_end, .)
+
+.ctors
+ *crtbegin.o(SORT(.ctors))
+ *crtbegin?.o(SORT(.ctors))
+ *(SORT(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors))
+ *(SORT(.ctors.*))
+ *(SORT(.ctors))
+
+.dtors
+ *crtbegin.o(SORT(.dtors))
+ *crtbegin?.o(SORT(.dtors))
+ *(SORT(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors))
+ *(SORT(.dtors.*))
+ *(SORT(.dtors))
+
+.jcr            0x00000000000205a8        0x4
+ *(SORT(.jcr))
+ .jcr           0x00000000000205a8        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+ .jcr           0x00000000000205a8        0x4 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+
+.data.rel.ro    0x00000000000205ac        0x0
+ *(SORT(.data.rel.ro.local*) SORT(.gnu.linkonce.d.rel.ro.local.*))
+ *(SORT(.data.rel.ro) SORT(.data.rel.ro.*) SORT(.gnu.linkonce.d.rel.ro.*))
+ .data.rel.ro   0x00000000000205ac        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+
+.dynamic        0x00000000000205ac       0xc0
+ *(SORT(.dynamic))
+ .dynamic       0x00000000000205ac       0xc0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+                0x00000000000205ac                _DYNAMIC
+                0x000000000002066c                . = DATA_SEGMENT_RELRO_END (., 0x0)
+
+.got            0x000000000002066c       0x20
+ *(SORT(.got.plt))
+ .got.plt       0x000000000002066c       0x20 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+                0x000000000002066c                _GLOBAL_OFFSET_TABLE_
+ *(SORT(.igot.plt))
+ .igot.plt      0x000000000002068c        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+ *(SORT(.got))
+ .got           0x000000000002068c        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+ *(SORT(.igot))
+
+.data           0x000000000002068c        0x0
+                [!provide]                        PROVIDE (__data_start, .)
+ *(SORT(.data) SORT(.data.*) SORT(.gnu.linkonce.d.*))
+
+.tm_clone_table
+                0x000000000002068c        0x0
+ .tm_clone_table
+                0x000000000002068c        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+ .tm_clone_table
+                0x000000000002068c        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+
+.data1
+ *(SORT(.data1))
+                0x000000000002068c                _edata = .
+                [!provide]                        PROVIDE (edata, .)
+                0x000000000002068c                . = .
+                0x000000000002068c                __bss_start = .
+                0x000000000002068c                __bss_start__ = .
+
+.bss            0x000000000002068c       0x1c
+ *(SORT(.dynbss))
+ .dynbss        0x000000000002068c        0x0 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+ *(SORT(.bss) SORT(.bss.*) SORT(.gnu.linkonce.b.*))
+ .bss           0x000000000002068c       0x1c /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+ *(SORT(COMMON))
+                0x00000000000206a8                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x00000000000206a8                _bss_end__ = .
+                0x00000000000206a8                __bss_end__ = .
+                0x00000000000206a8                . = ALIGN (0x4)
+                0x00000000000206a8                . = SEGMENT_START ("ldata-segment", .)
+                0x00000000000206a8                . = ALIGN (0x4)
+                0x00000000000206a8                __end__ = .
+                0x00000000000206a8                _end = .
+                [!provide]                        PROVIDE (end, .)
+                0x00000000000206a8                . = DATA_SEGMENT_END (.)
+
+.stab
+ *(SORT(.stab))
+
+.stabstr
+ *(SORT(.stabstr))
+
+.stab.excl
+ *(SORT(.stab.excl))
+
+.stab.exclstr
+ *(SORT(.stab.exclstr))
+
+.stab.index
+ *(SORT(.stab.index))
+
+.stab.indexstr
+ *(SORT(.stab.indexstr))
+
+.comment        0x0000000000000000       0x60
+ *(SORT(.comment))
+ .comment       0x0000000000000000       0x2e /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crti.o
+                                         0x2f (松开之前的大小)
+ .comment       0x000000000000002e       0x32 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+                                         0x33 (松开之前的大小)
+ .comment       0x0000000000000060       0x33 applets/built-in.o
+ .comment       0x0000000000000060       0x33 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+ .comment       0x0000000000000060       0x2f /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+
+.ARM.attributes
+                0x0000000000000000       0x2e
+ .ARM.attributes
+                0x0000000000000000       0x22 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crt1.o
+ .ARM.attributes
+                0x0000000000000022       0x22 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crti.o
+ .ARM.attributes
+                0x0000000000000044       0x32 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtbegin.o
+ .ARM.attributes
+                0x0000000000000076       0x32 applets/built-in.o
+ .ARM.attributes
+                0x00000000000000a8       0x32 /home/wxj/arm-anykav500-linux-uclibcgnueabi/bin/../lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/crtend.o
+ .ARM.attributes
+                0x00000000000000da       0x22 /home/wxj/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/lib/crtn.o
+
+.debug
+ *(SORT(.debug))
+
+.line
+ *(SORT(.line))
+
+.debug_srcinfo
+ *(SORT(.debug_srcinfo))
+
+.debug_sfnames
+ *(SORT(.debug_sfnames))
+
+.debug_aranges
+ *(SORT(.debug_aranges))
+
+.debug_pubnames
+ *(SORT(.debug_pubnames))
+
+.debug_info
+ *(SORT(.debug_info) SORT(.gnu.linkonce.wi.*))
+
+.debug_abbrev
+ *(SORT(.debug_abbrev))
+
+.debug_line
+ *(SORT(.debug_line) SORT(.debug_line.*) SORT(.debug_line_end))
+
+.debug_frame
+ *(SORT(.debug_frame))
+
+.debug_str
+ *(SORT(.debug_str))
+
+.debug_loc
+ *(SORT(.debug_loc))
+
+.debug_macinfo
+ *(SORT(.debug_macinfo))
+
+.debug_weaknames
+ *(SORT(.debug_weaknames))
+
+.debug_funcnames
+ *(SORT(.debug_funcnames))
+
+.debug_typenames
+ *(SORT(.debug_typenames))
+
+.debug_varnames
+ *(SORT(.debug_varnames))
+
+.debug_pubtypes
+ *(SORT(.debug_pubtypes))
+
+.debug_ranges
+ *(SORT(.debug_ranges))
+
+.debug_macro
+ *(SORT(.debug_macro))
+
+.debug_addr
+ *(SORT(.debug_addr))
+
+.gnu.attributes
+ *(SORT(.gnu.attributes))
+
+.note.gnu.arm.ident
+ *(SORT(.note.gnu.arm.ident))
+
+/DISCARD/
+ *(SORT(.note.GNU-stack))
+ *(SORT(.gnu_debuglink))
+ *(SORT(.gnu.lto_*))
+OUTPUT(0_lib/busybox_unstripped elf32-littlearm)

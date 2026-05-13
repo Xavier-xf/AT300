@@ -1,0 +1,1 @@
+cmd_drivers/usb/gadget/udc/udc-core.ko := arm-anykav500-linux-uclibcgnueabi-ld -EL -r  -T /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/scripts/module-common.lds --build-id  -o drivers/usb/gadget/udc/udc-core.ko drivers/usb/gadget/udc/udc-core.o drivers/usb/gadget/udc/udc-core.mod.o

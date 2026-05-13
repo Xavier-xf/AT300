@@ -1,0 +1,156 @@
+add_compile_options(-w)
+
+add_definitions(
+    -DSOCKLEN_T=socklen_t 
+    -DNO_SSTREAM=1 
+    -D_LARGEFILE_SOURCE=1 
+    -D_FILE_OFFSET_BITS=64  
+    -DLOCALE_NOT_USED 
+    -DNO_OPENSSL 
+    -DNO_STD_LIB
+)
+
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}/BasicUsageEnvironment/include/
+	${CMAKE_CURRENT_SOURCE_DIR}/groupsock/include/
+	${CMAKE_CURRENT_SOURCE_DIR}/liveMedia/include/
+	${CMAKE_CURRENT_SOURCE_DIR}/UsageEnvironment/include/
+	${CMAKE_CURRENT_SOURCE_DIR}/custom/
+)
+
+FILE(GLOB LIVE_SRC
+    BasicUsageEnvironment/BasicHashTable.cpp
+    BasicUsageEnvironment/BasicTaskScheduler.cpp
+    BasicUsageEnvironment/BasicTaskScheduler0.cpp
+    BasicUsageEnvironment/BasicUsageEnvironment.cpp
+    BasicUsageEnvironment/BasicUsageEnvironment0.cpp
+    BasicUsageEnvironment/DelayQueue.cpp
+
+    groupsock/Groupsock.cpp
+    groupsock/NetAddress.cpp
+    groupsock/NetInterface.cpp
+    groupsock/GroupsockHelper.cpp
+    groupsock/inet.c
+    groupsock/GroupEId.cpp
+
+    liveMedia/FramedFileSource.cpp
+    liveMedia/FramedSource.cpp
+    liveMedia/MediaSource.cpp
+    liveMedia/Media.cpp
+    liveMedia/MediaSink.cpp
+    liveMedia/RTCP.cpp
+    liveMedia/RTPSource.cpp
+    liveMedia/RTPInterface.cpp
+    liveMedia/TLSState.cpp
+    liveMedia/RTPSink.cpp
+    liveMedia/MIKEY.cpp
+    liveMedia/SRTPCryptographicContext.cpp
+    liveMedia/Base64.cpp
+    liveMedia/rtcp_from_spec.c
+    liveMedia/SimpleRTPSink.cpp
+    liveMedia/MultiFramedRTPSink.cpp
+    liveMedia/H264VideoRTPSink.cpp
+    liveMedia/H264or5VideoRTPSink.cpp
+    liveMedia/FramedFilter.cpp
+    liveMedia/VideoRTPSink.cpp
+    liveMedia/H264VideoRTPSource.cpp
+    liveMedia/MultiFramedRTPSource.cpp
+    liveMedia/H264or5VideoStreamFramer.cpp
+    liveMedia/MPEGVideoStreamParser.cpp
+    liveMedia/StreamParser.cpp
+    liveMedia/MPEGVideoStreamFramer.cpp
+    liveMedia/BitVector.cpp
+    liveMedia/H264VideoStreamFramer.cpp
+    liveMedia/RTSPClient.cpp
+    liveMedia/MediaSession.cpp
+    liveMedia/AMRAudioRTPSource.cpp
+    liveMedia/QCELPAudioRTPSource.cpp
+    liveMedia/MPEG4GenericRTPSource.cpp
+    liveMedia/MPEG1or2AudioRTPSource.cpp
+    liveMedia/MPEG4LATMAudioRTPSource.cpp
+    liveMedia/MP3ADURTPSource.cpp
+    liveMedia/MP3ADUinterleaving.cpp
+    liveMedia/MP3ADU.cpp
+    liveMedia/SimpleRTPSource.cpp
+    liveMedia/VorbisAudioRTPSource.cpp
+    liveMedia/TheoraVideoRTPSource.cpp
+    liveMedia/RawVideoRTPSource.cpp
+    liveMedia/VP8VideoRTPSource.cpp
+    liveMedia/AC3AudioRTPSource.cpp
+    liveMedia/VP9VideoRTPSource.cpp
+    liveMedia/H265VideoRTPSource.cpp
+    liveMedia/MPEG4ESVideoRTPSource.cpp
+    liveMedia/MPEG1or2VideoRTPSource.cpp
+    liveMedia/MPEG2TransportStreamFramer.cpp
+    liveMedia/H263plusVideoRTPSource.cpp
+    liveMedia/H261VideoRTPSource.cpp
+    liveMedia/JPEGVideoRTPSource.cpp
+    liveMedia/JPEG2000VideoRTPSource.cpp
+    liveMedia/DVVideoRTPSource.cpp
+    liveMedia/QuickTimeGenericRTPSource.cpp
+    liveMedia/BasicUDPSource.cpp
+    liveMedia/BasicUDPSource.cpp
+    liveMedia/Locale.cpp
+    liveMedia/DigestAuthentication.cpp
+    liveMedia/RTSPServer.cpp
+    liveMedia/ourMD5.cpp
+    liveMedia/MP3ADUdescriptor.cpp
+    liveMedia/MP3Internals.cpp
+    liveMedia/MP3InternalsHuffman.cpp
+    liveMedia/MP3InternalsHuffmanTable.cpp
+    liveMedia/AMRAudioSource.cpp
+    liveMedia/RTSPServerRegister.cpp
+    liveMedia/GenericMediaServer.cpp
+    liveMedia/RTSPRegisterSender.cpp
+    liveMedia/ProxyServerMediaSession.cpp
+    liveMedia/OnDemandServerMediaSubsession.cpp
+    liveMedia/ServerMediaSession.cpp
+    liveMedia/BasicUDPSink.cpp
+    liveMedia/MPEG4VideoStreamDiscreteFramer.cpp
+    liveMedia/MPEG4VideoStreamFramer.cpp
+    liveMedia/H265VideoStreamDiscreteFramer.cpp
+    liveMedia/H264or5VideoStreamDiscreteFramer.cpp
+    liveMedia/MPEG1or2VideoStreamDiscreteFramer.cpp
+    liveMedia/MPEG1or2VideoStreamFramer.cpp
+    liveMedia/H264VideoStreamDiscreteFramer.cpp
+    liveMedia/DVVideoStreamFramer.cpp
+    liveMedia/VP8VideoRTPSink.cpp
+    liveMedia/VP9VideoRTPSink.cpp
+    liveMedia/VorbisAudioRTPSink.cpp
+    liveMedia/T140TextRTPSink.cpp
+    liveMedia/MPEG1or2VideoRTPSink.cpp
+    liveMedia/MPEG4GenericRTPSink.cpp
+    liveMedia/AudioRTPSink.cpp
+    liveMedia/TextRTPSink.cpp
+    liveMedia/TheoraVideoRTPSink.cpp
+    liveMedia/MP3ADURTPSink.cpp
+    liveMedia/MPEG1or2AudioRTPSink.cpp
+    liveMedia/MPEG4ESVideoRTPSink.cpp
+    liveMedia/MPEG4LATMAudioRTPSink.cpp
+    liveMedia/H265VideoRTPSink.cpp
+    liveMedia/H263plusVideoRTPSink.cpp
+    liveMedia/GSMAudioRTPSink.cpp
+    liveMedia/DVVideoRTPSink.cpp
+    liveMedia/AC3AudioRTPSink.cpp
+    liveMedia/RTSPCommon.cpp
+
+    UsageEnvironment/UsageEnvironment.cpp
+    UsageEnvironment/HashTable.cpp
+    UsageEnvironment/strDup.cpp
+
+    custom/H264StreamSource.cpp
+    custom/PCMStreamSource.cpp
+    custom/MulticastStreamer.cpp
+    custom/H264Sink.cpp
+    custom/PCMSink.cpp
+    custom/MulticastReceiver.cpp
+
+    custom/H264StreamServerMediaSubsession.cpp
+    custom/PCMStreamServerMediaSubsession.cpp
+
+    custom/RTSPClient.cpp
+    custom/RTSPServer.cpp
+    
+)
+
+add_library(live555 STATIC ${LIVE_SRC})

@@ -1,0 +1,28 @@
+2026.5.13
+问题描述：
+
+问题原因：
+
+解决方法：
+
+涉及文件：
+
+具体修改：
+
+2026.5.13
+问题描述：
+在 Widgets Demo UI 界面点击 Birthday 输入框后会弹出日历选择框，此时直接点击左右切换按钮切换到音乐播放器 Demo，界面上会残留半透明灰色遮罩层。切换后音乐播放器和 Widgets Demo 的普通控件都无法点击，只有位于 top layer 的左右切换按钮仍可点击。
+
+问题原因：
+Widgets Demo 的 Birthday 日历弹窗创建在 lv_layer_top() 上，打开日历时会给 lv_layer_top() 添加 LV_OBJ_FLAG_CLICKABLE，并设置 LV_OPA_50 的半透明灰色背景，用来实现模态遮罩效果。切换 Demo 时原逻辑只清理了 lv_layer_top() 上的子对象，没有恢复 lv_layer_top() 自身的 CLICKABLE 标志和背景透明度，导致 top layer 作为全屏触摸拦截层残留，遮挡下层 Demo 控件。
+
+解决方法：
+1. 在 lv_demo_widgets_close() 中判断 calendar 是否存在，存在则删除并置空。
+2. 在 lv_demo_widgets_close() 中清除 lv_layer_top() 的 LV_OBJ_FLAG_CLICKABLE，并将背景透明度恢复为 LV_OPA_TRANSP。
+3. 在应用层 demo_load() 切换 Demo 时增加统一保护，清理 lv_layer_top() 后再次清除 CLICKABLE 标志并恢复透明背景，防止类似 top layer 弹层残留影响后续界面触摸。
+
+涉及文件：
+/home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/demos/widgets/lv_demo_widgets.c
+/home/xiaoxiao/workspace/QT300/indoor/sources/user/user_app.c
+
+具体修改：

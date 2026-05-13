@@ -1,0 +1,1 @@
+cmd_arch/arm/mach-anycloud/built-in.o :=  arm-anykav500-linux-uclibcgnueabi-ld -EL   -r -o arch/arm/mach-anycloud/built-in.o arch/arm/mach-anycloud/mach-ak37e.o arch/arm/mach-anycloud/ak_l2_dual.o arch/arm/mach-anycloud/ak_notifier.o arch/arm/mach-anycloud/ak_pm.o arch/arm/mach-anycloud/ak_l2_exebuf.o 

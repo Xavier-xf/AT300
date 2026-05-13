@@ -1,0 +1,1 @@
+cmd_drivers/net/ppp/ppp_mppe.ko := arm-anykav500-linux-uclibcgnueabi-ld -EL -r  -T /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/scripts/module-common.lds --build-id  -o drivers/net/ppp/ppp_mppe.ko drivers/net/ppp/ppp_mppe.o drivers/net/ppp/ppp_mppe.mod.o

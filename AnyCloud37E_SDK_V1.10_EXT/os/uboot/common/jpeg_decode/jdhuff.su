@@ -1,0 +1,13 @@
+jdhuff.c:466:1:jpeg_fill_bit_buffer	32	static
+jdhuff.c:594:1:jpeg_huff_decode	24	static
+jdhuff.c:637:1:finish_pass_huff	0	static
+jdhuff.c:654:1:process_restart	16	static
+jdhuff.c:710:1:decode_mcu_DC_first	96	static
+jdhuff.c:781:1:decode_mcu_AC_first	80	static
+jdhuff.c:868:1:decode_mcu_DC_refine	48	static
+jdhuff.c:915:1:decode_mcu_AC_refine	352	static
+jdhuff.c:1072:1:decode_mcu_sub	112	static
+jdhuff.c:1200:1:decode_mcu	104	static
+jdhuff.c:324:1:jpeg_make_d_derived_tbl	1336	static
+jdhuff.c:1323:1:start_pass_huff_decoder	40	static
+jdhuff.c:1522:1:jinit_huff_decoder	16	static

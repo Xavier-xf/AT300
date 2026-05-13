@@ -1,0 +1,4 @@
+relocate.o: relocate.S \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/linkage.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/linkage.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/config.h

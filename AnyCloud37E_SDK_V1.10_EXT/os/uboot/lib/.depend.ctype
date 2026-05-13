@@ -1,0 +1,2 @@
+ctype.o: ctype.c \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/ctype.h

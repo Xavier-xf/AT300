@@ -1,0 +1,11 @@
+ak_ethernet.c:2537:12:gmac_read_phy_reg	0	static
+ak_ethernet.c:2579:12:gmac_write_phy_reg	0	static
+ak_ethernet.c:4375:12:smc_rcv	24	static
+ak_ethernet.c:4456:13:gmac_rmii_sharepin_cfg	0	static
+ak_ethernet.c:4328:12:smc_send	24	static
+ak_ethernet.c:4282:13:smc_halt	8	static
+ak_ethernet.c:4430:12:smc_write_hwaddr	0	static
+ak_ethernet.c:4167:12:smc_init	32	static
+ak_ethernet.c:2316:14:get_eth_reset_gpio	40	static
+ak_ethernet.c:2356:14:get_eth1_reset_gpio	40	static
+ak_ethernet.c:4810:5:ak39_ethernet_initialize	32	static

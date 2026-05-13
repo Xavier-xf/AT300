@@ -1,0 +1,1 @@
+cmd_fs/nfs_common/grace.ko := arm-anykav500-linux-uclibcgnueabi-ld -EL -r  -T /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/scripts/module-common.lds --build-id  -o fs/nfs_common/grace.ko fs/nfs_common/grace.o fs/nfs_common/grace.mod.o

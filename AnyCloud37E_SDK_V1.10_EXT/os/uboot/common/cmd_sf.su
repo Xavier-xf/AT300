@@ -1,0 +1,9 @@
+cmd_sf.c:1052:14:spi_flash_fat32_blk_read	8	static
+cmd_sf.c:1064:14:spi_flash_fat32_blk_write	32	static
+cmd_sf.c:1077:14:spi_flash_fat32_blk_erase	8	static
+cmd_sf.c:123:12:do_spi_flash_probe	32	static
+cmd_sf.c:718:13:show_time	48	static
+cmd_sf.c:732:13:spi_test_next_stage	16	static
+cmd_sf.c:947:12:do_spi_flash	88	static
+cmd_sf.c:1020:5:spi_flash_get_size	8	static
+cmd_sf.c:1089:19:spi_get_dev	600	static

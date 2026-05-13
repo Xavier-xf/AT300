@@ -1,0 +1,10 @@
+ak_sdhsmmc.c:202:12:ak_mmc_getcd	0	static
+ak_sdhsmmc.c:227:12:ak_mmc_getwp	0	static
+ak_sdhsmmc.c:121:12:ak_mmc_setup_gpio_in	16	static
+ak_sdhsmmc.c:784:13:send_cmd.isra.3	8	static
+ak_sdhsmmc.c:730:13:ak_set_clock.isra.0.constprop	24	static
+ak_sdhsmmc.c:1241:12:ak_mmc_init_setup	16	static
+ak_sdhsmmc.c:1122:12:ak_mmc_send_cmd	32	static
+ak_sdhsmmc.c:1202:13:ak_mmc_set_ios	16	static
+ak_sdhsmmc.c:1273:5:ak_sdhsmmc_init	40	static
+ak_sdhsmmc.c:1359:6:sd_init_info	48	static

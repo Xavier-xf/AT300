@@ -1,0 +1,21 @@
+string.o: string.c \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/types.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/config.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/posix_types.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/stddef.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/posix_types.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/types.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdbool.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/string.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/string.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/config.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/config_cmd_defaults.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/config_defaults.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/configs/anycloud_ak37e.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/configs/ak_board.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/config.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/config_fallbacks.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/config_uncmd_spl.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/linux_string.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/ctype.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/malloc.h

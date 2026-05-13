@@ -1,0 +1,899 @@
+#include <common.h>
+#include <command.h>
+#include <s_record.h>
+#include <net.h>
+#include <ata.h>
+#include <part.h>
+#include <fat.h>
+#include <fs.h>
+
+#define PROGRESS_BAR_TYPE 1 // 0:渐进 1:分区块
+
+const static char *partition_name[] =
+	{
+		"u-boot.bin",
+		"env_ak3760e_nor.img",
+		"env_ak3760e_nor_bk.img",
+		"cloudOS.dtb",
+		"uImage",
+		"anyka_logo.jpg",
+		"root.sqsh4",
+		"config.jffs2",
+		"usr.sqsh4",
+		"app.sqsh4",
+		// "res.sqsh4",
+		"tuya.jffs2",
+		"data.jffs2",
+		// "asterisk.sqsh4",
+		"anyka_home.jpg",
+};
+
+#define ENV_SD_UPGRADEIMAGE "sd_upgrade_image"
+#define ENV_UPGRADEIMAGE_VERSION "upgrade_image_version"
+#define UPGRADE_SCRIPT_END_STR "\n# <- this is end of image parttion\n"
+#define FLASH_PART_WRITE_SIZE (256 * 1024)
+#define FLASH_PART_ERASE_SIZE (256 * 1024)
+#define UPGARDE_PARTITIONS_NUM_MAX (sizeof(partition_name) / sizeof(partition_name[0]))
+
+#define FB_WIDTH 1024
+#define FB_HEIGHT 600
+#define UPGRADE_BAR_WIDTH (FB_WIDTH / 2)
+#define UPGRADE_BAR_HEIGHT 6
+#define UPGRADE_BAR_X_START (FB_WIDTH / 4)
+#define UPGRADE_BAR_Y_START (FB_HEIGHT / 4 * 3)
+
+#define LOGO_JPEG_NAME "logo.jpg"
+#define HOME_JPEG_NAME "home.jpg"
+#define JPEG_SIZE_MAX 0x20000
+
+struct upgrade_partitions_info
+{
+	unsigned long offset;
+	unsigned long size;
+
+	unsigned long weights;
+};
+struct partition_mtdparts
+{
+	char name[32];
+	unsigned long offset;
+	unsigned long size;
+};
+
+struct upgrade_partitions_param
+{
+	char *buffer;
+	unsigned long buf_size;
+	char *img_offset_base;
+	char version[32];
+	struct upgrade_partitions_info partitions[UPGARDE_PARTITIONS_NUM_MAX];
+	struct partition_mtdparts mtdparts[UPGARDE_PARTITIONS_NUM_MAX];
+	int upgrade_progress;
+	int upgrade_total;
+};
+
+const unsigned char bitmap_bytes[][16] =
+	{
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //;" ",0
+		{0x00, 0x00, 0x00, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x00, 0x00, 0x08, 0x08, 0x00, 0x00}, //;"!",1
+		{0x00, 0x48, 0x24, 0x24, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //;""",2
+		{0x00, 0x00, 0x00, 0x48, 0x48, 0x48, 0x7E, 0x24, 0x24, 0x24, 0x7E, 0x24, 0x24, 0x24, 0x00, 0x00}, //;"#",3
+		{0x00, 0x00, 0x10, 0x3C, 0x52, 0x52, 0x12, 0x1C, 0x30, 0x50, 0x50, 0x52, 0x52, 0x3C, 0x10, 0x10}, //;"$",4
+		{0x00, 0x00, 0x00, 0x22, 0x25, 0x15, 0x15, 0x0D, 0x2A, 0x58, 0x54, 0x54, 0x52, 0x22, 0x00, 0x00}, //;"%",5
+		{0x00, 0x00, 0x00, 0x0C, 0x12, 0x12, 0x12, 0x0A, 0x76, 0x25, 0x29, 0x19, 0x91, 0x6E, 0x00, 0x00}, //;"&",6
+		{0x00, 0x06, 0x04, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //;"'",7
+		{0x00, 0x40, 0x20, 0x10, 0x10, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x10, 0x10, 0x20, 0x40, 0x00}, //;"(",8
+		{0x00, 0x02, 0x04, 0x08, 0x08, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x08, 0x08, 0x04, 0x02, 0x00}, //;")",9
+		{0x00, 0x00, 0x00, 0x00, 0x08, 0x08, 0x6B, 0x1C, 0x1C, 0x6B, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00}, //;"*",10
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x10, 0x10, 0xFE, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00}, //;"+",11
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x04, 0x04, 0x02}, //;",",12
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //;"-",13
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x06, 0x00, 0x00}, //;".",14
+		{0x00, 0x00, 0x40, 0x20, 0x20, 0x20, 0x10, 0x10, 0x08, 0x08, 0x08, 0x04, 0x04, 0x02, 0x02, 0x00}, //;"/",15
+		{0x00, 0x00, 0x00, 0x18, 0x24, 0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00}, //;"0",16
+		{0x00, 0x00, 0x00, 0x10, 0x1C, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x7C, 0x00, 0x00}, //;"1",17
+		{0x00, 0x00, 0x00, 0x3C, 0x42, 0x42, 0x42, 0x40, 0x20, 0x10, 0x08, 0x04, 0x42, 0x7E, 0x00, 0x00}, //;"2",18
+		{0x00, 0x00, 0x00, 0x3C, 0x42, 0x42, 0x40, 0x20, 0x18, 0x20, 0x40, 0x42, 0x42, 0x3C, 0x00, 0x00}, //;"3",19
+		{0x00, 0x00, 0x00, 0x20, 0x30, 0x30, 0x28, 0x24, 0x24, 0x22, 0xFE, 0x20, 0x20, 0xF8, 0x00, 0x00}, //;"4",20
+		{0x00, 0x00, 0x00, 0x7E, 0x02, 0x02, 0x02, 0x1E, 0x22, 0x40, 0x40, 0x42, 0x22, 0x1C, 0x00, 0x00}, //;"5",21
+		{0x00, 0x00, 0x00, 0x18, 0x24, 0x02, 0x02, 0x3A, 0x46, 0x42, 0x42, 0x42, 0x44, 0x38, 0x00, 0x00}, //;"6",22
+		{0x00, 0x00, 0x00, 0x7E, 0x42, 0x20, 0x20, 0x10, 0x10, 0x08, 0x08, 0x08, 0x08, 0x08, 0x00, 0x00}, //;"7",23
+		{0x00, 0x00, 0x00, 0x3C, 0x42, 0x42, 0x42, 0x24, 0x18, 0x24, 0x42, 0x42, 0x42, 0x3C, 0x00, 0x00}, //;"8",24
+		{0x00, 0x00, 0x00, 0x1C, 0x22, 0x42, 0x42, 0x42, 0x62, 0x5C, 0x40, 0x40, 0x24, 0x18, 0x00, 0x00}, //;"9",25
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x18, 0x18, 0x00, 0x00, 0x00, 0x00, 0x18, 0x18, 0x00, 0x00}, //;":",26
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x08, 0x08}, //;";",27
+		{0x00, 0x00, 0x00, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x00, 0x00}, //;"<",28
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7E, 0x00, 0x00, 0x7E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //;"=",29
+		{0x00, 0x00, 0x00, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x00, 0x00}, //;">",30
+		{0x00, 0x00, 0x00, 0x3C, 0x42, 0x42, 0x46, 0x20, 0x10, 0x10, 0x10, 0x00, 0x18, 0x18, 0x00, 0x00}, //;"?",31
+		{0x00, 0x00, 0x00, 0x1C, 0x22, 0x5A, 0x55, 0x55, 0x55, 0x55, 0x55, 0x3A, 0x42, 0x3C, 0x00, 0x00}, //;"@",32
+		{0x00, 0x00, 0x00, 0x08, 0x08, 0x18, 0x14, 0x14, 0x24, 0x3C, 0x22, 0x42, 0x42, 0xE7, 0x00, 0x00}, //;"A",33
+		{0x00, 0x00, 0x00, 0x1F, 0x22, 0x22, 0x22, 0x1E, 0x22, 0x42, 0x42, 0x42, 0x22, 0x1F, 0x00, 0x00}, //;"B",34
+		{0x00, 0x00, 0x00, 0x7C, 0x42, 0x42, 0x01, 0x01, 0x01, 0x01, 0x01, 0x42, 0x22, 0x1C, 0x00, 0x00}, //;"C",35
+		{0x00, 0x00, 0x00, 0x1F, 0x22, 0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x22, 0x1F, 0x00, 0x00}, //;"D",36
+		{0x00, 0x00, 0x00, 0x3F, 0x42, 0x12, 0x12, 0x1E, 0x12, 0x12, 0x02, 0x42, 0x42, 0x3F, 0x00, 0x00}, //;"E",37
+		{0x00, 0x00, 0x00, 0x3F, 0x42, 0x12, 0x12, 0x1E, 0x12, 0x12, 0x02, 0x02, 0x02, 0x07, 0x00, 0x00}, //;"F",38
+		{0x00, 0x00, 0x00, 0x3C, 0x22, 0x22, 0x01, 0x01, 0x01, 0x71, 0x21, 0x22, 0x22, 0x1C, 0x00, 0x00}, //;"G",39
+		{0x00, 0x00, 0x00, 0xE7, 0x42, 0x42, 0x42, 0x42, 0x7E, 0x42, 0x42, 0x42, 0x42, 0xE7, 0x00, 0x00}, //;"",40
+		{0x00, 0x00, 0x00, 0x3E, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x3E, 0x00, 0x00}, //;"I",41
+		{0x00, 0x00, 0x00, 0x7C, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x11, 0x0F}, //;"J",42
+		{0x00, 0x00, 0x00, 0x77, 0x22, 0x12, 0x0A, 0x0E, 0x0A, 0x12, 0x12, 0x22, 0x22, 0x77, 0x00, 0x00}, //;"K",43
+		{0x00, 0x00, 0x00, 0x07, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x42, 0x7F, 0x00, 0x00}, //;"L",44
+		{0x00, 0x00, 0x00, 0x77, 0x36, 0x36, 0x36, 0x36, 0x36, 0x2A, 0x2A, 0x2A, 0x2A, 0x6B, 0x00, 0x00}, //;"M",45
+		{0x00, 0x00, 0x00, 0xE3, 0x46, 0x46, 0x4A, 0x4A, 0x52, 0x52, 0x52, 0x62, 0x62, 0x47, 0x00, 0x00}, //;"N",46
+		{0x00, 0x00, 0x00, 0x1C, 0x22, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x22, 0x1C, 0x00, 0x00}, //;"O",47
+		{0x00, 0x00, 0x00, 0x3F, 0x42, 0x42, 0x42, 0x42, 0x3E, 0x02, 0x02, 0x02, 0x02, 0x07, 0x00, 0x00}, //;"P",48
+		{0x00, 0x00, 0x00, 0x1C, 0x22, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x4D, 0x32, 0x1C, 0x60, 0x00}, //;"Q",49
+		{0x00, 0x00, 0x00, 0x3F, 0x42, 0x42, 0x42, 0x3E, 0x12, 0x12, 0x22, 0x22, 0x42, 0xC7, 0x00, 0x00}, //;"R",50
+		{0x00, 0x00, 0x00, 0x7C, 0x42, 0x42, 0x02, 0x04, 0x18, 0x20, 0x40, 0x42, 0x42, 0x3E, 0x00, 0x00}, //;"S",51
+		{0x00, 0x00, 0x00, 0x7F, 0x49, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x1C, 0x00, 0x00}, //;"T",52
+		{0x00, 0x00, 0x00, 0xE7, 0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x3C, 0x00, 0x00}, //;"U",53
+		{0x00, 0x00, 0x00, 0xE7, 0x42, 0x42, 0x22, 0x24, 0x24, 0x14, 0x14, 0x18, 0x08, 0x08, 0x00, 0x00}, //;"V",54
+		{0x00, 0x00, 0x00, 0x6B, 0x2A, 0x2A, 0x2A, 0x2A, 0x2A, 0x36, 0x14, 0x14, 0x14, 0x14, 0x00, 0x00}, //;"W",55
+		{0x00, 0x00, 0x00, 0xE7, 0x42, 0x24, 0x24, 0x18, 0x18, 0x18, 0x24, 0x24, 0x42, 0xE7, 0x00, 0x00}, //;"X",56
+		{0x00, 0x00, 0x00, 0x77, 0x22, 0x22, 0x14, 0x14, 0x08, 0x08, 0x08, 0x08, 0x08, 0x1C, 0x00, 0x00}, //;"Y",57
+		{0x00, 0x00, 0x00, 0x7E, 0x21, 0x20, 0x10, 0x10, 0x08, 0x04, 0x04, 0x42, 0x42, 0x3F, 0x00, 0x00}, //;"Z",58
+		{0x00, 0x78, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x78, 0x00}, //;"[",59
+		{0x00, 0x00, 0x02, 0x04, 0x04, 0x04, 0x08, 0x08, 0x08, 0x10, 0x10, 0x20, 0x20, 0x20, 0x40, 0x40}, //;"\",60
+		{0x00, 0x1E, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1E, 0x00}, //;"]",61
+		{0x00, 0x18, 0x24, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //;"^",62
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF}, //;"_",63
+		{0x00, 0x06, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //;"`",64
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1C, 0x22, 0x30, 0x2C, 0x22, 0x32, 0x6C, 0x00, 0x00}, //;"a",65
+		{0x00, 0x00, 0x00, 0x00, 0x03, 0x02, 0x02, 0x1A, 0x26, 0x42, 0x42, 0x42, 0x26, 0x1A, 0x00, 0x00}, //;"b",66
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0x44, 0x02, 0x02, 0x02, 0x44, 0x38, 0x00, 0x00}, //;"c",67
+		{0x00, 0x00, 0x00, 0x00, 0x60, 0x40, 0x40, 0x7C, 0x42, 0x42, 0x42, 0x42, 0x62, 0xDC, 0x00, 0x00}, //;"d",68
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3C, 0x42, 0x42, 0x7E, 0x02, 0x42, 0x3C, 0x00, 0x00}, //;"e",69
+		{0x00, 0x00, 0x00, 0x00, 0x30, 0x48, 0x08, 0x3E, 0x08, 0x08, 0x08, 0x08, 0x08, 0x3E, 0x00, 0x00}, //;"f",70
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7C, 0x22, 0x22, 0x1C, 0x02, 0x3C, 0x42, 0x42, 0x3C}, //;"g",71
+		{0x00, 0x00, 0x00, 0x00, 0x03, 0x02, 0x02, 0x3A, 0x46, 0x42, 0x42, 0x42, 0x42, 0xE7, 0x00, 0x00}, //;"h",72
+		{0x00, 0x00, 0x00, 0x0C, 0x0C, 0x00, 0x00, 0x0E, 0x08, 0x08, 0x08, 0x08, 0x08, 0x3E, 0x00, 0x00}, //;"i",73
+		{0x00, 0x00, 0x00, 0x30, 0x30, 0x00, 0x00, 0x38, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x22, 0x1E}, //;"j",74
+		{0x00, 0x00, 0x00, 0x00, 0x03, 0x02, 0x02, 0x72, 0x12, 0x0A, 0x0E, 0x12, 0x22, 0x77, 0x00, 0x00}, //;"k",75
+		{0x00, 0x00, 0x00, 0x08, 0x0E, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x3E, 0x00, 0x00}, //;"l",76
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7F, 0x92, 0x92, 0x92, 0x92, 0x92, 0xB7, 0x00, 0x00}, //;"m",77
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3B, 0x46, 0x42, 0x42, 0x42, 0x42, 0xE7, 0x00, 0x00}, //;"n",78
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3C, 0x42, 0x42, 0x42, 0x42, 0x42, 0x3C, 0x00, 0x00}, //;"o",79
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1B, 0x26, 0x42, 0x42, 0x42, 0x26, 0x1A, 0x02, 0x07}, //;"p",80
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x58, 0x64, 0x42, 0x42, 0x42, 0x64, 0x58, 0x40, 0xE0}, //;"q",81
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x77, 0x4C, 0x04, 0x04, 0x04, 0x04, 0x1F, 0x00, 0x00}, //;"r",82
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7C, 0x42, 0x02, 0x3C, 0x40, 0x42, 0x3E, 0x00, 0x00}, //;"s",83
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x08, 0x3E, 0x08, 0x08, 0x08, 0x08, 0x48, 0x30, 0x00, 0x00}, //;"t",84
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x63, 0x42, 0x42, 0x42, 0x42, 0x62, 0xDC, 0x00, 0x00}, //;"u",85
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x77, 0x22, 0x22, 0x14, 0x14, 0x08, 0x08, 0x00, 0x00}, //;"v",86
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xDB, 0x91, 0x52, 0x5A, 0x2A, 0x24, 0x24, 0x00, 0x00}, //;"w",87
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x6E, 0x24, 0x18, 0x18, 0x18, 0x24, 0x76, 0x00, 0x00}, //;"x",88
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xE7, 0x42, 0x24, 0x24, 0x18, 0x18, 0x08, 0x08, 0x06}, //;"y",89
+		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7E, 0x22, 0x10, 0x08, 0x08, 0x44, 0x7E, 0x00, 0x00}, //;"z",90
+		{0x00, 0xC0, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x10, 0x20, 0x20, 0x20, 0x20, 0x20, 0xC0, 0x00}, //;"{",91
+		{0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10}, //;"|",92
+		{0x00, 0x03, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04, 0x04, 0x04, 0x04, 0x04, 0x03, 0x00}, //;"}",93
+		{0x04, 0x5A, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //;"~",94
+};
+
+void lcd_string_draw(void *fb_base, unsigned int x, unsigned int y, const char *str, unsigned int fcolor, unsigned int bcolor)
+{
+	int i = 0, j = 0, k = 0;
+	char *src = fb_base + (y * FB_WIDTH + x) * 3;
+	int len = strlen(str);
+	for (i = 0; i < 16; i++)
+	{
+		for (j = 0; j < len; j++)
+		{
+			for (k = 0; k < 8; k++)
+			{
+				if (bitmap_bytes[str[j] - 32][i] & (1 << k))
+				{
+					src[(j * 8 + k) * 3] = fcolor & 0xFF;
+					src[(j * 8 + k) * 3 + 1] = (fcolor >> 8) & 0xFF;
+					src[(j * 8 + k) * 3 + 2] = (fcolor >> 16) & 0xFF;
+				}
+			}
+		}
+		src += FB_WIDTH * 3;
+	}
+}
+
+static int upgarde_file_version_check(const char *buffer, char *version)
+{
+	char *p = strstr(buffer, "#<upgrade_bin_version=");
+	if (p == NULL)
+	{
+		printf("file error:%s\n", buffer);
+		return -1;
+	}
+	p += 22;
+	char *e = strstr(p, ">");
+	if (e == NULL)
+	{
+		printf("file error:%s\n", buffer);
+		return -1;
+	}
+	strncpy(version, p, e - p);
+	char *env_version = getenv(ENV_UPGRADEIMAGE_VERSION);
+	printf("upgarde version:%s cur version:%s\n", version, env_version);
+	if (env_version == NULL)
+	{
+		return 1;
+	}
+	return strcmp(version, env_version) ? 1 : 0;
+}
+static char *str_skip_sapce(const char *str)
+{
+	char *p = str;
+	while ((p != NULL) && ((*p) == ' '))
+	{
+		p++;
+	}
+	return p;
+}
+static int upgarde_file_partitions_check(const char *buffer, const char *parttions_name, struct upgrade_partitions_info *info)
+{
+	char *line = buffer;
+	char *endptr = NULL;
+	char *nextline = NULL;
+	char partitons_line[256] = {0};
+	char *s = NULL;
+	while ((nextline = strstr(line, "\n")) != NULL)
+	{
+		if ((nextline + 1) == NULL)
+		{
+			break;
+		}
+		nextline += 1;
+		// if (nextline == '\n')
+		// {
+		// 	line = nextline + 1;
+		// 	continue;
+		// }
+		memset(partitons_line, 0, sizeof(partitons_line));
+
+		strncpy(partitons_line, line, nextline - line - 1);
+		if ((s = strstr(partitons_line, parttions_name)) != NULL)
+		{
+			s += strlen(parttions_name);
+			if (s)
+			{
+				info->offset = simple_strtol(str_skip_sapce(s), &endptr, 10);
+				s = endptr;
+				info->size = simple_strtol(str_skip_sapce(s), &endptr, 10);
+				printf("imgage:%s %d %d\n", parttions_name, info->offset, info->size);
+			}
+			break;
+		}
+		line = nextline + 1;
+	}
+	return 0;
+}
+
+static int sd_upgrade_file_parttions(const char *dev, const char *part, const char *file, struct upgrade_partitions_param *upgrade)
+{
+	int ret = 0;
+	char version[32] = {0};
+	int i = 0;
+	char *argc[6];
+	char *addr_str = getenv("loadaddr");
+	if (addr_str != NULL)
+	{
+		upgrade->buffer = simple_strtoul(addr_str, NULL, 16);
+	}
+	else
+	{
+		ret = -1;
+		printf("[%s:%d]not find uprade file name:%s\n", __func__, __LINE__, file);
+		goto finish;
+	}
+	argc[1] = "mmc";
+	argc[2] = "0";
+	argc[3] = addr_str;
+	argc[4] = file;
+	argc[5] = "0x1000";
+	if (do_load(NULL, 0, 6, argc, FS_TYPE_FAT))
+	{
+		printf("load file failed :%s\n", file);
+		ret = -1;
+		goto finish;
+	}
+	// 检查版本是否一致
+	if (upgarde_file_version_check(upgrade->buffer, version) <= 0)
+	{
+		printf("file version :%s\n", version);
+		ret = -1;
+		goto finish;
+	}
+	argc[1] = "mmc";
+	argc[2] = "0";
+	argc[3] = addr_str;
+	argc[4] = file;
+	// argc[5] = "0x1000000";
+	do_load(NULL, 0, 5, argc, FS_TYPE_FAT);
+
+	char *end = strstr(upgrade->buffer, UPGRADE_SCRIPT_END_STR);
+	if (end == NULL)
+	{
+		ret = -1;
+		printf("file error:%s\n", file);
+		goto finish;
+	}
+	*end = 0;
+
+	memset(upgrade->version, 0, sizeof(upgrade->version));
+	strcpy(upgrade->version, version);
+
+	// 检查u-boot分区是否存在
+	for (i = 0; i < UPGARDE_PARTITIONS_NUM_MAX; i++)
+	{
+		upgarde_file_partitions_check(upgrade->buffer, partition_name[i], &upgrade->partitions[i]);
+
+		upgrade->partitions[i].weights = upgrade->upgrade_total + upgrade->partitions[i].size;
+		upgrade->upgrade_total = upgrade->partitions[i].weights;
+	}
+	upgrade->img_offset_base = end + strlen(UPGRADE_SCRIPT_END_STR);
+	// printf("img offsetbase:%lu \n", upgrade->img_offset_base - upgrade->buffer);
+finish:
+	return ret;
+}
+
+static int tftp_upgrade_file_parttions(const char *dev, const char *part, const char *file, struct upgrade_partitions_param *upgrade)
+{
+	int ret = 0;
+	char version[32] = {0};
+	int i = 0;
+	char *argv[6];
+	char *addr_str = getenv("loadaddr");
+	if (addr_str != NULL)
+	{
+		upgrade->buffer = simple_strtoul(addr_str, NULL, 16);
+	}
+	else
+	{
+		ret = -1;
+		printf("[%s:%d]not find uprade file name:%s\n", __func__, __LINE__, file);
+		goto finish;
+	}
+
+#define tftp_get_max 2
+	setenv_ulong("tftptimeout", 1000); // 设置超时时间(ms)
+	argv[1] = addr_str;
+	argv[2] = file;
+	for (i = 0; i < tftp_get_max; i++)
+	{
+		if (do_tftpb(NULL, 0, 3, argv) == CMD_RET_SUCCESS)
+		{
+			break;
+		}
+		udelay(10000);
+	}
+
+	if (i >= tftp_get_max)
+	{
+		printf("TFTP receive image file failed! \n");
+		return -1;
+		goto finish;
+	}
+	printf("TFTP received image file successfully! \n");
+
+	// 检查版本是否一致
+	if (upgarde_file_version_check(upgrade->buffer, version) <= 0)
+	{
+		printf("file version :%s\n", version);
+		ret = -1;
+		goto finish;
+	}
+
+	char *end = strstr(upgrade->buffer, UPGRADE_SCRIPT_END_STR);
+	if (end == NULL)
+	{
+		ret = -1;
+		printf("file error:%s\n", file);
+		goto finish;
+	}
+	*end = 0;
+
+	memset(upgrade->version, 0, sizeof(upgrade->version));
+	strcpy(upgrade->version, version);
+
+	// 检查u-boot分区是否存在
+	for (i = 0; i < UPGARDE_PARTITIONS_NUM_MAX; i++)
+	{
+		upgarde_file_partitions_check(upgrade->buffer, partition_name[i], &upgrade->partitions[i]);
+
+		upgrade->partitions[i].weights = upgrade->upgrade_total + upgrade->partitions[i].size;
+		upgrade->upgrade_total = upgrade->partitions[i].weights;
+	}
+	upgrade->img_offset_base = end + strlen(UPGRADE_SCRIPT_END_STR);
+	// printf("img offsetbase:%lu \n", upgrade->img_offset_base - upgrade->buffer);
+finish:
+	return ret;
+}
+
+static int jpeg_upgrade_file_parttions(const char *dev, const char *part, const char *file, struct upgrade_partitions_param *upgrade)
+{
+	int ret = 0;
+	char buf[32] = {0};
+	int i = 0;
+	int file_size = 0;
+	char *argc[6];
+	char *addr_str = getenv("loadaddr");
+	if (addr_str != NULL)
+	{
+		upgrade->buffer = simple_strtoul(addr_str, NULL, 16);
+	}
+	else
+	{
+		ret = -1;
+		printf("[%s:%d]not find uprade file name:%s\n", __func__, __LINE__, file);
+		goto finish;
+	}
+
+	upgrade->img_offset_base = upgrade->buffer; // 设置基地址为buffer的首地址
+	memset(upgrade->buffer, 0, JPEG_SIZE_MAX * 2); // 清空256kb
+
+	argc[1] = "mmc";
+	argc[2] = "0";
+	argc[3] = addr_str;
+	argc[4] = LOGO_JPEG_NAME;
+	// argc[5] = "0x20000";
+	if (do_load(NULL, 0, 5, argc, FS_TYPE_FAT)) // 将logo图片保存到0~127地址
+	{
+		printf("load file failed :%s\n", LOGO_JPEG_NAME);
+		ret = -1;
+		// goto finish;
+	}
+	else
+	{
+		file_size = simple_strtoul(getenv("filesize"), NULL, 16);
+		if (file_size > 0 && file_size <= JPEG_SIZE_MAX)
+		{
+			for (i = 0; i < UPGARDE_PARTITIONS_NUM_MAX; i++)
+			{
+				if (strstr(partition_name[i], "logo") != NULL)
+				{
+					upgrade->partitions[i].offset = 0;
+					upgrade->partitions[i].size = JPEG_SIZE_MAX;
+					upgrade->partitions[i].weights = upgrade->upgrade_total + upgrade->partitions[i].size;
+					upgrade->upgrade_total = upgrade->partitions[i].weights;
+					printf("imgage:%s %d %d\n", partition_name[i], upgrade->partitions[i].offset, upgrade->partitions[i].size);
+				}
+			}
+		}
+		else
+		{
+			printf("jpeg file:[%s] size:[%d] error \n", LOGO_JPEG_NAME, file_size);
+		}
+	}
+	sprintf(buf, "%x", upgrade->buffer + JPEG_SIZE_MAX);
+	// printf("home jpeg part addr:[%s]\n", buf);
+	argc[1] = "mmc";
+	argc[2] = "0";
+	argc[3] = buf;
+	argc[4] = HOME_JPEG_NAME;
+	// argc[5] = "0x20000";
+	if (do_load(NULL, 0, 5, argc, FS_TYPE_FAT)) // 将home图片保存到128~255地址
+	{
+		printf("load file failed :%s\n", HOME_JPEG_NAME);
+		ret = -1;
+		// goto finish;
+	}
+	else
+	{
+		file_size = simple_strtoul(getenv("filesize"), NULL, 16);
+		if (file_size > 0 && file_size <= JPEG_SIZE_MAX)
+		{
+			for (i = 0; i < UPGARDE_PARTITIONS_NUM_MAX; i++)
+			{
+				if(strstr(partition_name[i], "home") != NULL)
+				{
+					upgrade->partitions[i].offset = JPEG_SIZE_MAX;
+					upgrade->partitions[i].size = JPEG_SIZE_MAX;
+					upgrade->partitions[i].weights = upgrade->upgrade_total + upgrade->partitions[i].size;
+					upgrade->upgrade_total = upgrade->partitions[i].weights;
+					printf("imgage:%s %d %d\n", partition_name[i], upgrade->partitions[i].offset, upgrade->partitions[i].size);
+				}
+			}
+		}
+		else
+		{
+			printf("jpeg file:[%s] size:[%d] error \n", LOGO_JPEG_NAME, file_size);
+		}
+	}
+
+	for (i = 0; i < UPGARDE_PARTITIONS_NUM_MAX; i++)
+	{
+		if (upgrade->partitions[i].size != 0)
+		{
+			return 0;
+		}
+	}
+	
+finish:
+	return ret;
+}
+
+static int partition_string_parse(const char *input, struct partition_mtdparts *partition)
+{
+	char *p = NULL;
+	// Parse partition name
+	const char *openParen = strchr(input, '(');
+	if (openParen == NULL)
+	{
+		printf("[%s:%d] failed\n", __func__, __LINE__);
+		return -1;
+	}
+	const char *closeParen = strchr(openParen, ')');
+	if (closeParen == NULL)
+	{
+		printf("[%s:%d] failed\n", __func__, __LINE__);
+		return -1;
+	}
+	strncpy(partition->name, openParen + 1, closeParen - openParen - 1);
+
+	// Parse size and offset
+	partition->offset = 0;
+	const char *at = strchr(input, '@');
+	if (at == NULL)
+	{
+		printf("[%s:%d] failed\n", __func__, __LINE__);
+		return -1;
+	}
+	partition->offset = 0;
+	for (p = at + 3; p < openParen; ++p)
+	{
+		if (*p >= '0' && *p <= '9')
+		{
+			partition->offset = partition->offset * 16 + (*p - '0');
+		}
+		else if (*p >= 'a' && *p <= 'f')
+		{
+			partition->offset = partition->offset * 16 + (*p - 'a' + 10);
+		}
+		else if (*p >= 'A' && *p <= 'F')
+		{
+			partition->offset = partition->offset * 16 + (*p - 'A' + 10);
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	// Manually convert offset from hex string to unsigned long
+	partition->size = 0;
+	for (p = input; p < at; ++p)
+	{
+		if (*p >= '0' && *p <= '9')
+		{
+			partition->size = partition->size * 10 + (*p - '0');
+		}
+		else
+		{
+			break;
+		}
+	}
+	partition->size *= 1024;
+	printf("[%s] %d %d \n", partition->name, partition->offset, partition->size);
+	return 0;
+}
+static int partitions_mtdparts_parse(const char *mtdparts, struct upgrade_partitions_param *upgrade)
+{
+	char *parts = strstr(mtdparts, ":");
+	if (parts == NULL)
+	{
+		printf("[%s:%d] failed\n", __func__, __LINE__);
+		return -1;
+	}
+
+	char *token = strtok(parts + 1, ",");
+	if (token == NULL)
+	{
+		printf("[%s:%d] failed\n", __func__, __LINE__);
+		return -1;
+	}
+	int index = 0;
+	while (token != NULL)
+	{
+		// Parse each token to extract name, size, and offset
+		partition_string_parse(token, &upgrade->mtdparts[index]);
+
+		// Move to the next token
+		token = strtok(NULL, ",");
+		index++;
+	}
+	return 0;
+}
+
+static int partitions_mtdparts_parse_by_sdcard(const char *dev, const char *part, const char *file, struct upgrade_partitions_param *upgrade)
+{
+	char *env_addres = upgrade->img_offset_base + upgrade->partitions[1].offset;
+	char *s = NULL;
+	char *e = NULL;
+	int ret = 0;
+	char mtdparts[1024] = {0};
+	int offset = 0;
+	s = env_addres;
+	while ((s) && (offset < upgrade->partitions[1].size))
+	{
+		// printf("%s\n",s);
+		e = strstr(s, "mtdparts=");
+		if (e == NULL)
+		{
+			offset += strlen(s) + 1;
+			s = env_addres + offset;
+		}
+		else
+		{
+			break;
+		}
+	}
+	strcpy(mtdparts, s);
+	ret = partitions_mtdparts_parse(mtdparts, upgrade);
+finish:
+	return ret;
+}
+static int partitions_mtdparts_parse_by_envimg(struct upgrade_partitions_param *upgrade)
+{
+	char mtdparts[1024] = {0};
+	strcpy(mtdparts, getenv("mtdparts"));
+	return partitions_mtdparts_parse(mtdparts, upgrade);
+}
+
+static int upgrade_partitions_mtdparts(const char *dev, const char *part, const char *file, struct upgrade_partitions_param *upgrade)
+{
+	if (upgrade->partitions[1].size != 0) // 升级包里有分区表
+	{
+		return partitions_mtdparts_parse_by_sdcard(dev, part, file, upgrade); // 获取升级包里的分区表
+	}
+
+	return partitions_mtdparts_parse_by_envimg(upgrade); // 获取flash里的默认分区表
+}
+
+static int upgrade_progress_bar_draw(void *fb_base, unsigned long weights, unsigned long total, unsigned int fcolor, unsigned int bcolor)
+{
+	int i, j;
+	if (total == 0)
+	{
+		return 0;
+	}
+	char *src = fb_base + (UPGRADE_BAR_Y_START * FB_WIDTH + UPGRADE_BAR_X_START) * 3;
+	unsigned long progress_width = UPGRADE_BAR_WIDTH * (weights * 1.0 / total);
+	if (weights != 0)
+	{
+		for (i = 0; i < UPGRADE_BAR_HEIGHT; i++)
+		{
+			for (j = 0; j < progress_width; j++)
+			{
+				src[j * 3] = fcolor & 0xFF;
+				src[j * 3 + 1] = (fcolor >> 8) & 0xFF;
+				src[j * 3 + 2] = (fcolor >> 16) & 0xFF;
+			}
+			src += FB_WIDTH * 3;
+		}
+	}
+	if (weights == total)
+	{
+		return 0;
+	}
+
+	src = fb_base + (UPGRADE_BAR_Y_START * FB_WIDTH + UPGRADE_BAR_X_START + progress_width) * 3;
+	printf("progress_width = %d w = %d weights=%d,total = %d\n", progress_width, UPGRADE_BAR_WIDTH, weights, total);
+	progress_width = UPGRADE_BAR_WIDTH - progress_width;
+
+	for (i = 0; i < UPGRADE_BAR_HEIGHT; i++)
+	{
+		for (j = 0; j < progress_width; j++)
+		{
+			src[j * 3] = bcolor & 0xFF;
+			src[j * 3 + 1] = (bcolor >> 8) & 0xFF;
+			src[j * 3 + 2] = (bcolor >> 16) & 0xFF;
+		}
+		src += FB_WIDTH * 3;
+	}
+	return 0;
+}
+
+static int upgrade_partitions_update(const struct upgrade_partitions_param *upgrade)
+{
+	int i = 0, j = 0;
+	int ret = 0;
+	long offset = 0;
+	char cmd[256] = {0};
+	void *fb_base = getenv_ulong("lcdloadaddr", 16, 0x83d02000);
+	upgrade_progress_bar_draw(fb_base, 0, 100, 0xFFFFFF, 0xFFFFFF);
+	run_command("sf probe", 0);
+
+	char *tips = "Warning:Upgrading,please do not do anything!";
+	lcd_string_draw(fb_base, (FB_WIDTH - strlen(tips) * 8) / 2, UPGRADE_BAR_Y_START - 60, tips, 0xff9326, 0x000000);
+
+#if (PROGRESS_BAR_TYPE == 0)
+	unsigned long upgrade_total = upgrade->upgrade_total;
+	unsigned long upgrade_progress = 0;
+
+	for (i = 0; i < UPGARDE_PARTITIONS_NUM_MAX; ++i)
+	{
+		if (upgrade->partitions[i].size > 0)
+		{
+			upgrade_total += upgrade->mtdparts[i].size;
+		}
+	}
+#endif
+	for (i = 0; i < UPGARDE_PARTITIONS_NUM_MAX; ++i)
+	{
+		if (upgrade->partitions[i].size > upgrade->mtdparts[i].size)
+		{
+			printf("[%s:%d] %s: imge file size(%d) > env partitions(%d)\n", __func__, __LINE__, upgrade->mtdparts[i].name, upgrade->partitions[i].size, upgrade->mtdparts[i].size);
+			continue;
+		}
+
+		if (upgrade->partitions[i].size != 0)
+		{
+			printf("\nErase:%s addres:%d,partition size:%d image file size:%d\n", upgrade->mtdparts[i].name, upgrade->mtdparts[i].offset, upgrade->mtdparts[i].size, upgrade->partitions[i].size);
+#if (PROGRESS_BAR_TYPE == 0)
+			unsigned long addr = 0;
+			unsigned long offset = upgrade->mtdparts[i].offset;
+			unsigned long size = upgrade->mtdparts[i].size;
+
+			// unsigned int progress = 0;
+			// char str[16] = {0};
+
+			// progress = 100 * (upgrade_progress * 1.0 / upgrade_total);
+			// sprintf(str, "%d%%  ", progress);
+			// lcd_string_draw(fb_base, UPGRADE_BAR_X_START * 3 - 32, UPGRADE_BAR_Y_START - 20, str, 0xff9326, 0x000000);
+
+			while (size > 0)
+			{
+				if (size >= FLASH_PART_ERASE_SIZE)
+				{
+					memset(cmd, 0, sizeof(cmd));
+					sprintf(cmd, "sf erase 0x%x 0x%x", offset, FLASH_PART_ERASE_SIZE);
+					run_command(cmd, 0);
+
+					upgrade_progress += FLASH_PART_ERASE_SIZE;
+					upgrade_progress_bar_draw(fb_base, upgrade_progress, upgrade_total, 0xff9326, 0xFFFFFF);
+
+					offset += FLASH_PART_ERASE_SIZE;
+					size -= FLASH_PART_ERASE_SIZE;
+				}
+				else
+				{
+					memset(cmd, 0, sizeof(cmd));
+					sprintf(cmd, "sf erase 0x%x 0x%x", offset, size);
+					run_command(cmd, 0);
+
+					upgrade_progress += size;
+					upgrade_progress_bar_draw(fb_base, upgrade_progress, upgrade_total, 0xff9326, 0xFFFFFF);
+
+					offset += size;
+					size = 0;
+				}
+
+				// progress = 100 * (upgrade_progress * 1.0 / upgrade_total);
+				// sprintf(str, "%d%%  ", progress);
+				// lcd_string_draw(fb_base, UPGRADE_BAR_X_START * 3 - 32, UPGRADE_BAR_Y_START - 20, str, 0xff9326, 0x000000);
+			}
+
+			addr = upgrade->img_offset_base + upgrade->partitions[i].offset;
+			offset = upgrade->mtdparts[i].offset;
+			size = upgrade->partitions[i].size;
+			while (size > 0)
+			{
+				if (size >= FLASH_PART_WRITE_SIZE)
+				{
+					memset(cmd, 0, sizeof(cmd));
+					sprintf(cmd, "sf write 0x%x 0x%x 0x%x", addr, offset, FLASH_PART_WRITE_SIZE);
+					run_command(cmd, 0);
+
+					upgrade_progress += FLASH_PART_WRITE_SIZE;
+					upgrade_progress_bar_draw(fb_base, upgrade_progress, upgrade_total, 0xff9326, 0xFFFFFF);
+
+					addr += FLASH_PART_WRITE_SIZE;
+					offset += FLASH_PART_WRITE_SIZE;
+					size -= FLASH_PART_WRITE_SIZE;
+				}
+				else
+				{
+					memset(cmd, 0, sizeof(cmd));
+					sprintf(cmd, "sf write 0x%x 0x%x 0x%x", addr, offset, size);
+					run_command(cmd, 0);
+
+					upgrade_progress += size;
+					upgrade_progress_bar_draw(fb_base, upgrade_progress, upgrade_total, 0xff9326, 0xFFFFFF);
+
+					addr += size;
+					offset += size;
+					size = 0;
+				}
+
+				// progress = 100 * (upgrade_progress * 1.0 / upgrade_total);
+				// sprintf(str, "%d%%  ", progress);
+				// lcd_string_draw(fb_base, UPGRADE_BAR_X_START * 3 - 32, UPGRADE_BAR_Y_START - 20, str, 0xff9326, 0x000000);
+			}
+#else
+			memset(cmd, 0, sizeof(cmd));
+			sprintf(cmd, "sf erase 0x%x 0x%x", upgrade->mtdparts[i].offset, upgrade->mtdparts[i].size);
+			run_command(cmd, 0);
+			upgrade_progress_bar_draw(fb_base, upgrade->partitions[i].weights - upgrade->partitions[i].size / 2, upgrade->upgrade_total, 0xff9326, 0xFFFFFF);
+
+			sprintf(cmd, "sf write 0x%x 0x%x 0x%x", upgrade->img_offset_base + upgrade->partitions[i].offset, upgrade->mtdparts[i].offset, upgrade->partitions[i].size);
+			run_command(cmd, 0);
+			upgrade_progress_bar_draw(fb_base, upgrade->partitions[i].weights, upgrade->upgrade_total, 0xff9326, 0xFFFFFF);
+#endif
+		}
+	}
+	/*如果没有更新env.img则需要保存版本号，因为执行saveenv()函数会将已加载的env信息覆盖到flash的env分区，导致env分区更新失败*/
+	/* 用户升级logo和home分区时不带版本号，无需更新 */
+	if (upgrade->version[0] != 0)
+	{
+		env_relocate_spec(); /* 环境变量初始化 */
+        setenv(ENV_UPGRADEIMAGE_VERSION, upgrade->version);
+        saveenv();
+	}
+	printf("\nparttion update finish\n");
+	for (i = 0; i < 10; i++)
+	{
+		upgrade_progress_bar_draw(fb_base, 100, 100, 0xff9326, 0xFFFFFF);
+		mdelay(200);
+		upgrade_progress_bar_draw(fb_base, 100, 100, 0x000000, 0xFFFFFF);
+		mdelay(200);
+	}
+	run_command("reset", 0);
+	return 0;
+}
+
+int do_sd_upgrade(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
+{
+	int ret = 0;
+	struct upgrade_partitions_param upgrade;
+	char *upgrade_filename = getenv(ENV_SD_UPGRADEIMAGE);
+	if (upgrade_filename == NULL)
+	{
+		upgrade_filename = "SAT_ANYKA.IMG";
+		setenv(ENV_SD_UPGRADEIMAGE, upgrade_filename);
+		saveenv();
+	}
+	memset(&upgrade, 0, sizeof(struct upgrade_partitions_param));
+	if (sd_upgrade_file_parttions("mmc", "0", upgrade_filename, &upgrade) < 0)
+	{
+		printf("[%s:%d] sd_upgrade_file_parttions failed\n", __func__, __LINE__);
+		ret = 0;
+		goto finish;
+	}
+	else
+	{
+		goto upgrade;
+	}
+	// memset(&upgrade, 0, sizeof(struct upgrade_partitions_param));
+	// if (tftp_upgrade_file_parttions(NULL, NULL, upgrade_filename, &upgrade) < 0)
+	// {
+	// 	printf("[%s:%d] tftp_upgrade_file_parttions failed\n", __func__, __LINE__);
+	// 	ret = 0;
+	// 	// goto finish;
+	// }
+	// else
+	// {
+	// 	goto upgrade;
+	// }
+	// memset(&upgrade, 0, sizeof(struct upgrade_partitions_param));
+	// if (jpeg_upgrade_file_parttions(NULL, NULL, upgrade_filename, &upgrade) < 0)
+	// {
+	// 	printf("[%s:%d] jpeg_upgrade_file_parttions failed\n", __func__, __LINE__);
+	// 	ret = 0;
+	// 	goto finish;
+	// }
+	// else
+	// {
+	// 	goto upgrade;
+	// }
+
+upgrade:
+	upgrade_partitions_mtdparts("mmc", "0", upgrade_filename, &upgrade);
+	upgrade_partitions_update(&upgrade);
+
+finish:
+	return ret;
+}
+
+U_BOOT_CMD(
+	sd_upgrade, 7, 0, do_sd_upgrade,
+	"upgrade file from a dos filesystem",
+	"<NULL>\n"
+	"    - leo.liu 666\n");

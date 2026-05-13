@@ -1,0 +1,2 @@
+/home/wxj/workdir/WeiTaiKe/src/indoor/AnyCloud37E_SDK_V1.10_EXT/os/driver_src/ak_eth_new/ak_eth.ko
+/home/wxj/workdir/WeiTaiKe/src/indoor/AnyCloud37E_SDK_V1.10_EXT/os/driver_src/ak_eth_new/ak_eth.o

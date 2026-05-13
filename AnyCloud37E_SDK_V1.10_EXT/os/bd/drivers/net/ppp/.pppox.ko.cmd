@@ -1,0 +1,1 @@
+cmd_drivers/net/ppp/pppox.ko := arm-anykav500-linux-uclibcgnueabi-ld -EL -r  -T /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/scripts/module-common.lds --build-id  -o drivers/net/ppp/pppox.ko drivers/net/ppp/pppox.o drivers/net/ppp/pppox.mod.o

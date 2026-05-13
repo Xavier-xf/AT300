@@ -1,0 +1,2 @@
+kernel/drivers/mtd/devices/ak_spiflash.ko
+kernel/drivers/mtd/devices/ak_spi_nandflash.ko

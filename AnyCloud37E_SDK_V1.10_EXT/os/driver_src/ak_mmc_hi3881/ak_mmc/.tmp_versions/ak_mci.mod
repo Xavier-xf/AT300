@@ -1,0 +1,2 @@
+/home/wxj/workdir/kocom/anyka-sip-sdk/indoor/AnyCloud37E_SDK_V1.10/os/driver_src/ak_mmc_hi3881/ak_mmc/ak_mci.ko
+/home/wxj/workdir/kocom/anyka-sip-sdk/indoor/AnyCloud37E_SDK_V1.10/os/driver_src/ak_mmc_hi3881/ak_mmc/ak_mci.o

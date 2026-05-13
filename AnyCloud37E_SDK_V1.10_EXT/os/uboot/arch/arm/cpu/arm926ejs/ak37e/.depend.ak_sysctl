@@ -1,0 +1,19 @@
+ak_sysctl.o: ak_sysctl.c \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/io.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/types.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/config.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/posix_types.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/stddef.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/posix_types.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/types.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdbool.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/byteorder.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/byteorder/little_endian.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/compiler.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/compiler-gcc.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/compiler-gcc4.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/byteorder/swab.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/linux/byteorder/generic.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/memory.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/arch-ak37e/ak_cpu.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/arch-ak37e/ak_sysctl.h

@@ -1,0 +1,25 @@
+3rdparty/lvgl-8.4.0/CMakeFiles/lvgl.dir/src/extra/libs/gif/gifdec.c.o: \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/gifdec.c \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/gifdec.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdint.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/stdint.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/features.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/uClibc_config.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/sys/cdefs.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/wchar.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/wordsize.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/lv_fs.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/../lv_conf_internal.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/../lv_conf_kconfig.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/lv_conf.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdbool.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/lv_log.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/lv_types.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/lv_mem.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stddef.h \
+ /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/string.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/lv_color.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/lv_assert.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/lv_log.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/lv_mem.h \
+ /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/libs/gif/../../../misc/lv_math.h

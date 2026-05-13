@@ -1,0 +1,1 @@
+cmd_arch/arm/boot/uImage := /bin/bash /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/scripts/mkuboot.sh -A arm -O linux -C none  -T kernel -a 0x80008000 -e 0x80008040 -n 'Linux-4.4.192V2.4' -d arch/arm/boot/zImage arch/arm/boot/uImage

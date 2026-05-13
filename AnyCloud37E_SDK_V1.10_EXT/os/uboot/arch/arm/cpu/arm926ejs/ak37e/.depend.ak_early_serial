@@ -1,0 +1,4 @@
+ak_early_serial.o: ak_early_serial.c \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/arch-ak37e/ak_cpu.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/arch-ak37e/ak_l2buf.h \
+ /home/wxj/AK3760E_SDK/AnyCloud37E_SDK_V1.10_EXT/os/uboot/include/asm/arch-ak37e/ak_types.h

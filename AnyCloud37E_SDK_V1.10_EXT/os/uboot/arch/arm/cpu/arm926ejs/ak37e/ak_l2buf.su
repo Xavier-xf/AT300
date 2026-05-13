@@ -1,0 +1,15 @@
+ak_l2buf.c:503:15:l2_frac_dma	8	static
+ak_l2buf.c:261:14:l2_get_addr	0	static
+ak_l2buf.c:289:15:l2_cpu	40	static
+ak_l2buf.c:110:8:l2_init	0	static
+ak_l2buf.c:145:8:dma_init	0	static
+ak_l2buf.c:236:6:l2_get_status	0	static
+ak_l2buf.c:402:8:l2_combuf_cpu	40	static
+ak_l2buf.c:440:8:l2_combuf_cpu_frac	4	static
+ak_l2buf.c:672:8:l2_combuf_dma	48	static
+ak_l2buf.c:737:8:l2_set_status	0	static
+ak_l2buf.c:769:8:l2_clr_status	0	static
+ak_l2buf.c:800:15:l2_clear_dma	32	static
+ak_l2buf.c:942:8:l2_combuf_wait_dma_finish	24	static
+ak_l2buf.c:1015:6:l2_alloc	24	static
+ak_l2buf.c:1100:8:l2_free	16	static

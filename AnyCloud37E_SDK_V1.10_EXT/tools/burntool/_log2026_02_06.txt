@@ -1,0 +1,100 @@
+
+
+=============Transc Information =============
+Print Time: 2026-02-06 08:45:03
+
+[08:45:03]BT_DL_FILE_DOWNLOAD_FAIL fail
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue num_idex
+[08:45:06]BT_GetRamValue fail
+[08:45:06]memcmp fail
+[08:45:06]BT_DownloadProducer_sub fail
+
+
+=============Transc Information =============
+Print Time: 2026-02-06 08:45:56
+
+[08:45:56]BT_DL_FILE_DOWNLOAD_FAIL fail
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue num_idex
+[08:45:59]BT_GetRamValue fail
+[08:45:59]memcmp fail
+[08:45:59]BT_DownloadProducer_sub fail
+
+
+=============Transc Information =============
+Print Time: 2026-02-06 08:46:03
+
+[08:46:03]BT_DL_FILE_DOWNLOAD_FAIL fail
+[08:46:03]memcmp fail
+[08:46:03]BT_DownloadProducer_sub fail
+
+
+=============Transc Information =============
+Print Time: 2026-02-06 08:46:22
+
+[08:46:22]BT_DL_FILE_DOWNLOAD_FAIL fail
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue num_idex
+[08:46:25]BT_GetRamValue fail
+[08:46:25]memcmp fail
+[08:46:25]BT_DownloadProducer_sub fail
+
+
+=============Transc Information =============
+Print Time: 2026-02-06 08:46:26
+
+[08:46:26]BT_DL_FILE_DOWNLOAD_FAIL fail
+[08:46:26]memcmp fail
+[08:46:26]BT_DownloadProducer_sub fail
+
+
+=============Transc Information =============
+Print Time: 2026-02-06 08:48:08
+
+[08:48:08]BT_DL_FILE_DOWNLOAD_FAIL fail
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue num_idex
+[08:48:11]BT_GetRamValue fail
+[08:48:11]memcmp fail
+[08:48:11]BT_DownloadProducer_sub fail
+
+
+=============Transc Information =============
+Print Time: 2026-02-06 08:48:17
+
+[08:48:17]BT_DL_FILE_DOWNLOAD_FAIL fail
+[08:48:18]memcmp fail
+[08:48:18]BT_DownloadProducer_sub fail

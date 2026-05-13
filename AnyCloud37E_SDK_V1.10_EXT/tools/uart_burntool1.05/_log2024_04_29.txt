@@ -1,0 +1,82 @@
+
+
+=============Transc Information =============
+Print Time: 2024-04-29 15:54:56
+
+[15:54:56]184020
+
+=============Transc Information =============
+Print Time: 2024-04-29 16:08:02
+
+[16:08:02]184020
+
+=============Transc Information =============
+Print Time: 2024-04-29 16:32:18
+
+[16:32:18]BT_Start_Read: Open_Uart handle fail
+[16:32:18]BT_Start_Read: Open_Uart handle fail
+[16:32:18]BT_Start_Read: Open_Uart handle fail
+[16:32:19]BT_Start_Read: Open_Uart handle fail
+[16:32:19]BT_Start_Read: Open_Uart handle fail
+[16:32:19]BT_Start_Read: Open_Uart handle fail
+[16:32:19]BT_Start_Read: Open_Uart handle fail
+[16:32:19]BT_Start_Read: Open_Uart handle fail
+[16:32:19]BT_Start_Read: Open_Uart handle fail
+[16:32:19]BT_Start_Read: Open_Uart handle fail
+[16:32:19]BT_Start_Read: Open_Uart handle fail
+[16:32:20]BT_Start_Read: Open_Uart handle fail
+[16:32:20]BT_Start_Read: Open_Uart handle fail
+[16:32:20]BT_Start_Read: Open_Uart handle fail
+[16:32:20]BT_Start_Read: Open_Uart handle fail
+[16:32:20]BT_Start_Read: Open_Uart handle fail
+[16:32:20]BT_Start_Read: Open_Uart handle fail
+[16:32:20]BT_Start_Read: Open_Uart handle fail
+[16:32:20]BT_Start_Read: Open_Uart handle fail
+[16:32:21]BT_Start_Read: Open_Uart handle fail
+[16:32:21]BT_Start_Read: Open_Uart handle fail
+[16:32:21]BT_Start_Read: Open_Uart handle fail
+[16:32:21]BT_Start_Read: Open_Uart handle fail
+[16:32:21]BT_Start_Read: Open_Uart handle fail
+[16:32:21]BT_Start_Read: Open_Uart handle fail
+[16:32:21]BT_Start_Read: Open_Uart handle fail
+[16:32:21]BT_Start_Read: Open_Uart handle fail
+[16:32:22]BT_Start_Read: Open_Uart handle fail
+[16:32:22]BT_Start_Read: Open_Uart handle fail
+[16:32:22]BT_Start_Read: Open_Uart handle fail
+[16:32:22]BT_Start_Read: Open_Uart handle fail
+[16:32:22]BT_Start_Read: Open_Uart handle fail
+[16:32:22]BT_Start_Read: Open_Uart handle fail
+[16:32:22]BT_Start_Read: Open_Uart handle fail
+[16:32:22]BT_Start_Read: Open_Uart handle fail
+[16:32:23]BT_Start_Read: Open_Uart handle fail
+[16:32:23]BT_Start_Read: Open_Uart handle fail
+[16:32:23]BT_Start_Read: Open_Uart handle fail
+[16:32:23]BT_Start_Read: Open_Uart handle fail
+[16:32:23]BT_Start_Read: Open_Uart handle fail
+[16:32:23]BT_Start_Read: Open_Uart handle fail
+[16:32:23]BT_Start_Read: Open_Uart handle fail
+[16:32:23]BT_Start_Read: Open_Uart handle fail
+[16:32:24]BT_Start_Read: Open_Uart handle fail
+[16:32:24]BT_Start_Read: Open_Uart handle fail
+[16:32:24]BT_Start_Read: Open_Uart handle fail
+[16:32:24]BT_Start_Read: Open_Uart handle fail
+[16:32:24]BT_Start_Read: Open_Uart handle fail
+[16:32:24]BT_Start_Read: Open_Uart handle fail
+[16:32:24]BT_Start_Read: Open_Uart handle fail
+[16:32:24]BT_Start_Read: Open_Uart handle fail
+[16:32:25]BT_Start_Read: Open_Uart handle fail
+[16:32:25]BT_Start_Read: Open_Uart handle fail
+[16:32:39]BT_AttachUSB: BT_SetReg regAddr fail
+[16:33:04]184020
+
+=============Transc Information =============
+Print Time: 2024-04-29 16:33:23
+
+[16:33:23]BT_Start_Read: Open_Uart handle fail
+[16:33:24]BT_Start_Read: Open_Uart handle fail
+
+
+=============Transc Information =============
+Print Time: 2024-04-29 17:36:35
+
+[17:36:35]184020

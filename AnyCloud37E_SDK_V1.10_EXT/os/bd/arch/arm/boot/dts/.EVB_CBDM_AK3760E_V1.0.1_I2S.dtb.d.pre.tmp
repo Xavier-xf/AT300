@@ -1,0 +1,11 @@
+EVB_CBDM_AK3760E_V1.0.1_I2S.o: \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDM_AK3760E_V1.0.1_I2S.dts \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e.dtsi \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_common.dtsi \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/include/dt-bindings/gpio/gpio.h \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/include/dt-bindings/clock/ak37e-clock.h \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_pinctrl.dtsi \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/include/dt-bindings/pinctrl/ak_37e_pinctrl.h \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi \
+ /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_lcd.dtsi

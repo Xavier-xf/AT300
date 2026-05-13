@@ -1,0 +1,15 @@
+ak_gpio_37e.c:915:5:gpio_assert_legal	0	static
+ak_gpio_37e.c:963:5:gpio_free	0	static
+ak_gpio_37e.c:979:6:gpio_set_pin_level	0	static
+ak_gpio_37e.c:1023:15:gpio_get_pin_level	8	static
+ak_gpio_37e.c:1055:6:gpio_set_pin_dir	0	static
+ak_gpio_37e.c:1098:5:gpio_direction_input	8	static
+ak_gpio_37e.c:1112:5:gpio_direction_output	16	static
+ak_gpio_37e.c:1129:5:gpio_get_value	8	static
+ak_gpio_37e.c:1140:5:gpio_set_pull_up_r	16	static
+ak_gpio_37e.c:1211:5:gpio_set_pull_down_r	16	static
+ak_gpio_37e.c:1295:5:gpio_set_pin_as_gpio	8	static
+ak_gpio_37e.c:1330:6:gpio_int_disableall	0	static
+ak_gpio_37e.c:931:6:gpio_init	0	static
+ak_gpio_37e.c:949:5:gpio_request	8	static
+ak_gpio_37e.c:1338:6:gpio_int_restoreall	0	static

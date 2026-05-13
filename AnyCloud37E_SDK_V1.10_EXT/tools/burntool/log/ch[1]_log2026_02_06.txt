@@ -1,0 +1,91 @@
+=============Burn Information For Channel[1]=============
+Print Time: 2026-2-6 08:44:33
+
+ss g_udisk_burnnum: 0
+[08:44:33]work number = 1
+[08:44:33]burn_mode = 1, eMedium = 1
+[08:45:03]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[08:45:06]download producer fail.
+[08:45:06]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2026-2-6 08:45:56
+
+ss g_udisk_burnnum: 0
+[08:45:56]work number = 1
+[08:45:56]burn_mode = 1, eMedium = 1
+[08:45:56]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[08:45:59]download producer fail.
+[08:45:59]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2026-2-6 08:46:03
+
+ss g_udisk_burnnum: 0
+[08:46:03]work number = 1
+[08:46:03]burn_mode = 1, eMedium = 1
+[08:46:03]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[08:46:03]download producer fail.
+[08:46:03]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2026-2-6 08:46:15
+
+ss g_udisk_burnnum: 0
+[08:46:15]work number = 1
+[08:46:15]burn_mode = 1, eMedium = 1
+[08:46:15]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[08:46:25]download producer fail.
+[08:46:25]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2026-2-6 08:46:26
+
+ss g_udisk_burnnum: 0
+[08:46:26]work number = 1
+[08:46:26]burn_mode = 1, eMedium = 1
+[08:46:26]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[08:46:26]download producer fail.
+[08:46:26]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2026-2-6 08:47:39
+
+ss g_udisk_burnnum: 0
+[08:47:39]work number = 1
+[08:47:39]burn_mode = 1, eMedium = 1
+[08:48:08]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[08:48:11]download producer fail.
+[08:48:11]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2026-2-6 08:48:17
+
+ss g_udisk_burnnum: 0
+[08:48:17]work number = 1
+[08:48:17]burn_mode = 1, eMedium = 1
+[08:48:17]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[08:48:18]download producer fail.
+[08:48:18]close file
+
+
+

@@ -1,0 +1,25 @@
+{
+    "files.associations": {
+        "array": "c",
+        "compare": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "lv_port_disp.h": "c",
+        "db_hal_driver.h": "c",
+        "lv_port_indev.h": "c",
+        "driver_gui_display.h": "c",
+        "db_key_state.h": "c",
+        "user_layout.h": "c",
+        "user_app.h": "c",
+        "user_data.h": "c",
+        "private_access.h": "c",
+        "random": "c",
+        "driver_h264_decoder.h": "c",
+        "driver_mjpeg_encoder.h": "c",
+        "driver_mjpeg_decoder.h": "c",
+        "fstream": "c",
+        "layout_common.h": "c"
+    }
+}

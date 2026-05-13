@@ -1,0 +1,4940 @@
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+# 17 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+/dts-v1/;
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e1.dtsi" 1
+# 18 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e1.dtsi"
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_common.dtsi" 1
+# 16 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_common.dtsi"
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/include/dt-bindings/gpio/gpio.h" 1
+# 17 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_common.dtsi" 2
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/include/dt-bindings/clock/ak37e-clock.h" 1
+# 18 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_common.dtsi" 2
+# 50 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_common.dtsi"
+/ {
+    #address-cells = <1>;
+    #size-cells = <1>;
+
+    interrupt-parent = <&intc>;
+
+    aliases {
+        intc = &intc;
+        watchdog = &watchdog;
+        rtc = &rtc;
+        pwm0 = &pwm0;
+        pwm1 = &pwm1;
+        pwm2 = &pwm2;
+        pwm3 = &pwm3;
+        pwm4 = &pwm4;
+        pwm5 = &pwm5;
+        gpio = &gpio;
+        uart0 = &uart0;
+        uart1 = &uart1;
+        uart2 = &uart2;
+        uart3 = &uart3;
+        spi0 = &spi0;
+        spi1 = &spi1;
+        spi2 = &spi2;
+        mmc0 = &mmc0;
+        mmc1 = &mmc1;
+        mmc2 = &mmc2;
+        i2c0 = &i2c0;
+        i2c1 = &i2c1;
+        i2c2 = &i2c2;
+        i2c3 = &i2c3;
+        motor0 = &motor0;
+        motor1 = &motor1;
+        usb = &usb;
+        leds = &leds;
+        adkeys = &adkeys;
+        gpiokeys = &gpiokeys;
+        ethernet0 = &ethernet;
+        ethernet1 = &ethernet1;
+        pm_standby = &pm_standby;
+    };
+
+    intc: interrupt-controller {
+        compatible = "anyka,ak37e-ic";
+        interrupt-controller;
+        #interrupt-cells = <2>;
+        bank_irqs = <32 23>;
+    };
+
+    system_intc: system-control-ic {
+        compatible = "anyka,ak37e-system-ic";
+        interrupt-controller;
+        interrupts = <3 0>;
+    };
+
+    rtc: rtc {
+        compatible = "anyka,ak37e-rtc";
+        status = "disable";
+    };
+
+    timer {
+        compatible = "anyka,ak37e-system-timer";
+        interrupts = <6 1>,
+                     <5 1>,
+                     <4 1>,
+                     <3 1>,
+                     <2 1>,
+                     <20 1>,
+                     <19 1>,
+                     <21 1>,
+                     <22 1>,
+                     <23 1>;
+        clock-frequency = <12000000>;
+        status = "okay";
+    };
+
+    watchdog: watchdog {
+        compatible = "anyka,ak37e-wdt";
+        status = "disable";
+    };
+
+    soc: soc {
+        compatible = "simple-bus";
+        #address-cells = <1>;
+        #size-cells = <1>;
+        ranges;
+
+        lcdc: lcdc@20010000 {
+            compatible = "anyka,ak37e-lcd-ctrl";
+            reg = <0x20010000 0x7fff>,
+                  <0x20600000 0xffff>;
+            interrupts = <25 0>;
+            clocks =
+                <&gclk_asic 27>,
+                <&gclk_asic 29>;
+            clock-names = "lcdc", "mipi_dsi";
+            status = "disable";
+        };
+
+        gui: gui@20040000 {
+            compatible = "anyka,ak37e-gui-controller";
+            reg = <0x20040000 0x10000>;
+            interrupts = <24 0>;
+            clocks = <&gclk_asic 28>;
+            status = "disable";
+        };
+
+        vencoder: video-encoder@20018000 {
+            compatible = "anyka,ak37e-uio-vencoder";
+            reg = <0x20018000 0x8000>;
+            interrupts = <26 0>;
+            clocks = <&gclk_asic 25>;
+            status = "disable";
+        };
+
+        vdecoder: video-decoder@20030000 {
+            compatible = "anyka,ak37e-uio-vdecoder";
+            reg = <0x20030000 0x10000>;
+            interrupts = <23 0>;
+            clocks = <&gclk_asic 26>;
+            status = "disable";
+        };
+
+        mmc0: mmc0@20100000 {
+            compatible = "anyka,ak37e-mmc0";
+            reg = <0x20100000 0x7fff>;
+            interrupts = <4 0>,<28 0>;
+            clocks = <&gclk_asic 1>;
+            status = "disable";
+        };
+
+        mmc1: mmc1@20108000 {
+            compatible = "anyka,ak37e-mmc1";
+            reg = <0x20108000 0x7fff>;
+            interrupts = <5 0>, <28 0>;
+            clocks = <&gclk_asic 2>;
+            status = "disable";
+        };
+
+        mmc2: mmc2@201B0000 {
+            compatible = "anyka,ak37e-mmc2";
+            reg = <0x201B0000 0x7fff>;
+            interrupts = <27 0>,<28 0>;
+            clocks = <&gclk_asic 21>;
+            status = "disable";
+        };
+
+        adc_dac: adc_dac@20110000 {
+            compatible = "anyka,ak37e-adc-dac";
+            reg = <0x08000000 0xffff>,
+                <0x20110000 0x7fff>,
+                <0x201E0000 0xf>;
+            interrupts = <6 0>,<7 0>;
+            clocks =
+                <&gclk_asic 3>,
+                <&factor_audio_clk 2>,
+                <&factor_audio_clk 0>,
+                <&gclk_asic 4>,
+                <&factor_audio_clk 3>,
+                <&factor_audio_clk 1>,
+                <&gclk_asic 14>,
+                <&factor_audio_clk 5>,
+                <&factor_audio_clk 4>;
+
+            clock-names =
+                "sdadc_gclk",
+                "sdadc_clk",
+                "sdadchs_clk",
+                "sddac_gclk",
+                "sddac_clk",
+                "sddachs_clk",
+                "pdm_gclk",
+                "pdm_i2sm",
+                "pdm_hsclk";
+            status = "disable";
+        };
+
+        saradc: saradc@08000000 {
+            compatible = "anyka,ak37e-sar-adc";
+            reg = <0x08000000 0x100>;
+            interrupts = <1 1>;
+            clocks = <&sar_adc_clk 0>;
+            status = "disable";
+        };
+
+        spi0: spi0@20120000 {
+            compatible = "anyka,ak37e-spi0";
+            reg = <0x20120000 0x7fff>;
+            interrupts = <8 0>;
+            clocks = <&gclk_asic 5>, <&factor_asic_clk 5>;
+            clock-names = "spi0", "spi0_bus";
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "disable";
+
+            spif0:spi-flash@0 {
+                compatible = "anyka,ak-spiflash";
+                reg = <0>;
+                spi-max-frequency = <80000000>;
+                status = "disable";
+                #address-cells = <1>;
+                #size-cells = <0>;
+            };
+
+            spif1:spi-flash@1 {
+                compatible = "anyka,ak-spinand";
+                reg = <1>;
+                spi-max-frequency = <80000000>;
+
+                status = "disable";
+            };
+        };
+
+        spi1: spi1@20128000 {
+            compatible = "anyka,ak37e-spi1";
+            reg = <0x20128000 0x7fff>;
+            interrupts = <9 0>;
+            clocks = <&gclk_asic 6>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "disable";
+        };
+
+        spi2: spi2@20160000 {
+            compatible = "anyka,ak37e-spi2";
+            reg = <0x20160000 0x7fff>;
+            interrupts = <14 0>;
+            clocks = <&gclk_asic 20>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "disable";
+   spidev2: spidev@2 {
+    compatible = "rohm,dh2228fv";
+    reg = <0>;
+    spi-max-frequency = <30000000>;
+    status = "okay";
+   };
+        };
+
+  spi2_slave: spi2_slave@20160000 {
+            compatible = "anyka,ak-slave";
+            reg = <0x20160000 0x7fff>;
+            interrupts = <14 0>;
+            clocks = <&gclk_asic 20>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "disable";
+        };
+
+
+        uart0: uart0@20130000 {
+            compatible = "anyka,ak37e-uart0";
+            reg = <0x20130000 0x7fff>;
+            current-speed = <115200>;
+            interrupts = <10 0>;
+            fifosize = <64>;
+            clocks = <&gclk_asic 7>;
+            status = "disable";
+        };
+
+        uart1: uart1@20138000 {
+            compatible = "anyka,ak37e-uart1";
+            reg = <0x20138000 0x7fff>;
+            current-speed = <115200>;
+            interrupts = <11 0>;
+            fifosize = <64>;
+            clocks = <&gclk_asic 8>;
+            status = "disable";
+        };
+
+        uart2: uart2@201A0000 {
+            compatible = "anyka,ak37e-uart2";
+            reg = <0x201A0000 0x7fff>;
+            current-speed = <115200>;
+            interrupts = <21 0>;
+            fifosize = <64>;
+            clocks = <&gclk_asic 18>;
+            status = "disable";
+        };
+
+        uart3: uart3@201A8000 {
+            compatible = "anyka,ak37e-uart3";
+            reg = <0x201A8000 0x7fff>;
+            current-speed = <115200>;
+            interrupts = <22 0>;
+            fifosize = <64>;
+            clocks = <&gclk_asic 19>;
+            status = "disable";
+        };
+
+        l2buffer: l2-buffer@20140000 {
+            compatible = "anyka,ak37e-l2-dma";
+            reg = <0x20140000 0xffff>;
+            interrupts = <12 0>;
+            status = "disable";
+        };
+
+        gpio: gpio@20170000 {
+            compatible = "anyka,ak37e-gpio";
+            reg = <0x20170000 0xffff>,
+            <0x20400000 0x1000>,
+            <0x20480000 0x1000>;
+
+            interrupt-controller;
+            #interrupt-cells = <2>;
+            interrupts = <15 0>;
+            clocks = <&gclk_asic 12>;
+
+            gpio-controller;
+            #gpio-cells = <2>;
+            status = "okay";
+        };
+
+        i2c0: i2c0@20150000 {
+            compatible = "anyka,ak37e-i2c0";
+            reg = <0x20150000 0xffff>;
+            interrupts = <13 0>;
+            clocks = <&gclk_asic 10>;
+
+            status = "disable";
+        };
+
+        i2c1: i2c1@20190000 {
+            compatible = "anyka,ak37e-i2c1";
+            reg = <0x20190000 0xffff>;
+            interrupts = <20 0>;
+            clocks = <&gclk_asic 17>;
+
+            status = "disable";
+        };
+
+        i2c2: i2c2@201c0000 {
+            compatible = "anyka,ak37e-i2c2";
+            reg = <0x201c0000 0xffff>;
+            interrupts = <29 0>;
+            clocks = <&gclk_asic 22>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "disable";
+        };
+
+        i2c3: i2c3@201D0000 {
+            compatible = "anyka,ak37e-i2c3";
+            reg = <0x201d0000 0xffff>;
+            interrupts = <30 0>;
+            clocks = <&gclk_asic 23>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "disable";
+        };
+
+        i2c4: i2c4@4 {
+            compatible = "i2c-gpio";
+
+
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "disable";
+        };
+
+        usb: usb@20200000 {
+            compatible = "anyka,ak37e-usb";
+            reg = <0x20200000 0xffff>;
+            interrupts = <18 0
+                          19 0>;
+            clocks = <&gclk_asic 15>;
+            status = "disable";
+        };
+
+        ethernet: ethernet@20300000 {
+            compatible = "anyka,ak37e-ethernet";
+            reg = <0x20300000 0x1fff>;
+            interrupts = <16 0>;
+            clock-names = "mac0", "mac0_opclk";
+            clocks = <&gclk_asic 13>, <&factor_asic_clk 2>;
+            mac-address = [00 00 00 00 00 00];
+            status = "disable";
+        };
+
+        ethernet1: ethernet1@20500000 {
+            compatible = "anyka,ak37e-ethernet1";
+            reg = <0x20500000 0x1fff>;
+            interrupts = <31 0>;
+            clock-names = "mac1", "mac1_opclk";
+            clocks = <&gclk_asic 16>, <&factor_asic_clk 3>;
+            status = "disable";
+        };
+
+        dramctrl:dram-controller@21000000 {
+            compatible = "anyka,ak37e-dram-controller";
+            reg = <0x21000000 0xffffff>;
+            status = "disable";
+        };
+
+        vi0: vi0@20000000 {
+            compatible = "anyka,ak37e-vi";
+            reg = <0x20000000 0x1fff>;
+            interrupts = <1 0>;
+            clocks = <&gclk_asic 24>, <&factor_asic_clk 0>;
+            clock-names = "image_capture_clk", "csi0_clk";
+
+
+
+            interface = <0>;
+            status = "disable";
+        };
+
+        efuse: efuse@08000000 {
+            compatible = "anyka,ak37e-efuse";
+            reg = <0x08000000 0x100>;
+            interrupts = <1 1>;
+            status = "okay";
+        };
+    };
+
+    pm_standby: pm_standby {
+        compatible = "anyka,ak37e-pm";
+
+
+
+        status = "disable";
+    };
+
+    ramdisk:ramdisk{
+        compatible = "anyka,ak37e-ramdisk";
+        memory-region = <&dma_reserved>;
+        status = "okay";
+    };
+
+    leds: leds {
+        compatible = "anyka,ak37e-leds";
+        status = "disable";
+    };
+
+    adkeys: adkeys {
+        compatible = "anyka,ak37e-adckeys";
+        status = "disable";
+    };
+
+    gpiokeys: gpiokeys {
+        compatible = "anyka,ak37e-gpiokeys";
+        status = "disable";
+    };
+
+    motor0: motor0 {
+        compatible = "anyka,ak37e-motor0";
+        status = "disable";
+    };
+
+    motor1: motor1 {
+        compatible = "anyka,ak37e-motor1";
+        status = "disable";
+    };
+
+    pwm0: pwm0 {
+        compatible = "anyka,ak37e-pwm0";
+        #pwm-cells = <2>;
+        status = "disable";
+    };
+
+    pwm1: pwm1 {
+        compatible = "anyka,ak37e-pwm1";
+        #pwm-cells = <2>;
+        status = "disable";
+    };
+
+    pwm2: pwm2 {
+        compatible = "anyka,ak37e-pwm2";
+        #pwm-cells = <2>;
+        status = "disable";
+    };
+
+    pwm3: pwm3 {
+        compatible = "anyka,ak37e-pwm3";
+        #pwm-cells = <2>;
+        status = "disable";
+    };
+
+    pwm4: pwm4 {
+        compatible = "anyka,ak37e-pwm4";
+        #pwm-cells = <2>;
+        status = "disable";
+    };
+
+    pwm5: pwm5 {
+        compatible = "anyka,ak37e-pwm5";
+        #pwm-cells = <2>;
+        status = "disable";
+    };
+
+    clocks {
+        osc24M: osc24M {
+            compatible = "fixed-clock";
+            #clock-cells = <0>;
+            clock-output-names = "osc24M";
+            clock-frequency = <24000000>;
+        };
+
+        osc32K: osc32K {
+            compatible = "fixed-clock";
+            #clock-cells = <0>;
+            clock-output-names = "osc32K";
+            clock-frequency = <32768>;
+        };
+
+
+
+
+
+
+
+        cpu_pll: cpu_pll {
+            compatible = "anyka,ak37e-fixed-clk";
+            #clock-cells = <1>;
+            clock-id = <0>, <1>, <2>;
+            clock-output-names = "jclk", "hclk", "dphy";
+            clocks = <&osc24M>;
+        };
+
+
+
+
+        asic_pll: asic_pll {
+            compatible = "anyka,ak37e-fixed-clk";
+            #clock-cells = <0>;
+            clock-div-od = <1>;
+            clock-div-n = <3>;
+            clock-id = <3>;
+
+            clock-frequency = <500000000>;
+            clock-output-names = "asic_pll";
+            clocks = <&osc24M>;
+        };
+
+
+
+
+        audio_pll: audio_pll {
+            compatible = "anyka,ak37e-fixed-clk";
+            #clock-cells = <0>;
+            clock-div-od = <1>;
+            clock-div-n = <2>;
+            clock-id = <4>;
+            clock-frequency = <600000000>;
+            clock-output-names = "audio_pll";
+            clocks = <&osc24M>;
+        };
+
+        factor_asic_clk: factor_asic_clk {
+            compatible = "anyka,ak37e-factor-asic-clk";
+            #clock-cells = <1>;
+            clock-id = <0>, <1>,
+                        <2>, <3>,
+                        <4>, <5>;
+            clock-output-names = "csi0_sclk", "csi1_sclk", "mac0_opclk", "mac1_opclk", "lcd_pclk", "spi0_clk";
+            clocks = <&asic_pll>;
+        };
+
+        gclk_asic: gclk_asic {
+            compatible = "anyka,ak37e-gate-clk";
+            #clock-cells = <1>;
+
+
+
+            clock-id = <0>, <1>, <2>,
+                        <3>, <4>, <5>,
+                        <6>, <7>, <8>,
+                        <9>, <10>, <11>,
+                        <12>, <13>, <14>,
+                        <15>, <16>, <17>,
+                        <18>, <19>, <20>,
+                        <21>, <22>, <23>,
+                        <24>, <25>, <26>,
+                        <27>, <28>, <29>;
+            clock-ctrlbit = <0>, <1>, <2>,
+                            <3>, <4>, <5>,
+                            <6>, <7>, <8>,
+                            <9>, <10>, <11>,
+                            <12>, <13>, <14>,
+                            <15>, <16>, <17>,
+                            <32>, <33>, <34>,
+                            <35>, <36>, <37>,
+                            <19>, <20>, <21>,
+                            <22>, <23>, <31>;
+            clock-output-names = "bridge", "mmc0", "mmc1",
+                                 "sd-adc", "sd-dac", "spi0",
+                                 "spi1", "uart0", "uart1",
+                                 "l2buf0", "i2c0", "l2buf1",
+                                 "gpio", "mac0", "pdm",
+                                 "usb", "mac1", "i2c1",
+                                 "uart2","uart3","spi2",
+                                 "mmc2","i2c2", "i2c3",
+                                 "image_capture", "jpeg_codec", "video_decoder",
+                                 "lcd_controller", "gui_clk", "dsi_clk";
+            clocks = <&asic_pll>;
+        };
+
+        factor_audio_clk: factor_audio_clk {
+            compatible = "anyka,ak37e-factor-audio-clk";
+            #clock-cells = <1>;
+            clock-id = <0>, <1>, <2>,
+                        <3>, <4>, <5>,
+                        <6>, <7>;
+            clock-output-names = "sdadchs", "sddachs", "sdadc", "sddac", "pdm_hsclk", "pdm_i2sm", "i2s0_mclk", "i2s0_b_lr_clk";
+            clocks = <&audio_pll>;
+        };
+
+        sar_adc_clk: sar_adc_clk {
+            compatible = "anyka,ak37e-factor-sar-adc-clk";
+            #clock-cells = <1>;
+            clock-id = <0>;
+            clock-output-names = "sar_adc";
+            clocks = <&osc24M>;
+        };
+
+        uv_det_pd:uv_det_pd {
+             compatible = "anyka,ak37e-uv_det_pd";
+# 688 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_common.dtsi"
+             enable = <1>;
+             threshold = <2>;
+             status = "okay";
+         };
+    };
+};
+# 19 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e1.dtsi" 2
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_pinctrl.dtsi" 1
+# 25 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_pinctrl.dtsi"
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/include/dt-bindings/pinctrl/ak_37e_pinctrl.h" 1
+# 26 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_pinctrl.dtsi" 2
+
+&gpio {
+# 44 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e_pinctrl.dtsi"
+    uart0_pins: uart0_pins {
+        anyka,pins = <22 23>;
+        anyka,function = <1 1>;
+        anyka,pull = <0x00010010 0x00000010>;
+    };
+
+    uart0_pins_sleep: uart0_pins_sleep {
+        anyka,pins = <22 23>;
+        anyka,function = <0 0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    uart1_pins: uart1_pins {
+
+
+
+
+
+
+
+  anyka,pins = <24 25 >;
+        anyka,function = <1 1 >;
+        anyka,pull = <0x00010010 0x00000010>;
+    };
+
+    ethernet_rmii0_pins: ethernet_rmii0_pins {
+        anyka,pins = <0
+                        1
+
+                        3
+                        4
+                        5
+                        6
+                        7
+                        8
+                        9>;
+        anyka,function = <1
+                            1
+
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            >;
+        anyka,pull = <0x00010010 0x00010011 0x00010011 0x00010011 0x00010011 0x00010011 0x00010300 0x00010011 0x00010011 0x00010011>;
+    };
+
+      ethernet_rmii0_pins_sleep: ethernet_rmii0_pins_sleep {
+        anyka,pins = <0
+                        1
+
+                        3
+                        4
+                        5
+                        6
+                        7
+                        8
+                        9>;
+        anyka,function = <0
+                            0
+
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            >;
+        anyka,pull = <0x00000000>;
+    };
+
+
+
+    ethernet_rmii1_pins: ethernet_rmii1_pins {
+        anyka,pins = <58
+                        59
+                        60
+                        61
+                        62
+                        63
+                        64
+                        65
+                        66
+                        67>;
+        anyka,function = <2
+                            2
+                            2
+                            2
+                            2
+                            2
+                            2
+                            2
+                            2
+                            2
+                            >;
+        anyka,pull = <0x01010300 0x01010300 0x01010300 0x01010300 0x01010300 0x01010300 0x01010310 0x01010300 0x01010300 0x01010300>;
+    };
+
+    ethernet_rmii1_pins_sleep: ethernet_rmii1_pins_sleep {
+        anyka,pins = <58
+                        59
+                        60
+                        61
+                        62
+                        63
+                        64
+                        65
+                        66
+                        67>;
+        anyka,function = <0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            >;
+        anyka,pull = <0x00000000>;
+    };
+
+    ethernet_rmii0_rst_pins: ethernet_rmii0_rst_pins {
+        anyka,pins = <27>;
+        anyka,function = <0>;
+        anyka,pull = <0x00010010>;
+    };
+
+    ethernet_rmii0_rst_pins_sleep: ethernet_rmii0_rst_pins_sleep {
+        anyka,pins = <27>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    ethernet_rmii1_rst_pins: ethernet_rmii1_rst_pins {
+        anyka,pins = <57>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000010>;
+    };
+
+    ethernet_rmii1_rst_pins_sleep: ethernet_rmii1_rst_pins_sleep {
+        anyka,pins = <57>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    spiflash_pins: spiflash_pins {
+        anyka,pins = <15
+                        14
+                        13
+                        12
+                        11
+                        10
+                        >;
+        anyka,function = <1
+                            1
+                            1
+                            1
+                            1
+                            1
+                    >;
+        anyka,pull = <0x00010000>;
+    };
+
+    spiflash_pins_sleep: spiflash_pins_sleep {
+        anyka,pins = <15
+                        14
+                        13
+                        12
+                        11
+                        10
+                        >;
+        anyka,function = <0
+                            0
+                            0
+                            0
+                            0
+                            0
+                    >;
+        anyka,pull = <0x00000000>;
+    };
+
+    spi_nand_flash_cs_pins: spi_nand_flash_cs_pins {
+        anyka,pins = <82>;
+        anyka,function = <2>;
+        anyka,pull = <0x00000010>;
+    };
+
+    spi_nand_flash_cs_pins_sleep: spi_nand_flash_cs_pins_sleep {
+        anyka,pins = <82>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    spi2_pins: spi2_pins {
+        anyka,pins = <24
+                        25
+                        26
+                        27
+                        28
+                        >;
+        anyka,function = <2
+                            2
+                            2
+                            2
+                            3
+                    >;
+        anyka,pull = <0x00010000>;
+    };
+
+    spi2_pins_sleep: spi2_pins_sleep {
+        anyka,pins = <24
+                        25
+                        26
+                        27
+                        28
+                        >;
+        anyka,function = <0
+                            0
+                            0
+                            0
+                            0
+                    >;
+        anyka,pull = <0x00000000>;
+    };
+
+    spi1_pins: spi1_pins {
+        anyka,pins = <16
+                        17
+                        18
+                        19
+                        20
+                        21
+                        29
+                        >;
+        anyka,function = <1
+                        1
+                        1
+                        1
+                        1
+                        1
+                        3
+                    >;
+        anyka,pull = <0x00010000>;
+    };
+
+    spi1_pins_sleep: spi1_pins_sleep {
+        anyka,pins = <16
+                        17
+                        18
+                        19
+                        20
+                        21
+                        29
+                        >;
+        anyka,function = <0
+                        0
+                        0
+                        0
+                        0
+                        0
+                        0
+                    >;
+        anyka,pull = <0x00000000>;
+    };
+};
+# 20 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_ak37e1.dtsi" 2
+
+
+
+
+
+/ {
+    model = "anyka,ak37e";
+    compatible = "anyka,ak3761e";
+
+    chosen {
+
+        bootargs = "console=ttySAK0,115200n8 root=/dev/mtdblock6 rootfstype=squashfs init=/sbin/init mem=128M memsize=128M";
+    };
+
+    cpus {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        cpu@0 {
+            compatible = "arm, arm926ej-s";
+            device_type = "cpu";
+            reg = <0>;
+            d-cache-line-size = <32>;
+            i-cache-line-size = <32>;
+            d-cache-size = <0x8000>;
+            i-cache-size = <0x8000>;
+            timebase-frequency = <0>;
+            bus-frequency = <0>;
+            clock-frequency = <0>;
+        };
+    };
+
+    memory {
+        device_type = "memory";
+        reg = <0x80000000 0x08000000>;
+    };
+
+    reserved-memory {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        ranges;
+
+        cma_reserved: cma_reserved@0x87000000 {
+            compatible = "shared-dma-pool";
+            linux,cma-default;
+            reusable;
+            size = <0x1000000>;
+            reg = <0x87000000 0x1000000>;
+            status = "okay";
+        };
+
+        dma_reserved: dma_reserved@0x81400000 {
+
+
+
+            size = <0x2000000>;
+            reg = <0x81400000 0x2000000>;
+            status = "okay";
+        };
+    };
+
+    ion {
+        compatible = "anyka,ak37e-ion-reserve";
+        memory-region = <&dma_reserved>;
+        #address-cells = <1>;
+        #size-cells = <1>;
+        heaps-nr = <1>;
+        ranges;
+
+        dma_reserved_heap: dma_reserved_heap {
+            compatible = "anyka,dma-reserve";
+            ion-id = <1>;
+
+            ion-type = <1>;
+            base-address = <0x81400000>;
+            size = <0x2000000>;
+            align = <0x4>;
+            status = "okay";
+        };
+    };
+};
+# 19 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts" 2
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi" 1
+# 25 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+&spif0 {
+    mx25l3205d: spi-norflash@8 {
+        compatible = "macronix,mx25l3205d";
+        norflash-name = "mx25l3205d";
+  reg = <8>;
+
+
+        norflash-jedec-id = <0xc22016>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <64>;
+# 50 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1020>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+  norflash-b-cmp = <6>;
+
+        status = "disable";
+    };
+
+    mx25l6405d: spi-norflash@9 {
+        compatible = "macronix,mx25l6405d";
+        norflash-name = "mx25l6405d";
+  reg = <9>;
+
+
+        norflash-jedec-id = <0xc22017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 92 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1020>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+  norflash-b-cmp = <6>;
+
+        status = "disable";
+    };
+
+    mx25l12805d: spi-norflash@10 {
+        compatible = "macronix,mx25l12805d";
+        norflash-name = "mx25l12805d";
+  reg = <10>;
+
+
+        norflash-jedec-id = <0xc22018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 133 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1450>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+
+        status = "disable";
+    };
+
+    mx25l12855e: spi-norflash@11 {
+        compatible = "macronix,mx25l12855e";
+        norflash-name = "mx25l12855e";
+  reg = <11>;
+
+
+        norflash-jedec-id = <0xc22018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 174 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1020>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+        norflash-b-qe = <6>;
+
+        status = "disable";
+    };
+
+    s25fl129p0: spi-norflash@12 {
+        compatible = "spansion,s25fl129p0";
+        norflash-name = "s25fl129p0";
+  reg = <12>;
+
+
+        norflash-jedec-id = <0x012018>;
+        norflash-ext-id = <0x4d00>;
+        norflash-sector-size = <0x40000>;
+        norflash-n-sectors = <64>;
+# 216 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    s25fl129p1: spi-norflash@13 {
+        compatible = "spansion,s25fl129p1";
+        norflash-name = "s25fl129p1";
+  reg = <13>;
+
+
+        norflash-jedec-id = <0x012018>;
+        norflash-ext-id = <0x4d01>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 256 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    sst25vf040b: spi-norflash@14 {
+        compatible = "sst,sst25vf040b";
+        norflash-name = "sst25vf040b";
+  reg = <14>;
+
+
+        norflash-jedec-id = <0xbf258d>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <8>;
+# 296 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+
+        status = "disable";
+    };
+
+    sst25vf080b: spi-norflash@15 {
+        compatible = "sst,sst25vf080b";
+        norflash-name = "sst25vf080b";
+  reg = <15>;
+
+
+        norflash-jedec-id = <0xbf258e>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <16>;
+# 337 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+
+        status = "disable";
+    };
+
+    sst25vf016b: spi-norflash@16 {
+        compatible = "sst,sst25vf016b";
+        norflash-name = "sst25vf016b";
+  reg = <16>;
+
+
+        norflash-jedec-id = <0xbf2541>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <32>;
+# 379 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+
+        status = "disable";
+    };
+
+    sst25vf032b: spi-norflash@17 {
+        compatible = "sst,sst25vf032b";
+        norflash-name = "sst25vf032b";
+  reg = <17>;
+
+
+        norflash-jedec-id = <0xbf254a>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <64>;
+# 420 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+
+        status = "disable";
+    };
+
+    sst25wf512: spi-norflash@18 {
+        compatible = "sst,sst25wf512";
+        norflash-name = "sst25wf512";
+  reg = <18>;
+
+
+        norflash-jedec-id = <0xbf2501>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <1>;
+# 461 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    sst25wf010: spi-norflash@19 {
+        compatible = "sst,sst25wf010";
+        norflash-name = "sst25wf010";
+  reg = <19>;
+
+
+        norflash-jedec-id = <0xbf2502>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <2>;
+# 502 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    sst25wf020: spi-norflash@20 {
+        compatible = "sst,sst25wf020";
+        norflash-name = "sst25wf020";
+  reg = <20>;
+
+
+        norflash-jedec-id = <0xbf2503>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <4>;
+# 543 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+
+        status = "disable";
+    };
+
+    sst25wf040: spi-norflash@21 {
+        compatible = "sst,sst25wf040";
+        norflash-name = "sst25wf040";
+  reg = <21>;
+
+
+        norflash-jedec-id = <0xbf2504>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <8>;
+# 583 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    m25p05: spi-norflash@22 {
+        compatible = "st,m25p05";
+        norflash-name = "m25p05";
+  reg = <22>;
+
+
+        norflash-jedec-id = <0x202010>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x8000>;
+        norflash-n-sectors = <2>;
+# 623 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+
+        status = "disable";
+    };
+
+    m25p10: spi-norflash@23 {
+        compatible = "st,m25p10";
+        norflash-name = "m25p10";
+  reg = <23>;
+
+
+        norflash-jedec-id = <0x202011>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x8000>;
+        norflash-n-sectors = <4>;
+# 663 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+
+        status = "disable";
+    };
+
+    m25p20: spi-norflash@24 {
+        compatible = "st,m25p20";
+        norflash-name = "m25p20";
+  reg = <24>;
+
+
+        norflash-jedec-id = <0x202012>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <4>;
+# 702 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    m25p40: spi-norflash@25 {
+        compatible = "st,m25p40";
+        norflash-name = "m25p40";
+  reg = <25>;
+
+
+        norflash-jedec-id = <0x202013>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <8>;
+# 742 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    m25p80: spi-norflash@26 {
+        compatible = "st,m25p80";
+        norflash-name = "m25p80";
+  reg = <26>;
+
+
+        norflash-jedec-id = <0x202014>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <16>;
+# 782 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    m25p16: spi-norflash@27 {
+        compatible = "st,m25p16";
+        norflash-name = "m25p16";
+  reg = <27>;
+
+
+        norflash-jedec-id = <0x202015>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <32>;
+# 822 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    m25p32: spi-norflash@28 {
+        compatible = "st,m25p32";
+        norflash-name = "m25p32";
+  reg = <28>;
+
+
+        norflash-jedec-id = <0x202016>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <64>;
+# 862 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    m25p64: spi-norflash@29 {
+        compatible = "st,m25p64";
+        norflash-name = "m25p64";
+  reg = <29>;
+
+
+        norflash-jedec-id = <0x202017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 902 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    m25p128: spi-norflash@30 {
+        compatible = "st,m25p128";
+        norflash-name = "m25p128";
+  reg = <30>;
+
+
+        norflash-jedec-id = <0x202018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x40000>;
+        norflash-n-sectors = <64>;
+# 942 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    m45pe10: spi-norflash@31 {
+        compatible = "st,m45pe10";
+        norflash-name = "m45pe10";
+  reg = <31>;
+
+
+        norflash-jedec-id = <0x204011>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <2>;
+# 982 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+
+  wr_mode = <3>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+
+        status = "disable";
+    };
+
+    m45pe80: spi-norflash@32 {
+        compatible = "st,m45pe80";
+        norflash-name = "m45pe80";
+  reg = <32>;
+
+
+        norflash-jedec-id = <0x204014>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <16>;
+# 1019 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+
+  wr_mode = <3>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+
+        status = "disable";
+    };
+
+    m45pe16: spi-norflash@33 {
+        compatible = "st,m45pe16";
+        norflash-name = "m45pe16";
+  reg = <33>;
+
+
+        norflash-jedec-id = <0x204015>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <32>;
+# 1058 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+
+  wr_mode = <3>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+
+        status = "disable";
+    };
+
+    m25pe80: spi-norflash@34 {
+        compatible = "st,m25pe80";
+        norflash-name = "m25pe80";
+  reg = <34>;
+
+
+        norflash-jedec-id = <0x208014>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <16>;
+# 1095 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    m25pe16: spi-norflash@35 {
+        compatible = "st,m25pe16";
+        norflash-name = "m25pe16";
+  reg = <35>;
+
+
+        norflash-jedec-id = <0x208015>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <32>;
+# 1136 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+
+        status = "disable";
+    };
+
+    w25x10: spi-norflash@36 {
+        compatible = "winbond,w25x10";
+        norflash-name = "w25x10";
+  reg = <36>;
+
+
+        norflash-jedec-id = <0xef3011>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <2>;
+# 1176 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    w25x20: spi-norflash@37 {
+        compatible = "winbond,w25x20";
+        norflash-name = "w25x20";
+  reg = <37>;
+
+
+        norflash-jedec-id = <0xef3012>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <4>;
+# 1217 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    w25x40: spi-norflash@38 {
+        compatible = "winbond,w25x40";
+        norflash-name = "w25x40";
+  reg = <38>;
+
+
+        norflash-jedec-id = <0xef3013>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <8>;
+# 1258 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    w25x80: spi-norflash@39 {
+        compatible = "winbond,w25x80";
+        norflash-name = "w25x80";
+  reg = <39>;
+
+
+        norflash-jedec-id = <0xef3014>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <16>;
+# 1299 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    w25x16: spi-norflash@40 {
+        compatible = "winbond,w25x16";
+        norflash-name = "w25x16";
+  reg = <40>;
+
+
+        norflash-jedec-id = <0xef3015>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <32>;
+# 1340 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    w25x32: spi-norflash@41 {
+        compatible = "winbond,w25x32";
+        norflash-name = "w25x32";
+  reg = <41>;
+
+
+        norflash-jedec-id = <0xef3016>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <64>;
+# 1381 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    w25x64: spi-norflash@42 {
+        compatible = "winbond,w25x64";
+        norflash-name = "w25x64";
+  reg = <42>;
+
+
+        norflash-jedec-id = <0xef3017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 1422 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x1000>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    w25q32: spi-norflash@43 {
+        compatible = "winbond,w25q32";
+        norflash-name = "w25q32";
+  reg = <43>;
+
+
+        norflash-jedec-id = <0xef4016>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x8000>;
+        norflash-n-sectors = <128>;
+# 1463 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18A8>;
+  rd_status_cmd = <0x05>, <0x35>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0x20>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+
+        status = "disable";
+    };
+
+    w25q64: spi-norflash@44 {
+        compatible = "winbond,w25q64";
+        norflash-name = "w25q64";
+  reg = <44>;
+
+
+        norflash-jedec-id = <0xef4017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 1506 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18A8>;
+  rd_status_cmd = <0x05>, <0x35>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0x20>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    w25q128: spi-norflash@45 {
+        compatible = "winbond,w25q128";
+        norflash-name = "w25q128";
+  reg = <45>;
+
+
+        norflash-jedec-id = <0xef4018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 1550 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18A8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+  wr_mode = <0x21>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    gd25q64: spi-norflash@46 {
+        compatible = "gd,gd25q64";
+  #clock-cells = <1>;
+        norflash-name = "gd25q64";
+  reg = <46>;
+
+
+        norflash-jedec-id = <0xc84017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 1597 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>;
+  wr_mode = <1>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+        norflash-b-bp4 = <6>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    gd25q128: spi-norflash@47 {
+        compatible = "gd,gd25q128";
+        norflash-name = "gd25q128";
+  reg = <47>;
+
+
+        norflash-jedec-id = <0xc84018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 1645 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+  wr_mode = <1>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+        norflash-b-bp4 = <6>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    xm25qh64a: spi-norflash@48 {
+        compatible = "xmc,xm25qh64a";
+        norflash-name = "xm25qh64a";
+  reg = <48>;
+
+
+        norflash-jedec-id = <0x207017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 1693 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x58F8>;
+  rd_status_cmd = <0x05>, <0x09>, <0x95>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0x10>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+        norflash-b-srp0 = <7>;
+        norflash-b-qe = <8>;
+
+        status = "disable";
+    };
+
+    xm25qh128a: spi-norflash@49 {
+        compatible = "xmc,xm25qh128a";
+        norflash-name = "xm25qh128a";
+  reg = <49>;
+
+
+        norflash-jedec-id = <0x207018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 1737 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x58F8>;
+  rd_status_cmd = <0x05>, <0x09>, <0x95>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0x10>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+        norflash-b-srp0 = <7>;
+        norflash-b-qe = <8>;
+
+        status = "disable";
+    };
+
+    pn26f64b: spi-norflash@50 {
+        compatible = "pn,pn26f64b";
+        norflash-name = "pn26f64b";
+  reg = <50>;
+
+
+        norflash-jedec-id = <0x1c7017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 1782 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x58F8>;
+  rd_status_cmd = <0x05>, <0x09>, <0x95>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    by25q64a: spi-norflash@51 {
+        compatible = "by,by25q64a";
+        norflash-name = "by25q64a";
+  reg = <51>;
+
+
+        norflash-jedec-id = <0x684017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 1825 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+  wr_mode = <1>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+        norflash-b-bp4 = <6>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-lb = <10>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    by25q128a: spi-norflash@52 {
+        compatible = "by,by25q128a";
+        norflash-name = "by25q128a";
+  reg = <52>;
+
+
+        norflash-jedec-id = <0x684018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 1874 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+  wr_mode = <1>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+        norflash-b-bp4 = <6>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-lb = <10>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    fm25q64: spi-norflash@53 {
+        compatible = "fm,fm25q64";
+        norflash-name = "fm25q64";
+  reg = <53>;
+
+
+        norflash-jedec-id = <0xa14017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 1923 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+  wr_mode = <1>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-lb = <10>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    fm25q128: spi-norflash@54 {
+        compatible = "fm,fm25q128";
+        norflash-name = "fm25q128";
+  reg = <54>;
+
+
+        norflash-jedec-id = <0xa14018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 1970 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+  wr_mode = <1>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+  norflash-b-cmp = <6>;
+        norflash-b-srp0 = <7>;
+        norflash-b-qe = <9>;
+
+        status = "disable";
+    };
+
+    zb25vq32: spi-norflash@55 {
+        compatible = "zb,zb25vq32";
+        norflash-name = "zb25vq32";
+  reg = <55>;
+
+
+        norflash-jedec-id = <0x5e4016>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x8000>;
+        norflash-n-sectors = <128>;
+# 2014 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+  wr_mode = <1>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-lb = <10>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    zd25q64a: spi-norflash@56 {
+        compatible = "zd,zd25q64a";
+        norflash-name = "zd25q64a";
+  reg = <56>;
+
+
+        norflash-jedec-id = <0xba4017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 2061 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <6>;
+        norflash-b-srp0 = <7>;
+
+        status = "disable";
+    };
+
+    zb25vq64: spi-norflash@57 {
+        compatible = "zb,zb25vq64";
+        norflash-name = "zb25vq64";
+  reg = <57>;
+
+
+        norflash-jedec-id = <0x5e4017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 2104 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+  wr_mode = <1>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-lb = <10>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    zb25vq128: spi-norflash@58 {
+        compatible = "zb,zb25vq128";
+        norflash-name = "zb25vq128";
+  reg = <58>;
+
+
+        norflash-jedec-id = <0x5e4018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 2152 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+  wr_mode = <1>;
+  norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-lb = <10>;
+  norflash-b-cmp = <14>;
+        norflash-b-sus = <15>;
+
+        status = "disable";
+    };
+
+    kh25l64: spi-norflash@59 {
+  compatible = "kh,kh25l64";
+  norflash-name = "kh25l64";
+  reg = <59>;
+
+
+  norflash-jedec-id = <0xC22017>;
+  norflash-ext-id = <0>;
+  norflash-sector-size = <0x10000>;
+  norflash-n-sectors = <128>;
+# 2200 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+  norflash-flags = <0x18F0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+  norflash-b-wip = <0>;
+  norflash-b-wel = <1>;
+  norflash-b-bp0 = <2>;
+  norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+  norflash-b-bp3 = <5>;
+  norflash-b-qe = <6>;
+
+  status = "disable";
+};
+
+ kh25l128: spi-norflash@60 {
+  compatible = "kh,kh25l128";
+  norflash-name = "kh25l128";
+  reg = <60>;
+
+
+  norflash-jedec-id = <0xC22018>;
+  norflash-ext-id = <0>;
+  norflash-sector-size = <0x10000>;
+  norflash-n-sectors = <256>;
+# 2244 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+  norflash-flags = <0x18F0>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+  wr_mode = <0>;
+  norflash-wr_flags = <1>;
+
+
+  norflash-b-wip = <0>;
+  norflash-b-wel = <1>;
+  norflash-b-bp0 = <2>;
+  norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+  norflash-b-bp3 = <5>;
+  norflash-b-qe = <6>;
+
+  status = "disable";
+};
+
+    xt25f64b: spi-norflash@61 {
+        compatible = "xt,xt25f64b";
+        norflash-name = "xt25f64b";
+        reg = <61>;
+
+
+        norflash-jedec-id = <0x0b4017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 2287 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+        rd_status_cmd = <0x05>, <0x35>;
+        wr_status_cmd = <0x01>;
+        wr_mode = <0>;
+        norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-lb = <10>;
+        norflash-b-cmp = <14>;
+
+        status = "disable";
+    };
+
+    xt25f128b: spi-norflash@62 {
+        compatible = "xt,xt25f128b";
+        norflash-name = "xt25f128b";
+        reg = <62>;
+
+
+        norflash-jedec-id = <0x0b4018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 2334 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x18F8>;
+        rd_status_cmd = <0x05>, <0x35>;
+        wr_status_cmd = <0x01>;
+        wr_mode = <0>;
+        norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-lb = <10>;
+        norflash-b-cmp = <14>;
+
+        status = "disable";
+    };
+
+    xm25qh64c: spi-norflash@63 {
+        compatible = "xmc,xm25qh64c";
+        norflash-name = "xm25qh64c";
+        reg = <63>;
+
+
+        norflash-jedec-id = <0x204017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+
+        norflash-flags = <0x18F8>;
+        rd_status_cmd = <0x05>, <0x35>, <0x15>;
+        wr_status_cmd = <0x01>, <0x31>, <0x11>;
+        wr_mode = <0>;
+        norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-cmp = <14>;
+
+        status = "disable";
+    };
+
+    xm25qh128c: spi-norflash@64 {
+        compatible = "xmc,xm25qh128c";
+        norflash-name = "xm25qh128c";
+        reg = <64>;
+
+
+        norflash-jedec-id = <0x204018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+
+        norflash-flags = <0x18F8>;
+        rd_status_cmd = <0x05>, <0x35>, <0x15>;
+        wr_status_cmd = <0x01>, <0x31>, <0x11>;
+        wr_mode = <0>;
+        norflash-wr_flags = <1>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-cmp = <14>;
+
+        status = "disable";
+    };
+
+    GM25Q64A: spi-norflash@66 {
+        compatible = "GM,GM25Q64A";
+        norflash-name = "GM25Q64A";
+        reg = <66>;
+
+
+        norflash-jedec-id = <0x1c4017>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <128>;
+# 2444 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x218F8>;
+        rd_status_cmd = <0x05>, <0x35>, <0x15>;
+        wr_status_cmd = <0x01>, <0x31>, <0x11>;
+        wr_mode = <0x11>;
+        norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-cmp = <14>;
+
+        status = "disable";
+    };
+
+    GM25Q128A: spi-norflash@67 {
+        compatible = "GM,GM25Q128A";
+        norflash-name = "GM25Q128A";
+        reg = <67>;
+
+
+        norflash-jedec-id = <0x1c4018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+# 2491 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x218F8>;
+        rd_status_cmd = <0x05>, <0x35>, <0x15>;
+        wr_status_cmd = <0x01>, <0x31>, <0x11>;
+        wr_mode = <0x11>;
+        norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-cmp = <14>;
+
+        status = "disable";
+    };
+
+    gd25q256: spi-norflash@68 {
+        compatible = "gd,gd25q256";
+        norflash-name = "gd25q256";
+        reg = <68>;
+
+
+        norflash-jedec-id = <0xc84019>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <512>;
+# 2531 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x11888>;
+        rd_status_cmd = <0x05>, <0x35>, <0x15>;
+        wr_status_cmd = <0x01>, <0x31>;
+
+
+
+
+
+
+
+        wr_mode = <1>;
+        norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+    norflash-b-bp3 = <5>;
+    norflash-b-bp4 = <6>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-cmp = <14>;
+
+        status = "disable";
+    };
+
+    PY25Q64H: spi-norflash@69 {
+     compatible = "PUYA,PY25Q64H";
+     #clock-cells = <1>;
+     norflash-name = "PY25Q64H";
+     reg = <69>;
+
+
+     norflash-jedec-id = <0x852017>;
+     norflash-ext-id = <0>;
+     norflash-sector-size = <0x10000>;
+     norflash-n-sectors = <128>;
+
+     norflash-flags = <0x18F8>;
+     rd_status_cmd = <0x05>, <0x35>;
+     wr_status_cmd = <0x01>, <0x31>;
+     wr_mode = <1>;
+     norflash-wr_flags = <2>;
+
+
+     norflash-b-wip = <0>;
+     norflash-b-wel = <1>;
+     norflash-b-bp0 = <2>;
+     norflash-b-bp1 = <3>;
+     norflash-b-bp2 = <4>;
+     norflash-b-bp3 = <5>;
+     norflash-b-bp4 = <6>;
+     norflash-b-srp0 = <7>;
+     norflash-b-srp1 = <8>;
+     norflash-b-qe = <9>;
+     norflash-b-cmp = <14>;
+
+     status = "disable";
+  };
+
+    py25q128ha: spi-norflash@70 {
+        compatible = "py,py25q128ha";
+        norflash-name = "py25q128ha";
+        reg = <70>;
+
+
+        norflash-jedec-id = <0x852018>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <256>;
+
+
+
+
+
+
+
+        norflash-flags = <0x18F8>;
+
+        rd_status_cmd = <0x05>, <0x35>, <0x15>;
+        wr_status_cmd = <0x01>, <0x31>, <0x11>;
+
+
+
+
+
+
+        wr_mode = <0x10>;
+
+
+        norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-cmp = <14>;
+
+        status = "disable";
+    };
+
+    ME25L64E: spi-norflash@71 {
+     compatible = "ME,ME25L64E";
+     #clock-cells = <1>;
+     norflash-name = "ME25L64E";
+     reg = <71>;
+
+
+     norflash-jedec-id = <0xd84017>;
+     norflash-ext-id = <0>;
+     norflash-sector-size = <0x10000>;
+     norflash-n-sectors = <128>;
+
+     norflash-flags = <0x18F8>;
+     rd_status_cmd = <0x05>, <0x35>, <0x15>;
+     wr_status_cmd = <0x01>, <0x31>;
+     wr_mode = <1>;
+     norflash-wr_flags = <2>;
+
+
+     norflash-b-wip = <0>;
+     norflash-b-wel = <1>;
+     norflash-b-bp0 = <2>;
+     norflash-b-bp1 = <3>;
+     norflash-b-bp2 = <4>;
+     norflash-b-bp3 = <5>;
+     norflash-b-bp4 = <6>;
+     norflash-b-srp0 = <7>;
+     norflash-b-srp1 = <8>;
+     norflash-b-qe = <9>;
+     norflash-b-cmp = <14>;
+
+     status = "disable";
+  };
+
+ ME25L128C: spi-norflash@72 {
+     compatible = "ME,ME25L128C";
+     #clock-cells = <1>;
+     norflash-name = "ME25L128C";
+     reg = <72>;
+
+
+     norflash-jedec-id = <0xd84018>;
+     norflash-ext-id = <0>;
+     norflash-sector-size = <0x10000>;
+     norflash-n-sectors = <256>;
+
+     norflash-flags = <0x18F8>;
+     rd_status_cmd = <0x05>, <0x35>, <0x15>;
+     wr_status_cmd = <0x01>, <0x31>;
+     wr_mode = <1>;
+     norflash-wr_flags = <2>;
+
+
+     norflash-b-wip = <0>;
+     norflash-b-wel = <1>;
+     norflash-b-bp0 = <2>;
+     norflash-b-bp1 = <3>;
+     norflash-b-bp2 = <4>;
+     norflash-b-bp3 = <5>;
+     norflash-b-bp4 = <6>;
+     norflash-b-srp0 = <7>;
+     norflash-b-srp1 = <8>;
+     norflash-b-qe = <9>;
+     norflash-b-cmp = <14>;
+
+     status = "disable";
+ };
+
+ XM25QH256C: spi-norflash@73 {
+        compatible = "xmc,XM25QH256C";
+        norflash-name = "XM25QH256C";
+        reg = <73>;
+
+
+        norflash-jedec-id = <0x204019>;
+        norflash-ext-id = <0>;
+        norflash-sector-size = <0x10000>;
+        norflash-n-sectors = <512>;
+# 2727 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_norflash.dtsi"
+        norflash-flags = <0x118F8>;
+        rd_status_cmd = <0x05>, <0x35>, <0x15>;
+        wr_status_cmd = <0x01>, <0x31>, <0x11>;
+        wr_mode = <0>;
+        norflash-wr_flags = <2>;
+
+
+        norflash-b-wip = <0>;
+        norflash-b-wel = <1>;
+        norflash-b-bp0 = <2>;
+        norflash-b-bp1 = <3>;
+        norflash-b-bp2 = <4>;
+        norflash-b-bp3 = <5>;
+        norflash-b-srp0 = <7>;
+        norflash-b-srp1 = <8>;
+        norflash-b-qe = <9>;
+        norflash-b-cmp = <14>;
+
+        status = "disable";
+    };
+
+ W25Q256JV: spi-norflash@74 {
+  compatible = "WB,W25Q256JV";
+  norflash-name = "W25Q256JV";
+  reg = <74>;
+
+
+  norflash-jedec-id = <0xef4019>;
+  norflash-ext-id = <0>;
+  norflash-sector-size = <0x10000>;
+  norflash-n-sectors = <512>;
+
+
+  norflash-flags = <0x13888>;
+  rd_status_cmd = <0x05>, <0x35>, <0x15>;
+  wr_status_cmd = <0x01>, <0x31>, <0x11>;
+
+
+
+
+
+
+
+  wr_mode = <0x21>;
+  norflash-wr_flags = <2>;
+
+
+  norflash-b-wip = <0>;
+  norflash-b-wel = <1>;
+  norflash-b-bp0 = <2>;
+  norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+  norflash-b-srp0 = <7>;
+  norflash-b-srp1 = <8>;
+  norflash-b-qe = <9>;
+  norflash-b-cmp = <14>;
+  norflash-b-sus = <15>;
+
+  status = "disable";
+ };
+
+ MX25L25645G: spi-norflash@75 {
+  compatible = "MX,MX25L25645G";
+  norflash-name = "MX25L25645G";
+  reg = <75>;
+
+
+  norflash-jedec-id = <0xc22019>;
+  norflash-ext-id = <0>;
+  norflash-sector-size = <0x10000>;
+  norflash-n-sectors = <512>;
+
+
+  norflash-flags = <0x11880>;
+  rd_status_cmd = <0x05>;
+  wr_status_cmd = <0x01>;
+
+
+
+
+
+
+
+  wr_mode = <1>;
+  norflash-wr_flags = <1>;
+
+
+  norflash-b-wip = <0>;
+  norflash-b-wel = <1>;
+  norflash-b-bp0 = <2>;
+  norflash-b-bp1 = <3>;
+  norflash-b-bp2 = <4>;
+  norflash-b-bp3 = <5>;
+  norflash-b-qe = <6>;
+
+  status = "disable";
+ };
+};
+# 20 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts" 2
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi" 1
+# 17 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+&spif1 {
+ GD5F1GQ5UEY1G: spi-nandflash@0 {
+  compatible = "GD,GD5F1GQ5UEY1G";
+  nandflash-name = "GD5F1GQ5UEY1G";
+
+
+  nandflash-jedec-id = <0xc851c851>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <1024>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 58 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x01000000>;
+
+  status = "disable";
+ };
+
+ GD5F2GQ5UEYIG: spi-nandflash@4 {
+  compatible = "GD,GD5F2GQ5UEYIG";
+  nandflash-name = "GD5F2GQ5UEYIG";
+
+
+  nandflash-jedec-id = <0xc852c852>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <2048>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 104 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x01000000>;
+
+  status = "disable";
+ };
+
+ FM25S02A: spi-nandflash@3 {
+  compatible = "FM,FM25S02A";
+  nandflash-name = "FM25S02A";
+
+
+  nandflash-jedec-id = <0xa1e5a1e5>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <2048>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 150 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x01000000>;
+
+  status = "disable";
+ };
+
+ W25N02KV: spi-nandflash@6 {
+  compatible = "WINBOND,W25N02KV";
+  nandflash-name = "W25N02KV";
+
+
+  nandflash-jedec-id = <0xefaa2200>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <2048>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 196 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x01000000>;
+
+  status = "disable";
+ };
+
+ FS35ND01G: spi-nandflash@9 {
+  compatible = "FS,FS35ND01G";
+  nandflash-name = "FS35ND01G";
+
+
+  nandflash-jedec-id = <0xcdea11cd>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <1024>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 242 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x01000000>;
+
+  status = "disable";
+ };
+
+ FS35ND02G: spi-nandflash@10 {
+  compatible = "FM,FS35ND02G";
+  nandflash-name = "FS35ND02G";
+
+
+  nandflash-jedec-id = <0xcdeb11cd>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <2048>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 288 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x01000000>;
+
+  status = "disable";
+ };
+
+ MX35LF1GE4AB: spi-nandflash@11 {
+  compatible = "MX,MX35LF1GE4AB";
+  nandflash-name = "MX35LF1GE4AB";
+
+
+  nandflash-jedec-id = <0xc212c212>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <1024>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <16>;
+  nandflash-oob_down_skiplen = <0>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 334 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x00008000>;
+
+  status = "disable";
+ };
+
+    XT26G01C: spi-nandflash@12 {
+  compatible = "XT,XT26G01C";
+  nandflash-name = "XT26G01C";
+
+
+  nandflash-jedec-id = <0x0b110011>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <1024>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <16>;
+  nandflash-oob_down_skiplen = <0>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 380 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x00000000>;
+
+  status = "disable";
+    };
+
+    MX35LF2GE4AD: spi-nandflash@13 {
+  compatible = "MX,MX35LF2GE4AD";
+  nandflash-name = "MX35LF2GE4AD";
+
+
+  nandflash-jedec-id = <0xc2260300>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <2048>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 425 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x00008000>;
+
+  status = "disable";
+    };
+
+ XT26G02E: spi-nandflash@14 {
+  compatible = "XT,XT26G02E";
+  nandflash-name = "XT26G02E";
+
+
+  nandflash-jedec-id = <0x2c242c24>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <2>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <2048>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <16>;
+  nandflash-oob_down_skiplen = <0>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <32>;
+
+
+
+
+
+  nandflash-flags = <0x48A0>;
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 470 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x00000000>;
+
+  status = "disable";
+ };
+
+ XT26G02C: spi-nandflash@15 {
+  compatible = "XTX,XT26G02C";
+  nandflash-name = "XT26G02C";
+
+
+  nandflash-jedec-id = <0x0b120012>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <2048>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <16>;
+  nandflash-oob_down_skiplen = <0>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 516 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x00000000>;
+
+  status = "disable";
+ };
+
+ GD5F1GM7UE: spi-nandflash@16 {
+  compatible = "GD,GD5F1GM7UE";
+  nandflash-name = "GD5F1GM7UE";
+
+
+  nandflash-jedec-id = <0xc891c891>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <1024>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 562 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x00000000>;
+
+  status = "disable";
+ };
+
+ GD5F2GM7UE: spi-nandflash@17 {
+  compatible = "GD,GD5F2GM7UE";
+  nandflash-name = "GD5F2GM7UE";
+
+
+  nandflash-jedec-id = <0xc892c892>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <2048>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 608 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x00000000>;
+
+  status = "disable";
+ };
+
+ FM25S01BI3: spi-nandflash@18 {
+  compatible = "FM,FM25S01BI3";
+  nandflash-name = "FM25S01BI3";
+
+
+  nandflash-jedec-id = <0xa1d4a1d4>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <2048>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x20000>;
+  nandflash-n_blocks = <1024>;
+  nandflash-oob_size = <64>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <12>;
+  nandflash-oob_down_skiplen = <4>;
+  nandflash-oob_seg_perpage = <4>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 654 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x01000000>;
+
+  status = "disable";
+ };
+
+    HYF4GQ4UAACBE: spi-nandflash@19 {
+  compatible = "HY,HYF4GQ4UAACBE";
+  nandflash-name = "HYF4GQ4UAACBE";
+
+
+  nandflash-jedec-id = <0xc9d4c9d4>;
+  nandflash-ext-id = <0>;
+  nandflash-planecnt = <1>;
+  nandflash-page_size = <4096>;
+  nandflash-page_per_block = <64>;
+  nandflash-block_size = <0x40000>;
+  nandflash-n_blocks = <2048>;
+  nandflash-oob_size = <256>;
+  nandflash-oob_up_skiplen = <0>;
+  nandflash-oob_seglen = <4>;
+  nandflash-oob_down_skiplen = <28>;
+  nandflash-oob_seg_perpage = <8>;
+  nandflash-oob_vail_data_offset = <4>;
+
+
+
+
+
+  nandflash-flags = <0x8A0>;
+
+  nandflash-b_wip = <0>;
+
+  nandflash-b_qe = <8>;
+
+
+  nandflash-badflag_offs = <0>;
+  nandflash-badflag_len = <1>;
+# 699 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_nandflash.dtsi"
+  nandflash-badflag_option = <0x00000000>;
+
+  status = "disable";
+ };
+};
+# 21 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts" 2
+# 1 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_lcd.dtsi" 1
+# 19 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_lcd.dtsi"
+&lcdc {
+    lcd-alarm-empty = <128>;
+    lcd-alarm-full = <510>;
+    lcd-dma-mode = <1>;
+
+
+
+
+    lcd-rgb-tpg-sel = <1>;
+    lcd-vpage-en = <0>;
+    lcd-blank-sel = <0>;
+    lcd-pos-blank-level = <0>;
+    lcd-neg-blank-level = <0>;
+    lcd-rgb-bg-color = <0x00000000>;
+    lcd-vh-delay-en = <0>;
+    lcd-vh-delay-cycle = <0>;
+    lcd-v-unit = <0>;
+    lcd-alert-line = <30>;
+    status = "disable";
+
+    sat070cp50: lcd-panel@0 {
+        compatible = "sat,sat070cp50";
+        panel-if = <0>;
+        panel-rgb-seq = <1>;
+        panel-width = <1024>;
+        panel-height = <600>;
+        panel-pclk-div = <10>;
+        panel-thpw = <60>;
+        panel-thb = <100>;
+        panel-thf = <120>;
+        panel-tvpw = <2>;
+        panel-tvb = <21>;
+        panel-tvf = <12>;
+        panel-pclk-pol = <0>;
+        panel-hsync-pol = <1>;
+        panel-vsync-pol = <1>;
+        panel-vogate-pol = <0>;
+        panel-bus-width = <3>;
+        panel-sync-mode = <1>;
+
+        status = "disable";
+    };
+
+    adt07016BR50: lcd-panel@1 {
+        compatible = "sat,sat070cp50";
+        panel-if = <0>;
+        panel-rgb-seq = <1>;
+        panel-width = <1024>;
+        panel-height = <600>;
+        panel-pclk-div = <10>;
+        panel-thpw = <60>;
+        panel-thb = <100>;
+        panel-thf = <120>;
+        panel-tvpw = <2>;
+        panel-tvb = <21>;
+        panel-tvf = <12>;
+        panel-pclk-pol = <0>;
+        panel-hsync-pol = <1>;
+        panel-vsync-pol = <1>;
+        panel-vogate-pol = <0>;
+        panel-bus-width = <3>;
+        panel-sync-mode = <1>;
+
+        status = "disable";
+    };
+
+    JD9165T_CSOT7P0_1024x600_4L: lcd-panel@12 {
+        compatible = "JD9165T_CSOT7P0_1024x600_4L";
+        panel-if = <1>;
+        panel-rgb-seq = <1>;
+        panel-width = <1024>;
+        panel-height = <600>;
+        panel-pclk-div = <9>;
+        panel-dsi-num-lane = <3>;
+        panel-dsi-txd0 = <0>;
+        panel-dsi-txd1 = <1>;
+        panel-dsi-txd2 = <4>;
+        panel-dsi-txd3 = <2>;
+        panel-dsi-txd4 = <3>;
+        panel-dsi-noncontinuous-clk = <0>;
+        panel-dsi-t-pre = <1>;
+        panel-dsi-t-post = <1>;
+        panel-dsi-tx-gap = <1>;
+        panel-dsi-autoinsert-eotp = <0>;
+        panel-dsi-htx-to-count = <0xFFFFFF>;
+        panel-dsi-lrx-to-count = <0xFFFFFF>;
+        panel-dsi-bta-to-count = <0xFFFFFF>;
+        panel-dsi-t-wakeup = <0xc8>;
+        panel-dsi-pix-fifo-send-level = <512>;
+        panel-dsi-if-color-coding = <0x05>;
+        panel-dsi-pix-format = <0x03>;
+        panel-dsi-vsync-pol = <0>;
+        panel-dsi-hsync-pol = <0>;
+        panel-dsi-video-mode = <0>;
+        panel-dsi-hfp = <100>;
+        panel-dsi-hbp = <100>;
+        panel-dsi-hsa = <2>;
+        panel-dsi-mult-pkts-en = <0>;
+        panel-dsi-vbp = <12>;
+        panel-dsi-vfp = <95>;
+        panel-dsi-vsa = <2>;
+        panel-dsi-bllp-mode = <1>;
+        panel-dsi-use-null-pkt-bllp = <0>;
+        panel-dsi-vc = <0x00>;
+        panel-dsi-cmd-type = <0x0>;
+        panel-dsi-clk = <400>;
+        panel-init-list =
+                        < 0x00 0x39 0xDF 0x90 0x85 0x15 0xFFF
+                            0x00 0x15 0xDE 0x00 0xFFF
+                            0x00 0x15 0xCC 0x37 0xFFF
+                            0x00 0x39 0xB2 0x00 0x50 0x50 0xFFF
+                            0x00 0x39 0xB6 0x11 0x4F 0x00 0x5F 0x0D 0x16 0xC0 0xEE 0x00 0x5F 0x0D 0x8F 0xFFF
+                            0x00 0x39 0xB7 0x00 0xBD 0xBD 0xFFF
+                            0x00 0x39 0xBB 0x06 0x67 0x3F 0xFFF
+                            0x00 0x39 0xC1 0x40 0x01 0x00 0xFFF
+                            0x00 0x39 0xC3 0x0C 0x01 0x00 0x0C 0x18 0xE0 0x78 0x12 0xE8 0xFFF
+                            0x00 0x39 0xC4 0x13 0x2C 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x03 0x22 0xFFF
+                            0x00 0x39 0xC8 0x6E 0x69 0x64 0x57 0x4D 0x4E 0x3F 0x46 0x34 0x4E 0x4D 0x4C 0x67 0x54 0x5B 0x4C 0x4B 0x3F 0x2F 0x2B 0x27 0x6E 0x69 0x64 0x57 0x4D 0x4E 0x3F 0x46 0x34 0x4E 0x4D 0x4C 0x67 0x54 0x5B 0x4C 0x4B 0x3F 0x2F 0x2B 0x27 0xFFF
+                            0x00 0x39 0xCB 0x71 0xC0 0x00 0xC0 0xC0 0xC0 0x00 0xCB 0x2A 0x00 0x00 0xFFF
+                            0x00 0x39 0xCE 0x00 0x50 0x45 0x44 0x44 0x00 0x00 0x0C 0x00 0x00 0x00 0x00 0x00 0x50 0x45 0x44 0x44 0x00 0xFFF
+                            0x00 0x39 0xCF 0x00 0x02 0x01 0x02 0x2C 0x02 0x7C 0x03 0x2C 0x00 0x00 0x05 0x7C 0x05 0x2C 0xFFF
+                            0x00 0x39 0xD0 0x00 0xE5 0xE5 0xE5 0xE5 0xE5 0xE5 0xDF 0xC6 0xC6 0xD7 0xC4 0xC4 0xD8 0xCA 0xCA 0xE1 0xC8 0xC8 0xD5 0xE5 0xC0 0xDF 0xFFF
+                            0x00 0x39 0xD1 0x00 0xE5 0xE5 0xE5 0xE5 0xE5 0xE5 0xDF 0xC7 0xC7 0xD7 0xC5 0xC5 0xD8 0xCB 0xCB 0xE1 0xC9 0xC9 0xD5 0xE5 0xC1 0xDF 0xFFF
+                            0x00 0x39 0xD2 0x00 0x25 0x25 0x25 0x25 0x25 0x25 0x1F 0x09 0x09 0x17 0x0B 0x0B 0x18 0x05 0x05 0x21 0x07 0x07 0x1F 0x25 0x01 0x15 0xFFF
+                            0x00 0x39 0xD3 0x00 0x25 0x25 0x25 0x25 0x25 0x25 0x1F 0x08 0x08 0x17 0x0A 0x0A 0x18 0x04 0x04 0x21 0x06 0x06 0x1F 0x25 0x00 0x15 0xFFF
+                            0x00 0x39 0xD4 0x30 0x00 0x00 0x14 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x05 0x02 0x00 0x11 0x80 0x00 0xC0 0x04 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x01 0x01 0x11 0x80 0x0A 0xC0 0x05 0x07 0x01 0x00 0x0B 0x04 0x0A 0x04 0xC8 0xFFF
+                            0x00 0x39 0xD5 0x02 0x14 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x72 0x00 0x17 0x08 0x71 0x00 0x04 0x18 0x1E 0x01 0x09 0x00 0x09 0xFFF
+                            0x00 0x39 0xD6 0x04 0x02 0x04 0x02 0x04 0x04 0x04 0x04 0x04 0x02 0x04 0x04 0xFFF
+                            0x00 0x15 0xDE 0x02 0xFFF
+                            0x00 0x39 0xC5 0x4A 0x00 0xFFF
+                            0x00 0x39 0xD0 0x00 0x00 0x11 0x00 0x11 0x26 0x4A 0xEC 0x10 0x59 0x8D 0x26 0x4A 0xEC 0x10 0x59 0x8D 0x00 0x66 0xDD 0x66 0xDD 0xEA 0x86 0x20 0xDC 0x95 0x41 0xEA 0x86 0x20 0xDC 0x95 0x41 0xFFF
+                            0x00 0x39 0xD6 0x01 0x01 0x00 0x04 0x00 0x5A 0x00 0x03 0xFFF
+                            0x00 0x15 0xDE 0x04 0xFFF
+                            0x00 0x39 0xB0 0x44 0x01 0xFFF
+                            0x00 0x15 0xDE 0x00 0xFFF
+                            0x78 0x05 0x11 0x00 0xFFF
+                            0x78 0x05 0x29 0x00 0xFFF>;
+        status = "disable";
+    };
+# 422 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_lcd.dtsi"
+    ili9342c: lcd-panel@5 {
+        compatible = "mpu,ili9342c";
+        panel-if = <2>;
+        panel-width = <320>;
+        panel-height = <240>;
+        panel-pclk-div = <10>;
+        panel-data-width = <0>;
+        panel-color-mode = <1>;
+        panel-rs-polarity = <1>;
+
+        panel-wr-cycle = <8>;
+        panel-wr-low = <2>;
+
+
+        panel-direction = <0>;
+
+    panel-init-list = <0xC8 0xFF 0x93 0x42 0xFFF
+                             0x36 0xC8 0xFFF
+                             0x3A 0x55 0xFFF
+                             0xC0 0x13 0x0E 0xFFF
+                             0xC1 0x02 0xFFF
+                             0xC5 0xD5 0xFFF
+                             0xB1 0x00 0x1B 0xFFF
+                             0xB4 0x02 0xFFF
+                             0xE0 0x00 0x07 0x0C 0x06
+                             0x15 0x09 0x3A 0x36 0x48
+                             0x02 0x0B 0x0A 0x15 0x16
+                             0x0F 0xFFF
+                             0xE1 0x00 0x25 0x26 0x02
+                             0x0E 0x03 0x3D 0x13 0x4E
+                             0x03 0x0E 0x0B 0x34 0x37
+                             0x0F 0xFFF
+                             0x11 0xFFF
+                             0x29 0xFFF>;
+        status = "disable";
+    };
+
+    ili9488: lcd-panel@6 {
+  compatible = "mpu,ili9488";
+  panel-if = <2>;
+  panel-width = <320>;
+  panel-height = <480>;
+  panel-pclk-div = <9>;
+  panel-data-width = <1>;
+  panel-color-mode = <1>;
+  panel-rs-polarity = <1>;
+
+  panel-wr-cycle = <8>;
+  panel-wr-low = <2>;
+
+
+  panel-direction = <0>;
+
+  panel-init-list = <0xE0 0x00 0x07 0x10 0x09
+         0x17 0x0B 0x40 0x8A 0x4B
+         0x0A 0x0D 0x0F 0x15 0x16
+                           0x0F 0xFFF
+                           0xE1 0x00 0x1A 0x1B 0x02
+         0x0D 0x05 0x30 0x35 0x43
+         0x02 0x0A 0x09 0x32 0x36
+         0x0F 0xFFF
+         0xB1 0xA0 0xFFF
+         0xB4 0x02 0xFFF
+         0xC0 0x17 0x15 0xFFF
+         0xC1 0x41 0xFFF
+         0xC5 0x00 0x30 0x80 0xFFF
+         0xB6 0x02 0xFFF
+         0x36 0x48 0xFFF
+         0x3A 0x55 0xFFF
+         0xE9 0x00 0xFFF
+         0xF7 0xA9 0x51 0x2C 0x82 0xFFF
+         0x11 0xFFF
+          0x29 0xFFF>;
+
+      status = "disable";
+    };
+
+ adt07029bm30: lcd-panel@9{
+            compatible = "adt,adt07029bm30-08";
+            panel-if = <1>;
+            panel-rgb-seq = <1>;
+            panel-width = <1024>;
+            panel-height = <600>;
+            panel-pclk-div = <8>;
+            panel-dsi-num-lane = <3>;
+
+            panel-dsi-txd0 = <0>;
+            panel-dsi-txd1 = <1>;
+            panel-dsi-txd2 = <4>;
+            panel-dsi-txd3 = <2>;
+            panel-dsi-txd4 = <3>;
+            panel-dsi-noncontinuous-clk = <0>;
+            panel-dsi-t-pre = <1>;
+            panel-dsi-t-post = <1>;
+            panel-dsi-tx-gap = <1>;
+            panel-dsi-autoinsert-eotp = <0>;
+            panel-dsi-htx-to-count = <0xFFFFFF>;
+            panel-dsi-lrx-to-count = <0xFFFFFF>;
+            panel-dsi-bta-to-count = <0xFFFFFF>;
+            panel-dsi-t-wakeup = <0xc8>;
+            panel-dsi-pix-fifo-send-level = <512>;
+
+            panel-dsi-if-color-coding = <0x05>;
+
+            panel-dsi-pix-format = <0x03>;
+            panel-dsi-vsync-pol = <0>;
+            panel-dsi-hsync-pol = <0>;
+
+
+
+            panel-dsi-video-mode = <2>;
+            panel-dsi-hfp = <40>;
+            panel-dsi-hbp = <20>;
+            panel-dsi-hsa = <20>;
+            panel-dsi-mult-pkts-en = <0>;
+            panel-dsi-vbp = <8>;
+            panel-dsi-vfp = <8>;
+            panel-dsi-vsa = <4>;
+
+            panel-dsi-bllp-mode = <1>;
+            panel-dsi-use-null-pkt-bllp = <0>;
+            panel-dsi-vc = <0x00>;
+            panel-dsi-cmd-type = <0x0>;
+            panel-dsi-clk = <600>;
+
+            panel-init-list-count = <50>;
+            panel-init-list-line = <10>;
+            panel-init-list =
+                            < 0x00 0x15 0x00 0x01 0xFFF
+                              0x1E 0x15 0x00 0x00 0xFFF
+                              0x00 0x15 0x8B 0x80 0xFFF
+                              0x00 0x15 0x8B 0x80 0xFFF
+                              0x00 0x15 0xFF 0x81 0xFFF
+                              0x00 0x15 0x3C 0x82 0xFFF
+                              0x00 0x15 0xFF 0x83 0xFFF
+                              0x00 0x15 0xCA 0x84 0xFFF
+                              0x00 0x15 0xAF 0x85 0xFFF
+                              0x00 0x15 0xB5 0x86 0xFFF>;
+        status = "disable";
+    };
+# 1279 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_lcd.dtsi"
+    RGB_101INCH_IPS_1024X600: lcd-panel@2 {
+        compatible = "RGB_101INCH_IPS_1024X600";
+        panel-if = <0>;
+        panel-rgb-seq = <0>;
+        panel-width = <1024>;
+        panel-height = <600>;
+        panel-pclk-div = <9>;
+        panel-thpw = <10>;
+        panel-thb = <160>;
+        panel-thf = <150>;
+        panel-tvpw = <2>;
+        panel-tvb = <23>;
+        panel-tvf = <10>;
+        panel-pclk-pol = <0>;
+        panel-hsync-pol = <1>;
+        panel-vsync-pol = <1>;
+        panel-vogate-pol = <0>;
+        panel-bus-width = <3>;
+        panel-sync-mode = <1>;
+
+        status = "disable";
+    };
+
+
+ st7272a: lcd-panel@15 {
+  compatible = "sat,sat070cp50";
+  panel-if = <0>;
+  panel-rgb-seq = <1>;
+  panel-width = <320>;
+  panel-height = <240>;
+  panel-pclk-div = <30>;
+  panel-thpw = <4>;
+  panel-thb = <43>;
+  panel-thf = <8>;
+  panel-tvpw = <4>;
+  panel-tvb = <12>;
+  panel-tvf = <8>;
+  panel-pclk-pol = <0>;
+  panel-hsync-pol = <1>;
+  panel-vsync-pol = <1>;
+  panel-vogate-pol = <1>;
+  panel-bus-width = <0>;
+  panel-sync-mode = <1>;
+  panel-thd = <960>;
+  panel-tvd = <720>;
+  status = "disable";
+ };
+
+};
+# 22 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts" 2
+
+/ {
+    compatible = "anyka,ak3761e";
+    model = "EVB_CBDR_AK3761E_V1.0.0 camera board";
+    version = "V1.0.00";
+};
+
+&gpio {
+# 47 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+    pwm5_pins: pwm5_pins {
+        anyka,pins = <27>;
+        anyka,function = <3>;
+        anyka,pull = <0x1000190>;
+    };
+
+    pwm5_pins_sleep: pwm5_pins_sleep {
+        anyka,pins = <27>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    pwm5_pins_idle: pwm5_pins_idle {
+        anyka,pins = <27>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000000>;
+    };
+
+
+    icn85xx_pins: icn85xx_pins {
+        anyka,pins = <68 69>;
+        anyka,function = <0 0>;
+        anyka,pull = <0x00000010 0x00010010>;
+    };
+
+
+    gslX680_pins: gslX680_pins {
+        anyka,pins = <44 45>;
+        anyka,function = <0 0>;
+        anyka,pull = <0x00000010 0x00010010>;
+    };
+
+    i2c0_pins: i2c0_pins {
+        anyka,pins = <30 31>;
+        anyka,function = <1 1>;
+        anyka,pull = <0x1010010>;
+    };
+
+
+    i2c0_sleep_pins: i2c0_sleep_pins {
+        anyka,pins = <30 31>;
+        anyka,function = <0 0>;
+        anyka,pull = <0x0000000>;
+    };
+
+    i2c2_pins: i2c2_pins {
+        anyka,pins = <84 83>;
+        anyka,function = <1 1>;
+        anyka,pull = <0x1010010>;
+    };
+
+
+    i2c2_sleep_pins: i2c2_sleep_pins {
+        anyka,pins = <84 83>;
+        anyka,function = <0 0>;
+        anyka,pull = <0x0000000>;
+    };
+
+    lcd_reset_pins: lcd_reset_pins {
+        anyka,pins = <26>;
+        anyka,function = <0>;
+        anyka,pull = <0x01000010>;
+    };
+
+    lcd_rgb_pins: lcd_rgb_pins {
+        anyka,pins = <74
+                        75
+                        25
+                        24
+                        28
+                        29
+                        55
+                        54
+                        53
+                        52
+                        51
+                        50
+                        49
+                        48
+                        47
+                        46
+                        45
+                        44
+                        43
+                        42
+                        41
+                        40
+                        39
+                        38
+                        37
+                        36
+                        35
+                        34>;
+        anyka,function = <3
+                            3
+                            4
+                            4
+                            4
+                            4
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            1
+                            >;
+        anyka,pull = <0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010
+                        0x00000010>;
+    };
+
+    lcd_rgb_pins_sleep: lcd_rgb_pins_sleep {
+        anyka,pins = <74
+                        75
+                        25
+                        24
+                        28
+                        29
+                        55
+                        54
+                        53
+                        52
+                        51
+                        50
+                        49
+                        48
+                        47
+                        46
+                        45
+                        44
+                        43
+                        42
+                        41
+                        40
+                        39
+                        38
+                        37
+                        36
+                        35
+                        34>;
+        anyka,function = <0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            0
+                            >;
+        anyka,pull = <0x00000000>;
+    };
+
+    lcd_power_pins: lcd_power_pins {
+        anyka,pins = <73>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000010>;
+    };
+
+    mci2_pins: mci2_pins {
+        anyka,pins = <58 59 60 61 62 63>;
+        anyka,function = < 3
+                            3
+                            3
+                            3
+                            3
+                            3>;
+        anyka,pull = <0x1010310>;
+    };
+
+
+    mci2_idle_pins: mci2_idle_pins {
+        anyka,pins = <58 59 60 61 62 63>;
+        anyka,function = < 0
+                            0
+                            0
+                            0
+                            0
+                            0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    wifi_en_pins: wifi_en_pins {
+        anyka,pins = <77>;
+        anyka,function = <0>;
+        anyka,pull = <0x1010310>;
+    };
+
+    wifi_rst_pins: wifi_rst_pins {
+        anyka,pins = <71>;
+        anyka,function = <0>;
+        anyka,pull = <0x1010310>;
+    };
+
+    mci1_pins: mci1_pins {
+        anyka,pins = <16 17 18 19 20 21>;
+        anyka,function = <2
+                            2
+                            2
+                            2
+                            2
+                            2>;
+        anyka,pull = <0x00010010 0x00010010 0x00010001 0x00010010 0x00010010 0x00010010>;
+    };
+
+
+    mci1_idle_pins: mci1_idle_pins {
+        anyka,pins = <16 17 18 19 20 21>;
+        anyka,function = <0
+                            0
+                            0
+                            0
+                            0
+                            0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    tf_det_pins: tf_det_pins{
+        anyka,pins = <76>;
+        anyka,function = <0>;
+        anyka,pull = <0x1010310>;
+    };
+
+    tf_en_pins: tf_en_pins {
+        anyka,pins = <79>;
+        anyka,function = <0>;
+        anyka,pull = <0x1010310>;
+    };
+
+    led_pins:led_pins {
+        anyka,pins = <78>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000010>;
+    };
+
+    led_pins_sleep:led_pins_sleep {
+        anyka,pins = <78>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    speak_pins: speak_pins {
+        anyka,pins = <72>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000010>;
+    };
+
+    speak_pins_sleep: speak_pins_sleep {
+        anyka,pins = <72>;
+        anyka,function = <0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    dvp0_8bits_pins: dvp0_8bits_pins {
+        anyka,pins = <60
+                        61
+                        62
+                        63
+                        64
+                        65
+                        66
+                        67>;
+        anyka,function = <1
+                        1
+                        1
+                        1
+                        1
+                        1
+                        1
+                        1>;
+        anyka,pull = <0x01010310>;
+    };
+
+    dvp0_8bits_pins_sleep: dvp0_8bits_pins_sleep {
+        anyka,pins = <60
+                        61
+                        62
+                        63
+                        64
+                        65
+                        66
+                        67>;
+        anyka,function = <0
+                        0
+                        0
+                        0
+                        0
+                        0
+                        0
+                        0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    csi0_sclk_pin: csi0_sclk_pin {
+        anyka,pins = <56
+                        57
+                        58
+                        59>;
+        anyka,function = <1
+                        1
+                        1
+                        1>;
+        anyka,pull = <0x01010310>;
+    };
+
+    csi0_sclk_pin_sleep: csi0_sclk_pin_sleep {
+        anyka,pins = <56
+                        57
+                        58
+                        59>;
+        anyka,function = <0
+                        0
+                        0
+                        0>;
+        anyka,pull = <0x00000000>;
+    };
+
+    sensor0_reset_pins: sensor0_reset_pins {
+        anyka,pins = <32>;
+        anyka,function = <0>;
+        anyka,pull = <0x01000110>;
+    };
+
+    sensor0_pwdn_pins: sensor0_pwdn_pins {
+        anyka,pins = <71>;
+        anyka,function = <0>;
+        anyka,pull = <0x01000110>;
+    };
+
+    pm_wakeup_pins: pm_wakeup_pins {
+        anyka,pins = <31>;
+        anyka,function = <0>;
+        anyka,pull = <0x01010210>;
+    };
+};
+
+&pm_standby {
+    pinctrl-names = "default";
+    pinctrl-0 = <&pm_wakeup_pins>;
+
+
+
+    wakeup-mode = <0x1>;
+    wakeup-gpio = <&gpio 31 1>;
+
+
+
+    wakeup-gpio-edge = <0x1>;
+
+
+
+
+    wakeup-ain0-edge = <0x0>;
+
+    status = "disable";
+};
+
+&uart0 {
+    pinctrl-names = "default";
+    pinctrl-0 = <&uart0_pins>;
+    status = "okay";
+};
+
+&watchdog {
+
+    def_heartbeat = <10>;
+    status = "okay";
+};
+
+&rtc {
+
+
+
+
+    osc-select = <1>;
+    adjust-time = <1000>;
+    adjust-based-on-timer;
+    status = "okay";
+};
+
+&i2c2 {
+    pinctrl-names = "default","sleep";
+    pinctrl-0 = <&i2c2_pins>;
+    pinctrl-1 = <&i2c2_sleep_pins>;
+
+    clock-frequency = <400000>;
+    sda-delay = <100>;
+    status = "okay";
+    #address-cells = <1>;
+    #size-cells = <0>;
+
+    touch-screen@40 {
+        compatible = "anyka,ak37e-i2c-touchscreen-gslX680";
+        reg = <0x40>;
+
+
+        pinctrl-names = "default";
+        pinctrl-0 = <&gslX680_pins>;
+        irq-gpio = <&gpio 45 1>;
+        reset-gpio = <&gpio 44 1>;
+        TP_MAX_X = <1280>;
+        TP_MAX_Y = <800>;
+        status = "disable";
+      };
+
+      touch-screen@48 {
+        compatible = "anyka,ak37e-i2c-touchscreen-icn85xx";
+        reg = <0x48>;
+
+
+        pinctrl-names = "default";
+        pinctrl-0 = <&icn85xx_pins>;
+        irq-gpio = <&gpio 69 1>;
+        reset-gpio = <&gpio 68 1>;
+        TP_MAX_X = <1024>;
+        TP_MAX_Y = <600>;
+        status = "okay";
+      };
+};
+
+
+&lcdc {
+    pinctrl-names = "default","sleep";
+    pinctrl-0 = <&lcd_rgb_pins &lcd_reset_pins &lcd_power_pins>;
+    pinctrl-1 = <&lcd_rgb_pins_sleep &lcd_reset_pins &lcd_power_pins>;
+    reset-pins = <&gpio 26 1>;
+    pwr-gpio = <&gpio 73 1>;
+    backlight-gpio = <&gpio 27 0>;
+
+    lcd-logo-width = <600>;
+    lcd-logo-height = <165>;
+
+
+
+    lcd-logo-fmt0 = <1>;
+    lcd-logo-fmt1 = <0>;
+    lcd-logo-rgb-seq = <1>;
+
+    lcd-fb-type = <1>;
+    status = "okay";
+};
+
+
+&adt07016BR50 {
+    panel-pclk-div = <9>;
+    status = "okay";
+};
+
+&saradc{
+
+
+
+
+    vref-select = <0>;
+
+
+
+
+    battery-divider = <1>;
+
+
+
+
+
+    sampling-num = <3>;
+    status = "okay";
+};
+
+&usb {
+    status = "okay";
+};
+
+&spi0 {
+    pinctrl-names = "default","sleep";
+    pinctrl-0 = <&spiflash_pins &spi_nand_flash_cs_pins>;
+    pinctrl-1 = <&spiflash_pins_sleep &spi_nand_flash_cs_pins_sleep>;
+    spi-bus-frequency = <80000000>;
+
+
+
+
+
+    cap-spi-highspeed;
+    status = "okay";
+};
+
+&spif0 {
+
+
+
+
+
+
+    bus-width = <4>;
+    status = "okay";
+};
+
+&spif1 {
+    status = "okay";
+};
+
+&xm25qh64a{
+    status = "okay";
+};
+
+&xm25qh128a{
+    status = "okay";
+};
+
+&w25q64{
+    status = "okay";
+};
+
+&w25q128{
+    status = "okay";
+};
+
+&gd25q64{
+    status = "okay";
+};
+
+&gd25q128{
+    status = "okay";
+};
+
+&kh25l64{
+    status = "okay";
+};
+
+&kh25l128{
+    status = "okay";
+};
+
+&fm25q64{
+    status = "okay";
+};
+
+&fm25q128{
+    status = "okay";
+};
+
+&by25q64a{
+    status = "okay";
+};
+
+&by25q128a{
+    status = "okay";
+};
+
+&pn26f64b{
+    status = "okay";
+};
+
+&xt25f64b{
+    status = "okay";
+};
+
+&xt25f128b{
+    status = "okay";
+};
+
+&zb25vq64{
+    status = "okay";
+};
+
+&zb25vq128{
+    status = "okay";
+};
+
+&xm25qh64c{
+    status = "okay";
+};
+
+&xm25qh128c{
+    status = "okay";
+};
+
+&GD5F1GQ5UEY1G{
+    status = "okay";
+};
+
+&GD5F2GQ5UEYIG{
+    status = "okay";
+};
+
+&FM25S02A{
+    status = "okay";
+};
+
+&W25N02KV{
+    status = "okay";
+};
+
+&FS35ND01G{
+    status = "okay";
+};
+
+&FS35ND02G{
+    status = "okay";
+};
+
+&MX35LF1GE4AB{
+    status = "okay";
+};
+
+&XT26G01C{
+    status = "okay";
+};
+
+&MX35LF2GE4AD{
+    status = "okay";
+};
+
+&XT26G02E{
+    status = "okay";
+};
+
+&GM25Q64A {
+    status = "okay";
+};
+
+&GM25Q128A {
+    status = "okay";
+};
+
+&gd25q256 {
+    status = "okay";
+};
+
+&PY25Q64H {
+    status = "okay";
+};
+
+&py25q128ha {
+    status = "okay";
+};
+
+&ME25L64E {
+    status = "okay";
+};
+
+&ME25L128C {
+    status = "okay";
+};
+
+&XM25QH256C {
+    status = "okay";
+};
+
+&W25Q256JV{
+  status = "okay";
+};
+
+&MX25L25645G{
+  status = "okay";
+};
+
+&XT26G02C{
+  status = "okay";
+};
+
+&adc_dac {
+    pinctrl-names = "default", "sleep";
+    pinctrl-0 = <&speak_pins>;
+    pinctrl-1 = <&speak_pins_sleep>;
+    speak-gpios = <&gpio 72 1>;
+
+
+
+    speak-gpios-en = <1>;
+    status = "okay";
+
+    dev0 {
+        snd-dev = <0>;
+        snd-type = <0>;
+    };
+
+    dev1 {
+        snd-dev = <1>;
+        snd-type = <1>;
+    };
+
+    dev2 {
+        snd-dev = <2>;
+        snd-type = <2>;
+    };
+};
+
+&pwm0 {
+# 809 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+    period-ns = <1000000>;
+    duty-ns = <500000>;
+    pwm-enable = <1>;
+    status = "disable";
+};
+
+&pwm1 {
+# 829 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+    period-ns = <1000000>;
+    duty-ns = <500000>;
+    pwm-enable = <1>;
+    status = "disable";
+};
+
+&pwm2 {
+# 849 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+    period-ns = <1000000>;
+    duty-ns = <500000>;
+    pwm-enable = <1>;
+    status = "disable";
+};
+
+&pwm3 {
+# 869 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+    period-ns = <1000000>;
+    duty-ns = <500000>;
+    pwm-enable = <1>;
+    status = "disable";
+};
+
+&pwm4 {
+# 889 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+    period-ns = <1000000>;
+    duty-ns = <500000>;
+    pwm-enable = <1>;
+    status = "disable";
+};
+
+&pwm5 {
+    pinctrl-names = "default", "sleep", "idle";
+    pinctrl-0 = <&pwm5_pins>;
+    pinctrl-1 = <&pwm5_pins_sleep>;
+    pinctrl-2 = <&pwm5_pins_idle>;
+# 910 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+    period-ns = <1000000>;
+    duty-ns = <500000>;
+    pwm-enable = <1>;
+    status = "okay";
+};
+
+&ethernet {
+    pinctrl-names = "default", "sleep";
+    pinctrl-0 = <&ethernet_rmii0_pins &ethernet_rmii0_rst_pins>;
+    pinctrl-1 = <&ethernet_rmii0_pins_sleep &ethernet_rmii0_rst_pins_sleep>;
+    reset-gpios = <&gpio 85 1>;
+    phy-address = <1>;
+    status = "okay";
+};
+
+&ethernet1 {
+    pinctrl-names = "default", "sleep";
+    pinctrl-0 = <&ethernet_rmii1_pins &ethernet_rmii1_rst_pins>;
+    pinctrl-1 = <&ethernet_rmii1_pins_sleep &ethernet_rmii1_rst_pins_sleep>;
+    reset-gpios = <&gpio 86 1>;
+    phy-address = <1>;
+    status = "disable";
+};
+
+&gui{
+    status = "okay";
+};
+
+&mmc2 {
+    bus-width = <0x4>;
+    max-frequency = <50000000>;
+# 949 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+    non-removable;
+
+    cap-sd-highspeed;
+
+    cap-sdio-irq;
+    pinctrl-names = "default","idle";
+
+
+
+
+    pinctrl-0 = <&mci2_pins>,<&wifi_en_pins>,<&wifi_rst_pins>;
+    pinctrl-1 = <&mci2_idle_pins>;
+    power-pins = <&gpio 77 1>;
+    rst-pins = <&gpio 71 1>;
+    status = "disable";
+};
+
+&mmc1 {
+    bus-width = <0x4>;
+    max-frequency = <50000000>;
+# 977 "/home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/EVB_CBDR_AK3761E_V1.0.0_camera.dts"
+    detect-gpio = <&gpio 76 1>;
+
+    cap-sd-highspeed;
+    pinctrl-names = "default","idle";
+
+    pinctrl-0 = <&mci1_pins>,<&tf_en_pins>,<&tf_det_pins>;
+    pinctrl-1 = <&mci1_idle_pins>;
+
+
+
+    power-pins = <&gpio 79 1>;
+    power-inverted;
+    status = "okay";
+};
+
+&vencoder {
+    status = "okay";
+};
+
+&vdecoder{
+    status = "okay";
+};
+
+&adkeys {
+
+
+
+
+    interval = <120>;
+    debounce_interval = <20>;
+
+
+
+    pressed-input = <0>;
+    status = "okay";
+
+    addet0 {
+        unpress_min = <0>;
+        unpress_max = <3200>;
+        adc_index = <1>;
+        adc_channel = <0>;
+
+        key1 {
+            linux,code = <102>;
+            min = <0>;
+            max = <50>;
+        };
+
+        key2 {
+            linux,code = <103>;
+            min = <478>;
+            max = <708>;
+        };
+
+        key3 {
+            linux,code = <108>;
+            min = <1020>;
+            max = <1320>;
+        };
+
+        key4 {
+            linux,code = <105>;
+            min = <1510>;
+            max = <1810>;
+        };
+
+        key5 {
+            linux,code = <106>;
+            min = <1980>;
+            max = <2280>;
+        };
+
+        key6 {
+            linux,code = <28>;
+            min = <2460>;
+            max = <2760>;
+        };
+
+        key7 {
+            linux,code = <158>;
+            min = <2850>;
+            max = <3100>;
+        };
+    };
+};
+
+&leds {
+    pinctrl-names = "default", "sleep";
+    pinctrl-0 = <&led_pins>;
+    pinctrl-1 = <&led_pins_sleep>;
+    status = "okay";
+
+    state_led {
+        label = "state_led";
+        gpios = <&gpio 78 0>;
+        default-state = "off";
+    };
+};
+
+&i2c0 {
+    pinctrl-names = "default","sleep";
+    pinctrl-0 = <&i2c0_pins>;
+    pinctrl-1 = <&i2c0_sleep_pins>;
+
+    clock-frequency = <400000>;
+    sda-delay = <100>;
+    status = "okay";
+    #address-cells = <1>;
+    #size-cells = <0>;
+
+    sensor0: camera@0x42{
+        compatible = "anyka,sensor0";
+        reg = <0x42>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&sensor0_reset_pins &sensor0_pwdn_pins>;
+
+
+
+        reset-gpio = <&gpio 32 1>;
+        pwdn-gpio = <&gpio 71 1>;
+
+        port {
+            sensor0_0: endpoint@0 {
+                remote-endpoint = <&vi_0_0>;
+            };
+        };
+    };
+};
+
+&vi0 {
+    pinctrl-names = "default", "sleep", "dvp0_8bits", "csi0_sclk";
+    pinctrl-0 = <&dvp0_8bits_pins &csi0_sclk_pin>;
+    pinctrl-1 = <&dvp0_8bits_pins_sleep &csi0_sclk_pin_sleep>;
+    pinctrl-2 = <&dvp0_8bits_pins>;
+    pinctrl-3 = <&csi0_sclk_pin>;
+    status = "okay";
+
+    port@0 {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        vi_0_0: endpoint@0 {
+            reg = <0>;
+            remote-endpoint = <&sensor0_0>;
+        };
+    };
+};

@@ -1,0 +1,19 @@
+﻿上一版本：AtbmWifi_ble_Driver_SVN3047_LMAC18260_20230922
+当前版本：AtbmWifi_ble_Driver_SVN3116_LMAC18371_20230922
+
+更新如下：
+
+【修复】修复sdio设备重启，因为丢失sdio中断而导致的rx 线程无法推出的问题
+【修复】修复快连配置下wpa_supplicant.conf没有配置scan_ssid=1扫描不到wifi的问题
+【修复】修复使用dev ioctl， ap模式获取sta的信息时候mac地址一直是ap的mac地址的问题
+【修复】修复ap是隐藏ssid ， lmac_restart 后STA无法回连的问题
+【修复】修复ap模式下STA休眠，killall hostapd 退出特别慢的问题
+【修复】修复通过ioctl 设置发射功率无效问题
+【修复】修复通过库的方式使用ble协议栈，同一个进程exit退出流程，再启动ble流程虚拟内存会增加的问题
+【修复】修复golden产测时配置文件设置只测试不校准功能，会导致dcxo被写0的问题
+【修复】修复AP模式下获取第16台sta的吞吐率获取不到
+【支持】修改ioctl ap_list 增加可以识别SAE的加密方式, 测试atbm_wext demo 需要用v8.4版本以上
+【优化】FCC/CE/SRRC 认证相关优化
+
+
+

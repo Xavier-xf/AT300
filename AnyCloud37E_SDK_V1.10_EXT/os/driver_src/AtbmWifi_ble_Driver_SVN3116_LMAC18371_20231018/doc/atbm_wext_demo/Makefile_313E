@@ -1,0 +1,15 @@
+CFLAGS = -g -O2 -static
+
+CC = /usr/lchome/yuzhihuang/Mstar/IPC_I3/arm-linux-gnueabihf-4.8.3-201404/bin/arm-linux-gnueabihf-gcc
+#CC = /usr/lchome/yuzhihuang/Mstar/325/arm-buildroot-linux-uclibcgnueabihf-4.9.4/bin/arm-buildroot-linux-uclibcgnueabihf-gcc
+STRIP = /usr/lchome/yuzhihuang/Mstar/IPC_I3/arm-linux-gnueabihf-4.8.3-201404/bin/arm-linux-gnueabihf-strip
+#STRIP = /usr/lchome/yuzhihuang/Mstar/325/arm-buildroot-linux-uclibcgnueabihf-4.9.4/bin/arm-buildroot-linux-uclibcgnueabihf-strip
+LIBS += -lpthread -lm
+
+OBJS=main.c  atbm_ioctrl.c
+
+all:
+	$(CC) $(CFLAGS) -o atbm_wext $(OBJS) -static $(LIBS)
+	$(STRIP) -s atbm_wext
+clean:
+	rm -f *.o altm_wext

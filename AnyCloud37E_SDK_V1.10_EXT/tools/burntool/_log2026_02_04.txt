@@ -1,0 +1,16 @@
+
+
+=============Transc Information =============
+Print Time: 2026-02-04 17:36:53
+
+[17:36:53]BT_CommitTransc fail
+[17:36:53]BT_DownLoadCmd fail
+[17:36:53]BT_DownLoad fail
+
+
+=============Transc Information =============
+Print Time: 2026-02-04 17:37:27
+
+[17:37:27]BT_DL_FILE_DOWNLOAD_FAIL fail
+[17:37:27]memcmp fail
+[17:37:27]BT_DownloadProducer_sub fail

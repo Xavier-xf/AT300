@@ -1,0 +1,1 @@
+cmd_vmlinux := /bin/bash /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/os/kernel/scripts/link-vmlinux.sh arm-anykav500-linux-uclibcgnueabi-ld -EL  -p --no-undefined -X --pic-veneer --build-id

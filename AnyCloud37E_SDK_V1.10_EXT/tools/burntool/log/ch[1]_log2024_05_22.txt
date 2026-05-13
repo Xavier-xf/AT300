@@ -1,0 +1,38 @@
+=============Burn Information For Channel[1]=============
+Print Time: 2024-5-22 19:16:58
+
+ss g_udisk_burnnum: 0
+[19:16:58]work number = 1
+[19:16:58]burn_mode = 1, eMedium = 1
+[19:16:58]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[19:16:58]Burn_TestPCAndProducerConnectOK fail.
+[19:16:58]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2024-5-22 19:17:35
+
+ss g_udisk_burnnum: 0
+[19:17:35]work number = 1
+[19:17:35]burn_mode = 1, eMedium = 1
+[19:17:35]Burn_SetRamParam fail
+[19:17:35]close file
+
+
+
+=============Burn Information For Channel[1]=============
+Print Time: 2024-5-22 19:22:04
+
+ss g_udisk_burnnum: 0
+[19:22:04]work number = 1
+[19:22:04]burn_mode = 1, eMedium = 1
+[19:22:05]++Start download producer++
+producer path: producer_39xx.bin, addr=80000000
+[19:22:14]end work number = 0
+[19:22:14]++Burn success++
+[19:22:14]close file
+
+
+

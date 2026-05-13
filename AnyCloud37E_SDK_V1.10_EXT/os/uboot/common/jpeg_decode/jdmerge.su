@@ -1,0 +1,6 @@
+jdmerge.c:158:1:start_pass_merged_upsample	0	static
+jdmerge.c:225:1:merged_1v_upsample	16	static
+jdmerge.c:258:1:h2v1_merged_upsample	64	static
+jdmerge.c:320:1:h2v2_merged_upsample	80	static
+jdmerge.c:176:1:merged_2v_upsample	40	static
+jdmerge.c:402:1:jinit_merged_upsampler	24	static

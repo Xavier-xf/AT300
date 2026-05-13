@@ -1,0 +1,2 @@
+ak_module_reset.c:43:5:ak39_soft_reset	8	static
+ak_module_reset.c:54:5:ak_soft_reset	0	static

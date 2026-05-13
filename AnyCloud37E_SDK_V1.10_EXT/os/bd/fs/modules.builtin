@@ -1,0 +1,11 @@
+kernel/fs/binfmt_script.ko
+kernel/fs/fat/fat.ko
+kernel/fs/fat/vfat.ko
+kernel/fs/fat/msdos.ko
+kernel/fs/jffs2/jffs2.ko
+kernel/fs/nls/nls_base.ko
+kernel/fs/nls/nls_cp437.ko
+kernel/fs/nls/nls_iso8859-1.ko
+kernel/fs/nls/nls_utf8.ko
+kernel/fs/squashfs/squashfs.ko
+kernel/fs/yaffs2/yaffs2multi.ko
