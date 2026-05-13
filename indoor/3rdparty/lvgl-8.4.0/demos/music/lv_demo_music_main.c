@@ -30,12 +30,10 @@
     #define BAR_COLOR2_STOP     100
 #endif
 #define BAR_COLOR3_STOP     (2 * LV_HOR_RES / 3)
-#define BAR_CNT             16
+#define BAR_CNT             20
 #define DEG_STEP            (180/BAR_CNT)
 #define BAND_CNT            4
 #define BAR_PER_BAND_CNT    (BAR_CNT / BAND_CNT)
-#define MUSIC_SPECTRUM_FPS  20
-#define MUSIC_ALBUM_BASS_ZOOM 0
 
 /**********************
  *      TYPEDEFS
@@ -341,7 +339,7 @@ void _lv_demo_music_resume(void)
     lv_anim_set_values(&a, spectrum_i, spectrum_len - 1);
     lv_anim_set_exec_cb(&a, spectrum_anim_cb);
     lv_anim_set_var(&a, spectrum_obj);
-    lv_anim_set_time(&a, ((spectrum_len - spectrum_i) * 1000) / MUSIC_SPECTRUM_FPS);
+    lv_anim_set_time(&a, ((spectrum_len - spectrum_i) * 1000) / 30);
     lv_anim_set_playback_time(&a, 0);
     lv_anim_set_ready_cb(&a, spectrum_end_cb);
     lv_anim_start(&a);
@@ -801,7 +799,7 @@ static void spectrum_draw_event_cb(lv_event_t * e)
             uint32_t band_w = 0;    /*Real number of bars in this band.*/
             switch(s) {
                 case 0:
-                    band_w = 16;
+                    band_w = 20;
                     break;
                 case 1:
                     band_w = 8;
@@ -905,9 +903,7 @@ static void spectrum_anim_cb(void * a, int32_t v)
     }
     if(spectrum[spectrum_i][0] < 4) bar_rot += dir;
 
-#if MUSIC_ALBUM_BASS_ZOOM
     lv_img_set_zoom(album_img_obj, LV_IMG_ZOOM_NONE + spectrum[spectrum_i][0]);
-#endif
 }
 
 static void start_anim_cb(void * a, int32_t v)
