@@ -1,15 +1,43 @@
-2026.5.13
+2026年5月13日16:35:52
 问题描述：
+应用层修改完成后，原来需要手动进入 AnyCloud37E_SDK_V1.10_EXT 目录，把应用编译产物复制到 SDK rootfs，再执行 SDK 的 mksquashfs 和 make_image.sh 生成 SD 卡升级包。流程分散，容易漏复制文件或误打未修改分区。
 
 问题原因：
+indoor 应用层工程之前只有编译入口，没有封装应用产物同步和 SD 升级包生成流程。EXT SDK 已经有成熟的 make_image.sh 分区打包逻辑，但应用层没有直接调用入口。
 
 解决方法：
+1. 在 indoor 应用层新增 package_sd_upgrade.sh 脚本。
+2. 脚本默认编译应用，并把 build/DOORBELL_anyka_release.BIN 同步到 EXT SDK 的 SAT_ANYKA.BIN。
+3. 当选择 app 分区时，脚本自动重新生成 app.sqsh4，并复制到 EXT 的 upgrade/platform/app.sqsh4。
+4. 分区打包继续复用 EXT SDK 原有 upgrade/make_image.sh，避免在应用层重复维护分区拼包逻辑。
+5. 在 Makefile 中新增 make sd 和 make sd-no-build 入口，支持 PARTS="app dtb kernel" 这种应用层自定义分区打包方式。
+6. 新增应用层 SD 升级打包使用说明，记录目录来源、使用命令、分区含义和维护原则。
 
 涉及文件：
+/home/xiaoxiao/workspace/QT300/indoor/package_sd_upgrade.sh
+/home/xiaoxiao/workspace/QT300/indoor/Makefile
+/home/xiaoxiao/workspace/QT300/indoor/documents/应用层SD升级打包使用说明.md
 
 具体修改：
+1. 新增 package_sd_upgrade.sh：
+   - 默认分区为 app。
+   - 支持 --no-build 跳过应用编译。
+   - 支持 --out 指定额外输出路径。
+   - 支持 app、uboot、env、dtb、kernel、logo、rootfs、usr、config、data、tuya、home、all 分区参数。
+   - 多分区组合时自动向 EXT SDK 的 make_image.sh 填写交互选项。
+2. 修改 Makefile：
+   - 新增 PARTS ?= app。
+   - 新增 make sd：编译并打包指定分区。
+   - 新增 make sd-no-build：不重新编译，直接使用已有 build/DOORBELL_anyka_release.BIN 打包。
+3. 新增 documents/应用层SD升级打包使用说明.md：
+   - 说明应用层打包流程。
+   - 说明升级包输出路径。
+   - 说明常用命令和分区维护规则。
+4. 已验证：
+   - make -C /home/xiaoxiao/workspace/QT300/indoor sd-no-build PARTS=app 可正常生成 APP 分区升级包。
+   - 输出文件为 /home/xiaoxiao/workspace/QT300/AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG。
 
-2026.5.13
+2026年5月13日10:35:52
 问题描述：
 在 Widgets Demo UI 界面点击 Birthday 输入框后会弹出日历选择框，此时直接点击左右切换按钮切换到音乐播放器 Demo，界面上会残留半透明灰色遮罩层。切换后音乐播放器和 Widgets Demo 的普通控件都无法点击，只有位于 top layer 的左右切换按钮仍可点击。
 
