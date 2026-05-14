@@ -24,6 +24,8 @@
 #include "driver_gui_display.h"
 
 #define FB_PATH "/dev/fb0"
+#define TDE_MIN_AREA_WIDTH 18
+#define TDE_MIN_AREA_HEIGHT 18
 
 struct lv_lcd_layer
 {
@@ -47,9 +49,13 @@ typedef struct
     sem_t refresh_sem;
 
     pthread_t thread_id;
+    pthread_mutex_t lock;
     bool is_running;
 
     bool is_video_mode;
+    bool dirty_valid;
+    bool force_full_sync;
+    db_hal_position_t dirty_area;
 
 } display_device_private_data;
 
@@ -130,19 +136,189 @@ static void _lv_gui_layer_init(display_device_private_data *ctx)
 //     }
 // }
 
-/* gui层数据拷贝到framebuffer层，用于非视频模式，全屏拷贝 */
-static inline void _lv_gui_layer_to_fb_layer(display_device_private_data *ctx)
+static inline unsigned long _lv_fb_back_buffer_phyaddr(display_device_private_data *ctx)
 {
-    struct ak_tde_cmd opt;
-    memcpy(&(opt.tde_layer_src), &ctx->lv_gui_layer.layer, sizeof(struct ak_tde_layer));
-    memcpy(&(opt.tde_layer_dst), &ctx->lv_fb_layer.layer, sizeof(struct ak_tde_layer));
-    /***** 切换到未在显示的buffer *****/
+    unsigned long phyaddr = ctx->lv_fb_layer.layer.phyaddr;
     if (ctx->var_info.reserved[0] == 0)
     {
-        opt.tde_layer_dst.phyaddr += ctx->var_info.xres * ctx->var_info.yres * 3;
+        phyaddr += ctx->var_info.xres * ctx->var_info.yres * 3;
     }
-    opt.opt = GP_OPT_BLIT;
-    ak_tde_opt(&opt);
+    return phyaddr;
+}
+
+static inline unsigned long _lv_fb_front_buffer_phyaddr(display_device_private_data *ctx)
+{
+    unsigned long phyaddr = ctx->lv_fb_layer.layer.phyaddr;
+    if (ctx->var_info.reserved[0] != 0)
+    {
+        phyaddr += ctx->var_info.xres * ctx->var_info.yres * 3;
+    }
+    return phyaddr;
+}
+
+static inline unsigned char *_lv_fb_back_buffer_vaddr(display_device_private_data *ctx)
+{
+    unsigned char *addr = ctx->lv_fb_layer.data;
+    if (ctx->var_info.reserved[0] == 0)
+    {
+        addr += ctx->var_info.xres * ctx->var_info.yres * 3;
+    }
+    return addr;
+}
+
+static inline unsigned char *_lv_fb_front_buffer_vaddr(display_device_private_data *ctx)
+{
+    unsigned char *addr = ctx->lv_fb_layer.data;
+    if (ctx->var_info.reserved[0] != 0)
+    {
+        addr += ctx->var_info.xres * ctx->var_info.yres * 3;
+    }
+    return addr;
+}
+
+static inline bool _lv_tde_area_supported(const db_hal_position_t *area)
+{
+    return area->w >= TDE_MIN_AREA_WIDTH && area->h >= TDE_MIN_AREA_HEIGHT;
+}
+
+static inline void _lv_argb_to_fb_back_area_soft(display_device_private_data *ctx, const db_hal_position_t *area, unsigned char *data)
+{
+    unsigned char *dst = _lv_fb_back_buffer_vaddr(ctx) + (area->y * ctx->var_info.xres + area->x) * 3;
+    unsigned char *src = data;
+
+    for (int row = 0; row < area->h; row++)
+    {
+        unsigned char *dst_pixel = dst;
+        unsigned char *src_pixel = src;
+
+        for (int col = 0; col < area->w; col++)
+        {
+            if (src_pixel[3] == 0xff)
+            {
+                dst_pixel[0] = src_pixel[0];
+                dst_pixel[1] = src_pixel[1];
+                dst_pixel[2] = src_pixel[2];
+            }
+            else if (src_pixel[3] != 0)
+            {
+                unsigned int alpha = src_pixel[3];
+                unsigned int inv_alpha = 255 - alpha;
+                dst_pixel[0] = (src_pixel[0] * alpha + dst_pixel[0] * inv_alpha + 127) / 255;
+                dst_pixel[1] = (src_pixel[1] * alpha + dst_pixel[1] * inv_alpha + 127) / 255;
+                dst_pixel[2] = (src_pixel[2] * alpha + dst_pixel[2] * inv_alpha + 127) / 255;
+            }
+
+            src_pixel += 4;
+            dst_pixel += 3;
+        }
+
+        src += area->w * 4;
+        dst += ctx->var_info.xres * 3;
+    }
+}
+
+static inline void _lv_fb_front_to_back_area_soft(display_device_private_data *ctx, const db_hal_position_t *area)
+{
+    unsigned char *src = _lv_fb_front_buffer_vaddr(ctx) + (area->y * ctx->var_info.xres + area->x) * 3;
+    unsigned char *dst = _lv_fb_back_buffer_vaddr(ctx) + (area->y * ctx->var_info.xres + area->x) * 3;
+
+    for (int row = 0; row < area->h; row++)
+    {
+        memcpy(dst, src, area->w * 3);
+        src += ctx->var_info.xres * 3;
+        dst += ctx->var_info.xres * 3;
+    }
+}
+
+static inline void _lv_gui_layer_to_fb_layer_area(display_device_private_data *ctx, const db_hal_position_t *area)
+{
+    struct ak_tde_layer src, dst;
+    memcpy(&src, &ctx->lv_gui_layer.layer, sizeof(struct ak_tde_layer));
+    memcpy(&dst, &ctx->lv_fb_layer.layer, sizeof(struct ak_tde_layer));
+    tde_layer_pos_init(src, area->x, area->y, area->w, area->h);
+    tde_layer_pos_init(dst, area->x, area->y, area->w, area->h);
+    dst.phyaddr = _lv_fb_back_buffer_phyaddr(ctx);
+    ak_tde_opt_format(&src, &dst);
+}
+
+static inline int _lv_dma_argb_to_fb_layer_area(display_device_private_data *ctx, const db_hal_position_t *area, unsigned long src_phyaddr)
+{
+    struct ak_tde_layer src, dst;
+    if (!_lv_tde_area_supported(area) || area->x != 0 || area->w != ctx->var_info.xres)
+    {
+        return -1;
+    }
+
+    tde_layer_layer_init(src, GP_FORMAT_ARGB8888, area->w, area->h, 0, 0, area->w, area->h);
+    src.phyaddr = src_phyaddr;
+    tde_layer_layer_init(dst, GP_FORMAT_RGB888, area->w, area->h, 0, 0, area->w, area->h);
+    dst.phyaddr = _lv_fb_back_buffer_phyaddr(ctx) + area->y * ctx->var_info.xres * 3;
+    return ak_tde_opt_format(&src, &dst);
+}
+
+static inline void _lv_fb_front_to_back_area(display_device_private_data *ctx, const db_hal_position_t *area)
+{
+    struct ak_tde_layer src, dst;
+    if (!_lv_tde_area_supported(area))
+    {
+        _lv_fb_front_to_back_area_soft(ctx, area);
+        return;
+    }
+
+    memcpy(&src, &ctx->lv_fb_layer.layer, sizeof(struct ak_tde_layer));
+    memcpy(&dst, &ctx->lv_fb_layer.layer, sizeof(struct ak_tde_layer));
+    tde_layer_pos_init(src, area->x, area->y, area->w, area->h);
+    tde_layer_pos_init(dst, area->x, area->y, area->w, area->h);
+    src.phyaddr = _lv_fb_front_buffer_phyaddr(ctx);
+    dst.phyaddr = _lv_fb_back_buffer_phyaddr(ctx);
+    ak_tde_opt_blit(&src, &dst);
+}
+
+static inline void _lv_fb_front_to_back_full(display_device_private_data *ctx)
+{
+    db_hal_position_t area = {
+        .x = 0,
+        .y = 0,
+        .w = ctx->var_info.xres,
+        .h = ctx->var_info.yres,
+    };
+
+    _lv_fb_front_to_back_area(ctx, &area);
+}
+
+static inline void _lv_gui_dirty_area_merge(display_device_private_data *ctx, const db_hal_position_t *area)
+{
+    int x1 = area->x;
+    int y1 = area->y;
+    int x2 = area->x + area->w;
+    int y2 = area->y + area->h;
+
+    if (!ctx->dirty_valid)
+    {
+        ctx->dirty_area = *area;
+        ctx->dirty_valid = true;
+        return;
+    }
+
+    if (x1 < ctx->dirty_area.x)
+    {
+        ctx->dirty_area.w += ctx->dirty_area.x - x1;
+        ctx->dirty_area.x = x1;
+    }
+    if (y1 < ctx->dirty_area.y)
+    {
+        ctx->dirty_area.h += ctx->dirty_area.y - y1;
+        ctx->dirty_area.y = y1;
+    }
+
+    if (x2 > ctx->dirty_area.x + ctx->dirty_area.w)
+    {
+        ctx->dirty_area.w = x2 - ctx->dirty_area.x;
+    }
+    if (y2 > ctx->dirty_area.y + ctx->dirty_area.h)
+    {
+        ctx->dirty_area.h = y2 - ctx->dirty_area.y;
+    }
 }
 
 /* framebuffer双缓冲区切换 */
@@ -158,13 +334,23 @@ static void *sdl_renderer_task(void *arg)
     while (ctx->is_running)
     {
         sem_wait(&ctx->refresh_sem);
-        if (ctx->lv_gui_layer.timestamp != 0)
+        pthread_mutex_lock(&ctx->lock);
+        if (ctx->lv_gui_layer.timestamp != 0 && ctx->dirty_valid)
         {
             ctx->lv_gui_layer.timestamp = 0;
-            _lv_gui_layer_to_fb_layer(ctx);
             _lv_fb_layer_phyaddr_swap(ctx);
-            // usleep(10 * 1000);
+            if (ctx->force_full_sync)
+            {
+                _lv_fb_front_to_back_full(ctx);
+                ctx->force_full_sync = false;
+            }
+            else
+            {
+                _lv_fb_front_to_back_area(ctx, &ctx->dirty_area);
+            }
+            ctx->dirty_valid = false;
         }
+        pthread_mutex_unlock(&ctx->lock);
     }
     return NULL;
 }
@@ -209,8 +395,11 @@ static void *_driver_gui_display_open(void *arg)
     _lv_gui_layer_init(display_device_ctx);
     // _lv_video_layer_init(display_device_ctx);
     sem_init(&display_device_ctx->refresh_sem, 0, 0);
+    pthread_mutex_init(&display_device_ctx->lock, NULL);
     display_device_ctx->is_running = true;
     display_device_ctx->is_video_mode = false;
+    display_device_ctx->dirty_valid = false;
+    display_device_ctx->force_full_sync = true;
     pthread_create(&display_device_ctx->thread_id, NULL, sdl_renderer_task, display_device_ctx);
     // db_log_info("open success\n");
     return display_device_ctx;
@@ -230,6 +419,7 @@ static int _driver_gui_display_close(void *arg)
     pthread_join(ctx->thread_id, NULL);
 
     sem_destroy(&display_device_ctx->refresh_sem);
+    pthread_mutex_destroy(&display_device_ctx->lock);
     close(ctx->fd);
     free(ctx);
 
@@ -257,15 +447,35 @@ static int _driver_gui_display_write(void *arg, void *data, int length)
     int w = frame->pos.w;
     int h = frame->pos.h;
 
-    unsigned char *src = frame->data;
-    unsigned char *dst = ctx->lv_gui_layer.data + (MY_DISP_HOR_RES * y + x) * 4;
+    pthread_mutex_lock(&ctx->lock);
 
-    for (int i = 0; i < h; i++)
+    unsigned long src_phyaddr = 0;
+    if (!_lv_tde_area_supported(&frame->pos))
     {
-        memcpy(dst, src, w * 4);
-        src += w * 4;
-        dst += MY_DISP_HOR_RES * 4;
+        _lv_argb_to_fb_back_area_soft(ctx, &frame->pos, frame->data);
     }
+    else if (ak_mem_dma_vaddr2paddr(frame->data, &src_phyaddr) == 0 && src_phyaddr != 0 &&
+             _lv_dma_argb_to_fb_layer_area(ctx, &frame->pos, src_phyaddr) == 0)
+    {
+        /* Fast path: LVGL DMA draw buffer was converted directly into the back framebuffer. */
+    }
+    else
+    {
+        unsigned char *src = frame->data;
+        unsigned char *dst = ctx->lv_gui_layer.data + (MY_DISP_HOR_RES * y + x) * 4;
+
+        for (int i = 0; i < h; i++)
+        {
+            memcpy(dst, src, w * 4);
+            src += w * 4;
+            dst += MY_DISP_HOR_RES * 4;
+        }
+        _lv_gui_layer_to_fb_layer_area(ctx, &frame->pos);
+    }
+
+    _lv_gui_dirty_area_merge(ctx, &frame->pos);
+
+    pthread_mutex_unlock(&ctx->lock);
     return 0;
 }
 

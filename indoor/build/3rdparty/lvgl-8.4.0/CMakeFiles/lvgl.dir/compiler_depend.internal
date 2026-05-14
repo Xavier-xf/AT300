@@ -19039,6 +19039,8 @@
  /home/xiaoxiao/workspace/QT300/indoor/driver/db_hal_driver.h
  /home/xiaoxiao/workspace/QT300/indoor/driver/db_hal_driver.h
  /home/xiaoxiao/workspace/QT300/indoor/driver/gui_display/driver_gui_display.h
+ /home/xiaoxiao/workspace/QT300/indoor/includes/anyka/ak_common.h
+ /home/xiaoxiao/workspace/QT300/indoor/includes/anyka/ak_mem.h
  /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/alloca.h
  /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/asm-generic/socket.h
  /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/asm-generic/sockios.h

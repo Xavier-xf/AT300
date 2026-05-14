@@ -11,8 +11,10 @@
  *********************/
 #include "lv_port_disp.h"
 #include <stdbool.h>
+#include <string.h>
 #include "db_hal_driver.h"
 #include "gui_display/driver_gui_display.h"
+#include "anyka/ak_mem.h"
 /*********************
  *      DEFINES
  *********************/
@@ -83,10 +85,17 @@ void lv_port_disp_init(void)
      *      and you only need to change the frame buffer's address.
      */
 
-    /* Example for 1) */
+    /* Use two draw buffers so LVGL can render the next chunk while the previous one is flushing. */
     static lv_disp_draw_buf_t draw_buf_dsc_1;
-    static lv_color_t buf_1[MY_DISP_HOR_RES * MY_DISP_VER_RES / 10];                             /*A buffer for 10 rows*/
-    lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, NULL, MY_DISP_HOR_RES * MY_DISP_VER_RES / 10); /*Initialize the display buffer*/
+    lv_color_t *buf_1 = ak_mem_dma_alloc(MODULE_ID_GUI, MY_DISP_HOR_RES * MY_DISP_VER_RES / 10 * sizeof(lv_color_t));
+    lv_color_t *buf_2 = ak_mem_dma_alloc(MODULE_ID_GUI, MY_DISP_HOR_RES * MY_DISP_VER_RES / 10 * sizeof(lv_color_t));
+    if (!buf_1 || !buf_2)
+    {
+        return;
+    }
+    memset(buf_1, 0, MY_DISP_HOR_RES * MY_DISP_VER_RES / 10 * sizeof(lv_color_t));
+    memset(buf_2, 0, MY_DISP_HOR_RES * MY_DISP_VER_RES / 10 * sizeof(lv_color_t));
+    lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, buf_2, MY_DISP_HOR_RES * MY_DISP_VER_RES / 10);
 
     /*-----------------------------------
      * Register the display in LVGL

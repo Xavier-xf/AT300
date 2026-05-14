@@ -18862,6 +18862,8 @@
   /home/xiaoxiao/workspace/QT300/indoor/driver/db_hal_driver.h \
   /home/xiaoxiao/workspace/QT300/indoor/driver/db_hal_driver.h \
   /home/xiaoxiao/workspace/QT300/indoor/driver/gui_display/driver_gui_display.h \
+  /home/xiaoxiao/workspace/QT300/indoor/includes/anyka/ak_common.h \
+  /home/xiaoxiao/workspace/QT300/indoor/includes/anyka/ak_mem.h \
   /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/alloca.h \
   /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/asm-generic/socket.h \
   /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/asm-generic/sockios.h \
@@ -20670,8 +20672,6 @@
 
 /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/widgets/lv_switch.c:
 
-/home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/widgets/lv_roller.c:
-
 /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/widgets/lv_objx_templ.c:
 
 /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/widgets/lv_line.c:
@@ -20699,6 +20699,10 @@
 /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/sched.h:
 
 /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/in.h:
+
+/home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/widgets/lv_roller.c:
+
+/home/xiaoxiao/workspace/QT300/indoor/includes/anyka/ak_common.h:
 
 /home/xiaoxiao/workspace/QT300/indoor/common/db_common.h:
 
@@ -21017,6 +21021,8 @@
 /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/extra/widgets/chart/lv_chart.c:
 
 /home/xiaoxiao/workspace/QT300/indoor/3rdparty/lvgl-8.4.0/src/draw/sw/lv_draw_sw_layer.c:
+
+/home/xiaoxiao/workspace/QT300/indoor/includes/anyka/ak_mem.h:
 
 /opt/arm-anykav500-linux-uclibcgnueabi/lib/gcc/arm-anykav500-linux-uclibcgnueabi/4.9.4/include/stdint.h:
 

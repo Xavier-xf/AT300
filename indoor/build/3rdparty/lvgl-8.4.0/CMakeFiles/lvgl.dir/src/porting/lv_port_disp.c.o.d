@@ -305,4 +305,6 @@
  /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/asm-generic/sockios.h \
  /opt/arm-anykav500-linux-uclibcgnueabi/arm-anykav500-linux-uclibcgnueabi/sysroot/usr/include/bits/in.h \
  /home/xiaoxiao/workspace/QT300/indoor/driver/gui_display/driver_gui_display.h \
- /home/xiaoxiao/workspace/QT300/indoor/driver/gui_display/../db_hal_driver.h
+ /home/xiaoxiao/workspace/QT300/indoor/driver/gui_display/../db_hal_driver.h \
+ /home/xiaoxiao/workspace/QT300/indoor/includes/anyka/ak_mem.h \
+ /home/xiaoxiao/workspace/QT300/indoor/includes/anyka/ak_common.h
