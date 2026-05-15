@@ -1,0 +1,91 @@
+# 显示屏异常排查进度
+
+## 2026-05-15
+- 使用本地 `lcd_tp` 屏幕资料和SDK显示配置开始诊断。
+- 确认之前不存在规划文件。
+- 列出 `lcd_tp` 目录并识别出可能相关的LCD文档。
+- 提取LCD屏幕规格和JD9165T厂商初始化参数。
+- 用户确认应用层在另一个SDK上运行正常；将排查范围转移到SDK显示链路、屏幕初始化/时序/格式。
+- 检查EXT板设备树、共用LCD设备树、U-Boot MIPI解析路径、LVGL配置、安凯GUI显示适配层以及测试板JD9165T配置块。
+- 主要结论：屏幕基础参数与厂商数据匹配；异常现象更符合SDK显示格式/转换问题或DSI时钟裕量问题，而非LCD硬件故障。
+- 用户确认DSI时钟400和360均会复现问题，因此跳过DSI时钟实验。
+- 此步骤前已存在的修改：`driver_gui_display_anyka.c` 修改了VSYNC等待/FB_ACTIVATE_VBL；`anycloud_lcd.dtsi` 将屏幕DSI时钟从400改为360。
+- 实施实验一：强制所有GUI帧数据通过软件ARGB转帧缓冲路径。
+- 编译验证：`make -C /home/xiaoxiao/workspace/QT300/indoor` 执行成功，重新生成 `indoor/build/DOORBELL_anyka_release.BIN`。
+- 用户反馈执行 `make sd PARTS="app"` 后，实验一问题仍然存在。
+- 确认LVGL 32位像素内存顺序为BGRA（蓝、绿、红、透明），因此下一实验修改软件路径，按BGRA读取LVGL像素。
+- 在强制软件转换路径中实施实验二：按BGRA读取LVGL源像素，并按R、G、B顺序写入RGB888帧缓冲。
+- 在indoor目录通过 `make sd PARTS="app"` 打包实验二固件；输出镜像生成于 `AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG`，并复制到 `indoor/build/SAT_ANYKA.IMG`。
+- 用户反馈实验二仍存在边缘锯齿/绿点/白点，且整体颜色异常。结论：当前应用刷新数据不能按BGRA处理；应用层字节序实验作废。
+- 将应用显示适配层恢复到实验前的像素处理逻辑，保留已有的VSYNC/VBL修改。
+- 启动内核/根文件系统实验三：在 `AnyCloud37E_SDK_V1.10_EXT/bridge/main.sh` 中启用 `ak_fb.ko lcd_ctl_force_init=1`，使Linux重新初始化LCD控制器/屏幕，而非继承U-Boot的显示状态。
+- 使用EXT脚本 `./build.sh -s` 编译实验三：执行 `br`，然后 `mi all`，最后 `q`。
+- 验证生成的全分区升级镜像：`AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG` 大小11,423,181字节，时间戳5月15日11:03。
+- 验证生成的根文件系统脚本包含 `insmod /usr/modules/ak_fb.ko lcd_ctl_force_init=1`。
+- 用户反馈实验三可开机但LCD黑屏。结论：`lcd_ctl_force_init=1` 不适用于该主板/初始化时序。
+- 将 `bridge/main.sh` 恢复为正常的 `insmod /usr/modules/ak_fb.ko`。
+- 启动实验四：修改帧缓冲翻转等待顺序，使 `FBIO_WAITFORVSYNC` 在 `FBIOPUT_VSCREENINFO` 之后执行，避免前后缓冲同步在计划的VBL翻转完成前向缓冲区拷贝数据。
+- 使用EXT脚本 `./build.sh -s` 编译实验四：执行 `br`，然后 `mi all`，最后 `q`。
+- 验证生成的全分区升级镜像：`AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG` 大小11,423,181字节，时间戳5月15日11:13。
+- 验证根文件系统 `main.sh` 已恢复正常的 `insmod /usr/modules/ak_fb.ko`，不再使用 `lcd_ctl_force_init=1`。
+- 用户反馈实验四不再黑屏，但Logo边缘异常和 `your skills` 字体白/绿点仍然存在。结论：VBL翻转等待顺序不是根本原因。
+- 启动实验五：修改 `AnyCloud37E_SDK_V1.10_EXT/bridge/EVB_CBDM_AK3760E_V1.0.1.dts` 中的 `lcd-logo-rgb-seq` 从 `<0>` 改为 `<1>`，测试LCDC帧缓冲RGB/BGR输入顺序。
+- 使用EXT脚本 `./build.sh -s` 编译实验五：执行 `bk`，然后 `mi all`，最后 `q`。
+- 验证生成的镜像：`AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG` 大小11,422,613字节，时间戳5月15日11:25。验证 `upgrade/platform/cloudOS.dtb` 和 `uImage` 已于5月15日11:24重新生成。
+- 用户反馈实验五颜色不对，原有Logo边缘异常、`your skills`字体白/绿点和锯齿仍存在。结论：LCDC RGB/BGR输入顺序不是根因。
+- 确认 `bridge/EVB_CBDM_AK3760E_V1.0.1.dts` 和 `bridge/main.sh` 当前无残留diff；DTS实验和强制初始化实验均已恢复。
+- 启动实验六：在 `indoor/driver/gui_display/driver_gui_display_anyka.c` 的 `_driver_gui_display_write()` 中，当一批刷新开始且 `dirty_valid` 为假时，先调用 `_lv_fb_front_to_back_full(ctx)` 同步前后台缓冲。
+- 发现 `os/kernel/arch/arm/boot/dts/EVB_CBDM_AK3760E_V1.0.1.dts` 仍残留实验五的 `lcd-logo-rgb-seq=<1>`，已恢复为 `<0>`；这是用户反馈“颜色不对”需要先清除的原因。
+- 按“只打包修改过的地方”执行选择性构建：先 `bk` 重编DTB，再 `mi other` 仅选择 `cloudOS.dtb` 和 `app.sqsh4`。
+- 验证 `AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG` 头部仅包含 `cloudOS.dtb` 和 `app.sqsh4` 两个分区；反编译 `upgrade/platform/cloudOS.dtb` 确认 `lcd-logo-rgb-seq = <0x00>`。
+- 用户反馈：颜色已恢复正常，但Logo边缘、`your skills`字体白/绿点和锯齿仍然存在。实验六判定无效。
+- 撤销 `driver_gui_display_anyka.c` 中实验四/实验六的VBL等待和前后台全屏同步改动，恢复该显示适配文件到原始刷新策略。
+- 启动实验七：将 `indoor/3rdparty/lvgl-8.4.0/lv_conf.h` 的 `LV_COLOR_SCREEN_TRANSP` 从 `1` 改为 `0`，验证问题是否来自LVGL透明/抗锯齿alpha输出链路。
+- 使用 `make sd PARTS="app"` 完成实验七 app-only 打包；升级包头部仅包含 `app.sqsh4`，输出为 `AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG`，大小1,781,872字节，时间戳5月15日11:56。
+- 用户反馈实验七异常不变。恢复 `LV_COLOR_SCREEN_TRANSP=1`。
+- 启动实验八：在 `indoor/driver/gui_display/driver_gui_display_anyka.c` 增加一次性 framebuffer dump，启动约5秒后保存 `/app/data/fb0_visible.ppm`，用于判断异常是否已存在于 framebuffer 内存。
+- 使用 `make sd PARTS="app"` 完成实验八 app-only 打包；升级包头部仅包含 `app.sqsh4`，输出为 `AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG`，大小1,785,968字节，时间戳5月15日12:04。
+- 用户将 `fb0_visible.ppm` 拷贝到工作区根目录。该文件略短于完整1024x600 RGB888帧，补齐后查看有效区域：`Your skills`和左上logo在framebuffer图像中正常，没有屏上白/绿点。结论：问题发生在framebuffer之后。
+- 撤销实验八的framebuffer dump代码。
+- 启动实验九：将 `AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_lcd.dtsi` 中 `panel-dsi-bllp-mode` 从 `<1>` 改为 `<0>`，测试MIPI BLLP空白段保持blanking packet是否改善灰阶边缘异常。
+- 使用 `make sd PARTS="app"` 重新打包app，移除取证dump代码。
+- 使用 `./build.sh -s` 执行 `bk` 和 `mi other`，仅选择 `cloudOS.dtb` 与 `app.sqsh4`。升级包头部确认只包含这两个分区；反编译 `cloudOS.dtb` 确认 `lcd-logo-rgb-seq=<0x00>`、当前JD9165T节点 `panel-dsi-bllp-mode=<0x00>`、`panel-dsi-clk=<0x168>`。
+- 用户反馈实验九异常不变。恢复 `panel-dsi-bllp-mode=<1>`。
+- 启动实验十：将当前JD9165T节点 `panel-dsi-if-color-coding=<0x04>`、`panel-dsi-pix-format=<0x02>`，测试18-bit loosely packed DSI输出。
+- 用户反馈实验十异常仍然一样。恢复当前JD9165T节点为24-bit：`panel-dsi-if-color-coding=<0x05>`、`panel-dsi-pix-format=<0x03>`。
+- 执行实验十一：应用显示适配层打开 `/dev/fb0` 时增加 `O_SYNC`，并在 framebuffer 翻转前对脏区执行 `msync(MS_SYNC)`，测试用户态 mmap 缓存同步问题。
+- 用户反馈实验十一异常仍然一样。撤销 `driver_gui_display_anyka.c` 中的 `O_SYNC/msync` 改动，回到基线显示适配逻辑。
+- 检查 `ak_fb.ko`：模块版本 `1.0.17`，参数包含 `lcd_ctl_force_init/lcdc_wait_mode/busy_bh/fb_shadow/fb_shadow_dmasize`；字符串与重定位显示其 framebuffer 内存使用 `dma_alloc_from_coherent`，未发现直接可用的 gamma/dither 参数。
+- 对比 EXT 与 TestBoard 的 `JD9165T_CSOT7P0_1024x600_4L` 节点，除 `panel-dsi-clk` 外无差异；用户已确认 400 和 360 都复现，因此不再重复 DSI clock 实验。
+- 检查 `lcd_tp/JD9165T_CSOT7P0_VER3D_CID08_4L_LV_20260421.bin`，头部和内容更像 JD9165T 触控/固件二进制，不是可直接替换到 MIPI `panel-init-list` 的LCD DCS初始化表。
+- 启动实验十二：将 `AnyCloud37E_SDK_V1.10_EXT/os/kernel/arch/arm/boot/dts/anycloud_lcd.dtsi` 中 `panel-dsi-pix-fifo-send-level` 从 `<512>` 降为 `<256>`，测试 DSI 像素FIFO水位/取数裕量。
+- 重新编译 `indoor` app，确保实验十一的 `O_SYNC/msync` 代码未残留到应用二进制。
+- 使用 `make sd PARTS="app"` 重新生成 `app.sqsh4`。
+- 使用 `./build.sh -s` 执行 `bk` 和 `mi other`，仅选择 `cloudOS.dtb` 与 `app.sqsh4` 生成升级包。
+- 验证 `upgrade/SAT_ANYKA.IMG` 头部仅包含 `cloudOS.dtb` 和 `app.sqsh4`；反编译 `cloudOS.dtb` 确认当前 `JD9165T_CSOT7P0_1024x600_4L` 节点为 `panel-dsi-pix-fifo-send-level=<0x100>`、24-bit、`panel-dsi-bllp-mode=<0x01>`、`panel-dsi-clk=<0x168>`、`lcd-logo-rgb-seq=<0x00>`。
+- 用户反馈实验十二异常仍然一样。恢复 `panel-dsi-pix-fifo-send-level=<512>`。
+- 启动实验十三：在 JD9165T init-list 的 `Sleep Out (0x11)` 前增加 `0x00 0x15 0x3A 0x77 0xFFF`，显式设置面板侧 pixel format 为24-bit RGB888。
+- 使用 `./build.sh -s` 执行 `bk` 和 `mi other`，仅选择 `cloudOS.dtb` 生成升级包；自动输入尾部多余导致脚本在产物生成后段错误退出，但升级包已生成并通过包头/DTB反编译校验。
+- 验证 `upgrade/SAT_ANYKA.IMG` 头部仅包含 `cloudOS.dtb`；反编译 `cloudOS.dtb` 确认当前 JD9165T 节点含 `0x00 0x15 0x3A 0x77 0xFFF`，并且 `panel-dsi-pix-fifo-send-level=<0x200>`、24-bit、`panel-dsi-bllp-mode=<0x01>`、`panel-dsi-clk=<0x168>`、`lcd-logo-rgb-seq=<0x00>`。
+- 用户反馈实验十三区别不大，感觉不到有变化。撤销 `0x3A 0x77`。
+- 启动实验十四：将 `panel-dsi-t-pre`、`panel-dsi-t-post`、`panel-dsi-tx-gap` 从 `<1>` 改为 `<3>`，验证 MIPI DPHY HS/LP 时序裕量。
+- 使用 `./build.sh -s` 执行 `bk` 和 `mi other`，仅选择 `cloudOS.dtb` 生成升级包；自动输入尾部仍有多余字符导致脚本在产物生成后继续打印菜单，已停止进程。
+- 验证 `upgrade/SAT_ANYKA.IMG` 头部仅包含 `cloudOS.dtb`；反编译 `cloudOS.dtb` 确认当前 JD9165T 节点 `panel-dsi-t-pre/t-post/tx-gap=<0x03>`，`panel-dsi-pix-fifo-send-level=<0x200>`、24-bit、`panel-dsi-bllp-mode=<0x01>`、`panel-dsi-clk=<0x168>`、`lcd-logo-rgb-seq=<0x00>`，且无 `0x3A 0x77`。
+- 用户反馈实验十四还是没有感觉。恢复 `panel-dsi-t-pre/t-post/tx-gap=<1>`。
+- 当前判断：软件/app/格式/常规MIPI配置方向基本排除；剩余方向是 JD9165T gamma/source/GIP 初始化调参，或屏/FPC/主板硬件一致性问题。下一步优先做屏、FPC、主板三角互换；没有硬件条件时再做强 gamma/source 参数实验。
+- 用户要求先不排硬件，继续软件排查。
+- 启动实验十五：`bridge/main.sh` 将 `ak_fb.ko` 加载参数改为 `fb_shadow=1`，同时 `driver_gui_display_anyka.c` 将 `FB_PATH` 从 `/dev/fb0` 改为 `/dev/fb1`，验证内核 shadow framebuffer/LCDC 缓冲路径。
+- 实验十五构建与打包完成：应用二进制字符串确认包含 `/dev/fb1`，rootfs 输入与生成目录的 `main.sh` 均确认加载 `ak_fb.ko fb_shadow=1`。
+- 生成选择性升级包 `AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG`，包头版本 `20260515143627`，仅包含 `cloudOS.dtb`、`root.sqsh4`、`app.sqsh4` 三个分区。
+- 反编译 `upgrade/platform/cloudOS.dtb` 校验：`lcd-logo-rgb-seq=<0>`，JD9165T当前节点 `panel-dsi-t-pre/t-post/tx-gap=<1>`、`panel-dsi-pix-fifo-send-level=<512>`、24-bit、`panel-dsi-bllp-mode=<1>`、`panel-dsi-clk=<360>`，无前序实验残留。
+- 用户反馈实验十五 satozlogo 能显示但锯齿无变化，且应用日志报 `_driver_gui_display_open: open`。代码定位该错误是打开 `/dev/fb1` 失败，因此实验十五无效。
+- 恢复实验十五改动：`driver_gui_display_anyka.c` 恢复 `FB_PATH "/dev/fb0"`，`bridge/main.sh`、`rootfs/rootfs/usr/sbin/main.sh`、`rootfs/utils/usr/sbin/main.sh` 恢复正常 `insmod /usr/modules/ak_fb.ko`。
+- 查阅 JD9165T 规格书：标准 DCS `GAMSET(0x26)` 可选择 Gamma Curve 1-4，参数为 `0x01/0x02/0x04/0x08`。
+- 启动实验十六：在当前 JD9165T 初始化表 `Sleep Out (0x11)` 前增加 `0x00 0x15 0x26 0x02 0xFFF`，测试 Gamma Curve 2。
+- 构建验证：`make -C indoor` 成功，`make sd PARTS="app"` 成功，`printf "br\nq\n" | ./build.sh -s` 成功，`printf "bk\nq\n" | ./build.sh -s` 成功。
+- 生成选择性升级包 `AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG`，包头版本 `20260515144421`，仅包含 `cloudOS.dtb`、`root.sqsh4`、`app.sqsh4`。
+- 校验：应用二进制包含 `/dev/fb0`；rootfs `main.sh` 为正常 `insmod /usr/modules/ak_fb.ko`；反编译 DTB 确认当前 JD9165T 节点包含 `0x00 0x15 0x26 0x02 0xFFF`，关键显示参数保持 24-bit、`bllp=<1>`、`lcd-logo-rgb-seq=<0>`、`panel-dsi-clk=<360>`。
+- 用户反馈实验十六能使用但效果没有太大区别，要求改回 FB0。确认当前 app 已经是 `/dev/fb0`，继续撤销实验十六的 `GAMSET(0x26)=0x02`，恢复干净 FB0 基线。
+- 重建 DTB：`printf "bk\nq\n" | ./build.sh -s` 成功。
+- 生成只包含 `cloudOS.dtb` 的恢复包 `AnyCloud37E_SDK_V1.10_EXT/upgrade/SAT_ANYKA.IMG`，包头版本 `20260515145004`。
+- 精确校验：当前启用 JD9165T 节点无 `0x00 0x15 0x26 0x02`；`lcd-logo-rgb-seq=<0>`，`panel-dsi-clk=<360>`。
